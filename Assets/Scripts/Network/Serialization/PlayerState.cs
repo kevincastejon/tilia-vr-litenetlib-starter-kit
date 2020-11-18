@@ -5,22 +5,22 @@ public class PlayerState : INetSerializable
 {
     public int Id { get; set; }
     public Vector3 HeadPosition { get; set; }
-    public Vector3 HeadRotation { get; set; }
+    public Quaternion HeadRotation { get; set; }
     public Vector3 LeftHandPosition { get; set; }
-    public Vector3 LeftHandRotation { get; set; }
+    public Quaternion LeftHandRotation { get; set; }
     public Vector3 RightHandPosition { get; set; }
-    public Vector3 RightHandRotation { get; set; }
+    public Quaternion RightHandRotation { get; set; }
     public bool Shooting { get; set; }
 
     public void Serialize(NetDataWriter writer)
     {
         writer.Put(Id);
         Vector3Utils.Serialize(writer, HeadPosition);
-        Vector3Utils.Serialize(writer, HeadRotation);
+        QuatUtils.Serialize(writer, HeadRotation);
         Vector3Utils.Serialize(writer, LeftHandPosition);
-        Vector3Utils.Serialize(writer, LeftHandRotation);
+        QuatUtils.Serialize(writer, LeftHandRotation);
         Vector3Utils.Serialize(writer, RightHandPosition);
-        Vector3Utils.Serialize(writer, RightHandRotation);
+        QuatUtils.Serialize(writer, RightHandRotation);
         writer.Put(Shooting);
     }
 
@@ -28,11 +28,11 @@ public class PlayerState : INetSerializable
     {
         Id = reader.GetInt();
         HeadPosition = Vector3Utils.Deserialize(reader);
-        HeadRotation = Vector3Utils.Deserialize(reader);
+        HeadRotation = QuatUtils.Deserialize(reader);
         LeftHandPosition = Vector3Utils.Deserialize(reader);
-        LeftHandRotation = Vector3Utils.Deserialize(reader);
+        LeftHandRotation = QuatUtils.Deserialize(reader);
         RightHandPosition = Vector3Utils.Deserialize(reader);
-        RightHandRotation = Vector3Utils.Deserialize(reader);
+        RightHandRotation = QuatUtils.Deserialize(reader);
         Shooting = reader.GetBool();
     }
 }

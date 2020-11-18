@@ -6,7 +6,7 @@ using LiteNetLib.Utils;
 using UnityEngine.Events;
 
 public class BaseServerPlayerEvent : UnityEvent<NetPeer> { };
-public class BaseServerPlayerStateEvent : UnityEvent<NetPeer, AvatarState> { };
+public class BaseServerPlayerStateEvent : UnityEvent<NetPeer, PlayerState> { };
 
 public class Server : MonoBehaviour, INetEventListener, INetLogger
 {
@@ -22,7 +22,7 @@ public class Server : MonoBehaviour, INetEventListener, INetLogger
         NetDebug.Logger = this;
         _netPacketProcessor.RegisterNestedType(Vector3Utils.Serialize, Vector3Utils.Deserialize);
         _netPacketProcessor.RegisterNestedType(() => new PlayerState());
-        _netPacketProcessor.SubscribeReusable<AvatarState, NetPeer>(OnPlayerState);
+        _netPacketProcessor.SubscribeReusable<PlayerState, NetPeer>(OnPlayerState);
     }
 
     void Update()
@@ -89,10 +89,10 @@ public class Server : MonoBehaviour, INetEventListener, INetLogger
         onPlayerDisconnected.Invoke(peer);
     }
 
-    private void OnPlayerState(AvatarState pi, NetPeer peer)
+    private void OnPlayerState(PlayerState ps, NetPeer peer)
     {
         Debug.Log("received player state");
-        onPlayerState.Invoke(peer, pi);
+        onPlayerState.Invoke(peer, ps);
     }
 
     public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)

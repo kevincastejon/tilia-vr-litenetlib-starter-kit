@@ -12,8 +12,8 @@ public class Player : MonoBehaviour
     public GameObject rightGO;
     public bool leftPointerActivated;
     public bool rightPointerActivated;
-    private GameObject avatarHead;
-    private TextMeshProUGUI playerName;
+    private GameObject nameOrientationTarget;
+    public TextMeshProUGUI playerName;
     private LTDescr headMoveTween;
     private LTDescr headRotTween;
     private LTDescr leftHandMoveTween;
@@ -35,23 +35,20 @@ public class Player : MonoBehaviour
     private float lastRightGrabbedPosUpdate;
     private float lastRightGrabbedRotUpdate;
 
-    void Awake()
-    {
-        playerName = transform.Find("Head").transform.Find("Canvas").Find("Name").GetComponent<TextMeshProUGUI>();
-    }
-    public void SetHeadNameTracking(GameObject avatarHead)
-    {
-        this.avatarHead = avatarHead;
-    }
     private void Update()
     {
-        playerName.transform.rotation = Quaternion.LookRotation(playerName.transform.position - avatarHead.transform.position);
+        playerName.transform.rotation = Quaternion.LookRotation(playerName.transform.position - nameOrientationTarget.transform.position);
         lastHeadPosUpdate += Time.deltaTime;
         lastHeadRotUpdate += Time.deltaTime;
         lastLeftHandPosUpdate += Time.deltaTime;
         lastLeftHandRotUpdate += Time.deltaTime;
         lastRightHandPosUpdate += Time.deltaTime;
         lastRightHandRotUpdate += Time.deltaTime;
+    }
+
+    public void SetNameOrientationTarget(GameObject target)
+    {
+        nameOrientationTarget = target;
     }
 
     public void SetHeadPositionTarget(Vector3 posTarget)

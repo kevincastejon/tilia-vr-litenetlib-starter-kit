@@ -6,7 +6,7 @@ using UnityEngine.Events;
 [Serializable]
 public class PlayerEvent : UnityEvent<int> { };
 [Serializable]
-public class PlayerStateEvent : UnityEvent<int, AvatarState> { };
+public class PlayerStateEvent : UnityEvent<int, PlayerState> { };
 
 public class GameServer : MonoBehaviour
 {
@@ -22,7 +22,7 @@ public class GameServer : MonoBehaviour
         server = GetComponentInChildren<Server>();
         server.onPlayerConnected.AddListener((NetPeer peer) => OnPeerConnected(peer));
         server.onPlayerDisconnected.AddListener((NetPeer peer) => OnPeerDisconnected(peer));
-        server.onPlayerState.AddListener((NetPeer peer, AvatarState ps) => OnPeerState(peer, ps));
+        server.onPlayerState.AddListener((NetPeer peer, PlayerState ps) => OnPeerState(peer, ps));
         if (autoStart)
         {
             Listen();
@@ -52,9 +52,9 @@ public class GameServer : MonoBehaviour
     {
         onPlayerDisconnected.Invoke(peer.Id);
     }
-    private void OnPeerState(NetPeer peer, AvatarState pi)
+    private void OnPeerState(NetPeer peer, PlayerState ps)
     {
-        onPlayerState.Invoke(peer.Id, pi);
+        onPlayerState.Invoke(peer.Id, ps);
     }
     public void SendInitMessage(InitMessage im, int peerId)
     {

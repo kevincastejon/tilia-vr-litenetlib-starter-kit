@@ -3193,7 +3193,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &691973309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9085,7 +9085,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2035483287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9098,9 +9098,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e0586517989f214685a543b80cd0db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverIP: localhost
-  serverPort: 5000
-  autoConnect: 1
   onLANDiscovered:
     m_PersistentCalls:
       m_Calls: []
@@ -9172,7 +9169,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4320cd22601fc4b4389b487ed6faecf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serverIP: 192.168.0.17
+  serverPort: 5000
   token: appsecret
+  autoConnect: 1
 --- !u!4 &2035483289
 Transform:
   m_ObjectHideFlags: 0

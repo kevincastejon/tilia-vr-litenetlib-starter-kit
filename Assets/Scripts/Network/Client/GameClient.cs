@@ -14,9 +14,6 @@ public class ClientLANDiscoveredEvent : UnityEvent<string, IPEndPoint> { };
 
 public class GameClient : MonoBehaviour
 {
-    public string serverIP;
-    public int serverPort;
-    public bool autoConnect;
     public ClientLANDiscoveredEvent onLANDiscovered = new ClientLANDiscoveredEvent();
     public ClientEvent onConnected = new ClientEvent();
     public ClientEvent onDisconnected = new ClientEvent();
@@ -35,10 +32,6 @@ public class GameClient : MonoBehaviour
         client.onDisconnected.AddListener(() => OnDisconnected());
         client.onInit.AddListener((InitMessage im) => OnInit(im));
         client.onState.AddListener((StateMessage sm) => OnState(sm));
-        if (autoConnect)
-        {
-            Connect(new IPEndPoint(IPAddress.Parse(serverIP), serverPort));
-        }
     }
     /// <summary>
     /// Start sending regular discovery broadcast message
@@ -65,9 +58,9 @@ public class GameClient : MonoBehaviour
     /// <summary>
     /// Sends the local player's state
     /// </summary>
-    public void SendAvatarState(AvatarState avatarState)
+    public void SendPlayerState(PlayerState playerState)
     {
-        client.SendFastMessage(avatarState);
+        client.SendFastMessage(playerState);
     }
     private void OnLANDiscovered(string name, IPEndPoint ip)
     {

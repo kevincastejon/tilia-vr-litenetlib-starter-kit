@@ -21,8 +21,8 @@ public class GameManagerClient : MonoBehaviour
         {
             if (gameClient.Connected)
             {
-                AvatarState avs = GetAvatarState();
-                gameClient.SendAvatarState(avs);
+                PlayerState avs = GetPlayerState();
+                gameClient.SendPlayerState(avs);
             }
         }
     }
@@ -71,12 +71,13 @@ public class GameManagerClient : MonoBehaviour
     private void SpawnPlayer(PlayerState ps)
     {
         Player newPlayer = Instantiate(playerPrefab).GetComponent<Player>();
-        newPlayer.headGO.transform.position = ps.HeadPosition;
-        newPlayer.headGO.transform.eulerAngles = ps.HeadRotation;
-        newPlayer.leftGO.transform.position = ps.LeftHandPosition;
-        newPlayer.leftGO.transform.eulerAngles = ps.LeftHandRotation;
-        newPlayer.rightGO.transform.position = ps.RightHandPosition;
-        newPlayer.rightGO.transform.eulerAngles = ps.RightHandRotation;
+        newPlayer.SetNameOrientationTarget(headGO);
+        newPlayer.SetHeadPositionTarget(ps.HeadPosition);
+        newPlayer.SetHeadRotationTarget(ps.HeadRotation);
+        newPlayer.SetLeftHandPositionTarget(ps.LeftHandPosition);
+        newPlayer.SetLeftHandRotationTarget(ps.LeftHandRotation);
+        newPlayer.SetRightHandPositionTarget(ps.RightHandPosition);
+        newPlayer.SetRightHandRotationTarget(ps.RightHandRotation);
         newPlayer.id = ps.Id;
         players.Add(newPlayer);
     }
@@ -97,23 +98,23 @@ public class GameManagerClient : MonoBehaviour
     private void SetPlayerState(Player player, PlayerState ps)
     {
         player.headGO.transform.position = ps.HeadPosition;
-        player.headGO.transform.eulerAngles = ps.HeadRotation;
+        player.headGO.transform.rotation = ps.HeadRotation;
         player.leftGO.transform.position = ps.LeftHandPosition;
-        player.leftGO.transform.eulerAngles = ps.LeftHandRotation;
+        player.leftGO.transform.rotation = ps.LeftHandRotation;
         player.rightGO.transform.position = ps.RightHandPosition;
-        player.rightGO.transform.eulerAngles = ps.RightHandRotation;
+        player.rightGO.transform.rotation = ps.RightHandRotation;
     }
 
-    private AvatarState GetAvatarState()
+    private PlayerState GetPlayerState()
     {
-        return new AvatarState()
+        return new PlayerState()
         {
             HeadPosition = headGO.transform.position,
-            HeadRotation = headGO.transform.eulerAngles,
+            HeadRotation = headGO.transform.rotation,
             LeftHandPosition = leftGO.transform.position,
-            LeftHandRotation = leftGO.transform.eulerAngles,
+            LeftHandRotation = leftGO.transform.rotation,
             RightHandPosition = rightGO.transform.position,
-            RightHandRotation = rightGO.transform.eulerAngles,
+            RightHandRotation = rightGO.transform.rotation,
             Shooting = false
         };
     }

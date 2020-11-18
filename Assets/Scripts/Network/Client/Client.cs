@@ -12,12 +12,15 @@ public class BaseClientLANDiscoveredEvent : UnityEvent<string, IPEndPoint> { };
 
 public class Client : MonoBehaviour, INetEventListener
 {
+    public string serverIP="192.168.0.x";
+    public int serverPort=5000;
+    public string token = "appsecret";
+    public bool autoConnect;
     public BaseClientEvent onConnected = new BaseClientEvent();
     public BaseClientEvent onDisconnected = new BaseClientEvent();
     public BaseClientInitEvent onInit = new BaseClientInitEvent();
     public BaseClientStateEvent onState = new BaseClientStateEvent();
     public BaseClientLANDiscoveredEvent onLANDiscovered = new BaseClientLANDiscoveredEvent();
-    public string token = "appsecret";
     private NetManager _netClient;
     private NetPeer server;
     private NetDataWriter _dataWriter;
@@ -39,6 +42,10 @@ public class Client : MonoBehaviour, INetEventListener
         _netPacketProcessor.RegisterNestedType(() => new PlayerState());
         _netPacketProcessor.SubscribeReusable<InitMessage, NetPeer>(OnInitReceived);
         _netPacketProcessor.SubscribeReusable<StateMessage, NetPeer>(OnStateReceived);
+        if (autoConnect)
+        {
+            Connect(new IPEndPoint(IPAddress.Parse(serverIP), serverPort));
+        }
     }
 
     void Update()

@@ -8,7 +8,7 @@ public class GameManagerServer : MonoBehaviour
     public GameObject headGO;
     public GameObject leftGO;
     public GameObject rightGO;
-    private readonly List<GameObject> players = new List<GameObject>();
+    private readonly List<Player> players = new List<Player>();
     private float sendRate = 50 / 1000f;
     private float sendTimer = 0f;
 
@@ -24,7 +24,8 @@ public class GameManagerServer : MonoBehaviour
 
     public void OnClientConnected(int peerID)
     {
-        GameObject newPlayer = Instantiate(playerPrefab);
+        Player newPlayer = Instantiate(playerPrefab).GetComponent<Player>();
+        newPlayer.SetNameOrientationTarget(headGO);
         newPlayer.GetComponent<Player>().id = peerID;
         players.Add(newPlayer);
         InitMessage im = new InitMessage()
@@ -36,21 +37,21 @@ public class GameManagerServer : MonoBehaviour
 
     public void OnClientDisconnected(int peerID)
     {
-        GameObject disconnectedPlayer = players.Find(x => x.GetComponent<Player>().id == peerID);
+        Player disconnectedPlayer = players.Find(x => x.id == peerID);
         players.Remove(disconnectedPlayer);
         Destroy(disconnectedPlayer);
     }
 
-    public void OnClientState(int peerID, AvatarState avatarState)
+    public void OnClientState(int peerID, PlayerState ps)
     {
         //Debug.Log("AvatarState : " + peerID);
         Player player = players.Find(x => x.GetComponent<Player>().id == peerID).GetComponent<Player>();
-        player.headGO.transform.position = avatarState.HeadPosition;
-        player.headGO.transform.eulerAngles = avatarState.HeadRotation;
-        player.leftGO.transform.position = avatarState.LeftHandPosition;
-        player.leftGO.transform.eulerAngles = avatarState.LeftHandRotation;
-        player.rightGO.transform.position = avatarState.RightHandPosition;
-        player.rightGO.transform.eulerAngles = avatarState.RightHandRotation;
+        player.SetHeadPositionTarget(ps.HeadPosition);
+        player.SetHeadRotationTarget(ps.HeadRotation);
+        player.SetLeftHandPositionTarget(ps.LeftHandPosition);
+        player.SetLeftHandRotationTarget(ps.LeftHandRotation);
+        player.SetRightHandPositionTarget(ps.RightHandPosition);
+        player.SetRightHandRotationTarget(ps.RightHandRotation);
     }
 
     private StateMessage GetWorldState()
@@ -63,11 +64,11 @@ public class GameManagerServer : MonoBehaviour
             {
                 Id = p.id,
                 HeadPosition = p.headGO.transform.position,
-                HeadRotation = p.headGO.transform.eulerAngles,
+                HeadRotation = p.headGO.transform.rotation,
                 LeftHandPosition = p.leftGO.transform.position,
-                LeftHandRotation = p.leftGO.transform.eulerAngles,
+                LeftHandRotation = p.leftGO.transform.rotation,
                 RightHandPosition = p.rightGO.transform.position,
-                RightHandRotation = p.rightGO.transform.eulerAngles,
+                RightHandRotation = p.rightGO.transform.rotation,
                 Shooting = false
             };
         }
@@ -76,11 +77,11 @@ public class GameManagerServer : MonoBehaviour
         {
             Id = -1,
             HeadPosition = headGO.transform.position,
-            HeadRotation = headGO.transform.eulerAngles,
+            HeadRotation = headGO.transform.rotation,
             LeftHandPosition = leftGO.transform.position,
-            LeftHandRotation = leftGO.transform.eulerAngles,
+            LeftHandRotation = leftGO.transform.rotation,
             RightHandPosition = rightGO.transform.position,
-            RightHandRotation = rightGO.transform.eulerAngles,
+            RightHandRotation = rightGO.transform.rotation,
             Shooting = false
         };
 
