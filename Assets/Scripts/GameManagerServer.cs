@@ -97,7 +97,7 @@ public class GameManagerServer : MonoBehaviour
             RightHandRotation = rightGO.transform.rotation,
             Shooting = shooting
         };
-        EntityState[] bulletStates = new EntityState[bullets.Count + 1];
+        EntityState[] bulletStates = new EntityState[bullets.Count];
         for (int i = 0; i < bullets.Count; i++)
         {
             Bullet b = bullets[i];
