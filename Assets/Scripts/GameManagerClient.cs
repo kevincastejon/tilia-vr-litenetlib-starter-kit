@@ -6,11 +6,14 @@ public class GameManagerClient : MonoBehaviour
 {
     public GameClient gameClient;
     public GameObject playerPrefab;
+    public GameObject bulletPrefab;
     public GameObject headGO;
     public GameObject leftGO;
     public GameObject rightGO;
+    public bool shooting;
     private int avatarId;
     private readonly List<Player> players = new List<Player>();
+    private readonly List<Bullet> bullets = new List<Bullet>();
     private float sendRate = 50 / 1000f;
     private float sendTimer = 0f;
 
@@ -25,6 +28,11 @@ public class GameManagerClient : MonoBehaviour
                 gameClient.SendPlayerState(avs);
             }
         }
+    }
+
+    public void SetShooting(bool shooting)
+    {
+        this.shooting = shooting;
     }
 
     /// <summary>
@@ -66,6 +74,19 @@ public class GameManagerClient : MonoBehaviour
             }
         }
         DespawnOldPlayers(sm.Players);
+        for (int i = 0; i < sm.Bullets.Length; i++)
+        {
+            Bullet bullet = bullets.Find(x => x.id == sm.Bullets[i].Id);
+            if (bullet != null)
+            {
+                SetBulletState(bullet, sm.Bullets[i]);
+            }
+            else if (sm.Bullets[i].Id != avatarId)
+            {
+                SpawnBullet(sm.Bullets[i]);
+            }
+        }
+        DespawnOldBullets(sm.Bullets);
     }
 
     private void SpawnPlayer(PlayerState ps)
@@ -103,6 +124,34 @@ public class GameManagerClient : MonoBehaviour
         player.leftGO.transform.rotation = ps.LeftHandRotation;
         player.rightGO.transform.position = ps.RightHandPosition;
         player.rightGO.transform.rotation = ps.RightHandRotation;
+        player.shooting = ps.Shooting;
+    }
+    private void SpawnBullet(EntityState bs)
+    {
+        Bullet newBullet = Instantiate(bulletPrefab).GetComponent<Bullet>();
+        newBullet.SetPositionTarget(bs.Position);
+        newBullet.SetRotationTarget(bs.Rotation);
+        newBullet.id = bs.Id;
+        bullets.Add(newBullet);
+    }
+
+    private void DespawnOldBullets(EntityState[] bs)
+    {
+        for (int i = 0; i < bullets.Count; i++)
+        {
+            Bullet oldBullet = bullets[i];
+            if (Array.Find(bs, x => x.Id == oldBullet.id) == null)
+            {
+                bullets.Remove(oldBullet);
+                Destroy(oldBullet.gameObject);
+            }
+        }
+    }
+
+    private void SetBulletState(Bullet bullet, EntityState bs)
+    {
+        bullet.transform.position = bs.Position;
+        bullet.transform.rotation = bs.Rotation;
     }
 
     private PlayerState GetPlayerState()
@@ -115,7 +164,7 @@ public class GameManagerClient : MonoBehaviour
             LeftHandRotation = leftGO.transform.rotation,
             RightHandPosition = rightGO.transform.position,
             RightHandRotation = rightGO.transform.rotation,
-            Shooting = false
+            Shooting = shooting
         };
     }
 

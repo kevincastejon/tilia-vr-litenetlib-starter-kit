@@ -10,10 +10,11 @@ public class Player : MonoBehaviour
     public GameObject headGO;
     public GameObject leftGO;
     public GameObject rightGO;
+    public TextMeshProUGUI playerName;
     public bool leftPointerActivated;
     public bool rightPointerActivated;
+    public bool shooting;
     private GameObject nameOrientationTarget;
-    public TextMeshProUGUI playerName;
     private LTDescr headMoveTween;
     private LTDescr headRotTween;
     private LTDescr leftHandMoveTween;

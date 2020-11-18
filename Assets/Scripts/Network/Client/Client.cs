@@ -40,6 +40,7 @@ public class Client : MonoBehaviour, INetEventListener
         _netClient.Start();
         _netPacketProcessor.RegisterNestedType(Vector3Utils.Serialize, Vector3Utils.Deserialize);
         _netPacketProcessor.RegisterNestedType(() => new PlayerState());
+        _netPacketProcessor.RegisterNestedType(() => new EntityState());
         _netPacketProcessor.SubscribeReusable<InitMessage, NetPeer>(OnInitReceived);
         _netPacketProcessor.SubscribeReusable<StateMessage, NetPeer>(OnStateReceived);
         if (autoConnect)

@@ -5,10 +5,14 @@ public class GameManagerServer : MonoBehaviour
 {
     public GameServer server;
     public GameObject playerPrefab;
+    public GameObject bulletPrefab;
     public GameObject headGO;
     public GameObject leftGO;
     public GameObject rightGO;
+    public Gun gun;
+    public bool shooting;
     private readonly List<Player> players = new List<Player>();
+    private readonly List<Bullet> bullets = new List<Bullet>();
     private float sendRate = 50 / 1000f;
     private float sendTimer = 0f;
 
@@ -20,6 +24,14 @@ public class GameManagerServer : MonoBehaviour
             StateMessage sm = GetWorldState();
             server.SendWorldState(sm);
         }
+    }
+
+    public void SetShooting(bool shooting)
+    {
+        this.shooting = shooting;
+        Bullet bullet = Instantiate(bulletPrefab, gun.spawnPoint.position, gun.spawnPoint.rotation).GetComponent<Bullet>();
+        bullet.GetComponentInChildren<Rigidbody>().AddRelativeForce(Vector3.forward * 1, ForceMode.Impulse);
+        bullets.Add(bullet);
     }
 
     public void OnClientConnected(int peerID)
@@ -52,14 +64,15 @@ public class GameManagerServer : MonoBehaviour
         player.SetLeftHandRotationTarget(ps.LeftHandRotation);
         player.SetRightHandPositionTarget(ps.RightHandPosition);
         player.SetRightHandRotationTarget(ps.RightHandRotation);
+        player.shooting = ps.Shooting;
     }
 
     private StateMessage GetWorldState()
     {
-        PlayerState[] playerStates = new PlayerState[players.Count+1];
+        PlayerState[] playerStates = new PlayerState[players.Count + 1];
         for (int i = 0; i < players.Count; i++)
         {
-            Player p = players[i].GetComponent<Player>();
+            Player p = players[i];
             playerStates[i] = new PlayerState()
             {
                 Id = p.id,
@@ -69,10 +82,10 @@ public class GameManagerServer : MonoBehaviour
                 LeftHandRotation = p.leftGO.transform.rotation,
                 RightHandPosition = p.rightGO.transform.position,
                 RightHandRotation = p.rightGO.transform.rotation,
-                Shooting = false
+                Shooting = p.shooting
             };
         }
-        
+
         playerStates[players.Count] = new PlayerState()
         {
             Id = -1,
@@ -82,12 +95,23 @@ public class GameManagerServer : MonoBehaviour
             LeftHandRotation = leftGO.transform.rotation,
             RightHandPosition = rightGO.transform.position,
             RightHandRotation = rightGO.transform.rotation,
-            Shooting = false
+            Shooting = shooting
         };
-
+        EntityState[] bulletStates = new EntityState[bullets.Count + 1];
+        for (int i = 0; i < bullets.Count; i++)
+        {
+            Bullet b = bullets[i];
+            bulletStates[i] = new EntityState()
+            {
+                Id = b.id,
+                Position = b.transform.position,
+                Rotation = b.transform.rotation,
+            };
+        }
         StateMessage sm = new StateMessage()
         {
             Players = playerStates,
+            Bullets = bulletStates
         };
         return sm;
     }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 2138677392}
-  m_IndirectSpecularColor: {r: 0.28498062, g: 0.37134537, b: 0.4959416, a: 1}
+  m_IndirectSpecularColor: {r: 0.2836156, g: 0.36955687, b: 0.4935608, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -633,6 +633,28 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 691973312}
+        m_MethodName: SetShooting
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 2035483290}
+        m_MethodName: SetShooting
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   ValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -641,7 +663,29 @@ MonoBehaviour:
       m_Calls: []
   Deactivated:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 691973312}
+        m_MethodName: SetShooting
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2035483290}
+        m_MethodName: SetShooting
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &155289357 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5839046843648530548, guid: f8e0d2a59209d854b91b04b5db7df9ca,
@@ -3292,9 +3336,12 @@ MonoBehaviour:
   server: {fileID: 691973309}
   playerPrefab: {fileID: 5143088545895085449, guid: c72752aba5d06074586033b2a852aeaf,
     type: 3}
+  bulletPrefab: {fileID: 0}
   headGO: {fileID: 1253932596}
   leftGO: {fileID: 77620282}
   rightGO: {fileID: 1500526633}
+  gun: {fileID: 0}
+  shooting: 0
 --- !u!1 &705789048
 GameObject:
   m_ObjectHideFlags: 0
@@ -3595,8 +3642,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ac8196f18357344b1261583e02023c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 2024301931097442895, guid: 2910db0b28aba7b408e99e773670a592,
-    type: 3}
+  spawnPoint: {fileID: 1079335538}
 --- !u!1 &802472598
 GameObject:
   m_ObjectHideFlags: 0
@@ -4169,7 +4215,7 @@ GameObject:
   - component: {fileID: 951090265}
   - component: {fileID: 951090264}
   - component: {fileID: 951090263}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GunCannon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6730,6 +6776,16 @@ PrefabInstance:
       propertyPath: Converged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8477555685268444746, guid: 71fc6f8bc6839244ca08bcfe14432fa3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8625140131942458800, guid: 71fc6f8bc6839244ca08bcfe14432fa3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71fc6f8bc6839244ca08bcfe14432fa3, type: 3}
 --- !u!4 &1431509162 stripped
@@ -7573,7 +7629,7 @@ GameObject:
   - component: {fileID: 1737012311}
   - component: {fileID: 1737012310}
   - component: {fileID: 1737012313}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8832,7 +8888,7 @@ GameObject:
   - component: {fileID: 1970978566}
   - component: {fileID: 1970978565}
   - component: {fileID: 1970978564}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GunGrip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9202,9 +9258,11 @@ MonoBehaviour:
   gameClient: {fileID: 2035483287}
   playerPrefab: {fileID: 5143088545895085449, guid: c72752aba5d06074586033b2a852aeaf,
     type: 3}
+  bulletPrefab: {fileID: 0}
   headGO: {fileID: 1253932596}
   leftGO: {fileID: 77620282}
   rightGO: {fileID: 1500526633}
+  shooting: 0
 --- !u!114 &2050020145 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3607323991379943426, guid: 702caa48c730e92469a1c5144fd8ed46,

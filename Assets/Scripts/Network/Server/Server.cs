@@ -22,6 +22,7 @@ public class Server : MonoBehaviour, INetEventListener, INetLogger
         NetDebug.Logger = this;
         _netPacketProcessor.RegisterNestedType(Vector3Utils.Serialize, Vector3Utils.Deserialize);
         _netPacketProcessor.RegisterNestedType(() => new PlayerState());
+        _netPacketProcessor.RegisterNestedType(() => new EntityState());
         _netPacketProcessor.SubscribeReusable<PlayerState, NetPeer>(OnPlayerState);
     }
 
