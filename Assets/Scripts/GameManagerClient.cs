@@ -74,19 +74,19 @@ public class GameManagerClient : MonoBehaviour
             }
         }
         DespawnOldPlayers(sm.Players);
-        //for (int i = 0; i < sm.Bullets.Length; i++)
-        //{
-        //    Bullet bullet = bullets.Find(x => x.id == sm.Bullets[i].Id);
-        //    if (bullet != null)
-        //    {
-        //        SetBulletState(bullet, sm.Bullets[i]);
-        //    }
-        //    else if (sm.Bullets[i].Id != avatarId)
-        //    {
-        //        SpawnBullet(sm.Bullets[i]);
-        //    }
-        //}
-        //DespawnOldBullets(sm.Bullets);
+        for (int i = 0; i < sm.Bullets.Length; i++)
+        {
+            Bullet bullet = bullets.Find(x => x.id == sm.Bullets[i].Id);
+            if (bullet != null)
+            {
+                SetBulletState(bullet, sm.Bullets[i]);
+            }
+            else if (sm.Bullets[i].Id != avatarId)
+            {
+                SpawnBullet(sm.Bullets[i]);
+            }
+        }
+        DespawnOldBullets(sm.Bullets);
     }
 
     private void SpawnPlayer(PlayerState ps)
