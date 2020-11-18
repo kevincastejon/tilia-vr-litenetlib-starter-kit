@@ -183,10 +183,10 @@ MonoBehaviour:
   headGO: {fileID: 5143088546153528603}
   leftGO: {fileID: 5143088547053985206}
   rightGO: {fileID: 5143088546728339851}
+  playerName: {fileID: 5475225523451354045}
   leftPointerActivated: 0
   rightPointerActivated: 0
-  nameOrientationTarget: {fileID: 0}
-  playerName: {fileID: 5475225523451354045}
+  shooting: 0
 --- !u!1 &5143088546153528603
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,7 +247,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 0ff32c08d2ea10f4e9ed0657aa37332a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -340,7 +340,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 0ff32c08d2ea10f4e9ed0657aa37332a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -433,7 +433,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 0ff32c08d2ea10f4e9ed0657aa37332a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

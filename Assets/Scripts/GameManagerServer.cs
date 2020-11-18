@@ -29,9 +29,16 @@ public class GameManagerServer : MonoBehaviour
     public void SetShooting(bool shooting)
     {
         this.shooting = shooting;
-        Bullet bullet = Instantiate(bulletPrefab, gun.spawnPoint.position, gun.spawnPoint.rotation).GetComponent<Bullet>();
-        bullet.GetComponentInChildren<Rigidbody>().AddRelativeForce(Vector3.forward * 1, ForceMode.Impulse);
-        bullets.Add(bullet);
+        if (shooting)
+        {
+            Debug.Log("Spawn position: "+gun.spawnPoint.position);
+            Debug.Log("Spawn rotation: "+gun.spawnPoint.rotation);
+            Bullet bullet = Instantiate(bulletPrefab).GetComponent<Bullet>();
+            bullet.transform.position = gun.spawnPoint.position;
+            bullet.transform.rotation = gun.spawnPoint.rotation;
+            bullet.GetComponent<Rigidbody>().AddRelativeForce(bullet.transform.forward * 1, ForceMode.Impulse);
+            bullets.Add(bullet);
+        }
     }
 
     public void OnClientConnected(int peerID)
