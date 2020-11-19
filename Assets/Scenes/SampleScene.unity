@@ -468,7 +468,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
-  ownerId: 0
+  grabbed: 0
+  leftHand: 0
+  lastOwnerId: 0
 --- !u!1 &62202835
 GameObject:
   m_ObjectHideFlags: 0
@@ -649,7 +651,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
-  ownerId: 0
+  grabbed: 0
+  leftHand: 0
+  lastOwnerId: 0
 --- !u!1 &151667565
 GameObject:
   m_ObjectHideFlags: 0
@@ -715,8 +719,8 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 2035483290}
-        m_MethodName: SetShooting
-        m_Mode: 6
+        m_MethodName: SetShootingLeft
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -746,8 +750,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 2035483290}
-        m_MethodName: SetShooting
-        m_Mode: 6
+        m_MethodName: SetShootingLeft
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2260,7 +2264,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
-  ownerId: 0
+  grabbed: 0
+  leftHand: 0
+  lastOwnerId: 0
 --- !u!114 &381407656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3740,7 +3746,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &691973309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3837,7 +3843,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b5c13bf20f744e4c89255abcb85b8f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shooting: 0
+  leftShooting: 0
+  rightShooting: 0
   server: {fileID: 691973309}
   playerPrefab: {fileID: 5143088545895085449, guid: c72752aba5d06074586033b2a852aeaf,
     type: 3}
@@ -3846,11 +3853,13 @@ MonoBehaviour:
   headGO: {fileID: 1253932596}
   leftGO: {fileID: 77620282}
   rightGO: {fileID: 1500526633}
-  leftGrab: {fileID: 0}
-  rightGrab: {fileID: 0}
   guns:
   - {fileID: 30507604}
   - {fileID: 381407655}
+  leftGrab: {fileID: 0}
+  rightGrab: {fileID: 0}
+  leftPointer: 0
+  rightPointer: 0
 --- !u!1 &705789048
 GameObject:
   m_ObjectHideFlags: 0
@@ -4776,8 +4785,8 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 2035483290}
-        m_MethodName: SetShooting
-        m_Mode: 6
+        m_MethodName: SetShootingRight
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4807,8 +4816,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 2035483290}
-        m_MethodName: SetShooting
-        m_Mode: 6
+        m_MethodName: SetShootingRight
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4983,6 +4992,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f374290a390ec5f46882b6c06f914834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &978153841
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 978153843}
+  - component: {fileID: 978153842}
+  m_Layer: 0
+  m_Name: DEV_NetworkSwitcher
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &978153842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 978153841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74bc7fb32c2b34341973cba88a531b2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isServer: 1
+  server: {fileID: 691973308}
+  client: {fileID: 2035483286}
+--- !u!4 &978153843
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 978153841}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.4074178, y: -0.68904305, z: -12.834988}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &980473048 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6827894074637364027, guid: 571e38d33c8273a41ac856406b029f0c,
@@ -10628,6 +10683,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ada12defafa79d459d6281b1ec8ae59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  avatarId: 0
+  leftGrab: {fileID: 0}
+  rightGrab: {fileID: 0}
+  leftShooting: 0
+  rightShooting: 0
+  leftPointer: 0
+  rightPointer: 0
   gameClient: {fileID: 2035483287}
   playerPrefab: {fileID: 5143088545895085449, guid: c72752aba5d06074586033b2a852aeaf,
     type: 3}
@@ -10636,7 +10698,7 @@ MonoBehaviour:
   headGO: {fileID: 1253932596}
   leftGO: {fileID: 77620282}
   rightGO: {fileID: 1500526633}
-  shooting: 0
+  guns: []
 --- !u!114 &2050020145 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3607323991379943426, guid: 702caa48c730e92469a1c5144fd8ed46,

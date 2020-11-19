@@ -10,12 +10,19 @@ public class Player : MonoBehaviour
     public GameObject headGO;
     public GameObject leftGO;
     public GameObject rightGO;
-    public GameObject leftGrabGO;
-    public GameObject rightGrabGO;
     public TextMeshProUGUI playerName;
+    [ReadOnly]
     public bool leftPointerActivated;
+    [ReadOnly]
     public bool rightPointerActivated;
-    public bool shooting;
+    [ReadOnly]
+    public int leftGrabId;
+    [ReadOnly]
+    public int rightGrabId;
+    [ReadOnly]
+    public bool leftShooting;
+    [ReadOnly]
+    public bool rightShooting;
     private GameObject nameOrientationTarget;
     private LTDescr headMoveTween;
     private LTDescr headRotTween;
@@ -23,20 +30,12 @@ public class Player : MonoBehaviour
     private LTDescr leftHandRotTween;
     private LTDescr rightHandMoveTween;
     private LTDescr rightHandRotTween;
-    private LTDescr leftGrabbedMoveTween;
-    private LTDescr leftGrabbedRotTween;
-    private LTDescr rightGrabbedMoveTween;
-    private LTDescr rightGrabbedRotTween;
     private float lastHeadPosUpdate;
     private float lastHeadRotUpdate;
     private float lastLeftHandPosUpdate;
     private float lastLeftHandRotUpdate;
     private float lastRightHandPosUpdate;
     private float lastRightHandRotUpdate;
-    private float lastLeftGrabbedPosUpdate;
-    private float lastLeftGrabbedRotUpdate;
-    private float lastRightGrabbedPosUpdate;
-    private float lastRightGrabbedRotUpdate;
 
     private void Update()
     {
@@ -113,46 +112,6 @@ public class Player : MonoBehaviour
         rightHandRotTween = LeanTween.rotate(rightGO, rotTarget.eulerAngles, lastRightHandRotUpdate);
         rightHandRotTween.setOnComplete(() => rightHandRotTween = null);
         lastRightHandRotUpdate = 0;
-    }
-    public void SetLeftGrabbedPositionTarget(Vector3 posTarget)
-    {
-        if (leftGrabbedMoveTween != null)
-        {
-            LeanTween.cancel(leftGrabbedMoveTween.id);
-        }
-        leftGrabbedMoveTween = LeanTween.move(leftGrabGO, posTarget, lastLeftGrabbedPosUpdate);
-        leftGrabbedMoveTween.setOnComplete(() => leftGrabbedMoveTween = null);
-        lastLeftGrabbedPosUpdate = 0;
-    }
-    public void SetLeftGrabbedRotationTarget(Quaternion rotTarget)
-    {
-        if (leftGrabbedRotTween != null)
-        {
-            LeanTween.cancel(leftGrabbedRotTween.id);
-        }
-        leftGrabbedRotTween = LeanTween.rotate(leftGrabGO, rotTarget.eulerAngles, lastLeftGrabbedRotUpdate);
-        leftGrabbedRotTween.setOnComplete(() => leftGrabbedRotTween = null);
-        lastLeftGrabbedRotUpdate = 0;
-    }
-    public void SetRightGrabbedPositionTarget(Vector3 posTarget)
-    {
-        if (rightGrabbedMoveTween != null)
-        {
-            LeanTween.cancel(rightGrabbedMoveTween.id);
-        }
-        rightGrabbedMoveTween = LeanTween.move(rightGrabGO, posTarget, lastRightGrabbedPosUpdate);
-        rightGrabbedMoveTween.setOnComplete(() => rightGrabbedMoveTween = null);
-        lastRightGrabbedPosUpdate = 0;
-    }
-    public void SetRightGrabbedRotationTarget(Quaternion rotTarget)
-    {
-        if (rightGrabbedRotTween != null)
-        {
-            LeanTween.cancel(rightGrabbedRotTween.id);
-        }
-        rightGrabbedRotTween = LeanTween.rotate(rightGrabGO, rotTarget.eulerAngles, lastRightGrabbedRotUpdate);
-        rightGrabbedRotTween.setOnComplete(() => rightGrabbedRotTween = null);
-        lastRightGrabbedRotUpdate = 0;
     }
 
     public void SetName(string name)

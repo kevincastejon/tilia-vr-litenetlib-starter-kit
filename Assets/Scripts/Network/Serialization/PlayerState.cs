@@ -10,6 +10,8 @@ public class PlayerState : INetSerializable
     public Quaternion LeftHandRotation { get; set; }
     public Vector3 RightHandPosition { get; set; }
     public Quaternion RightHandRotation { get; set; }
+    public bool LeftPointer { get; set; }
+    public bool RightPointer { get; set; }
 
     public void Serialize(NetDataWriter writer)
     {
@@ -20,6 +22,8 @@ public class PlayerState : INetSerializable
         QuatUtils.Serialize(writer, LeftHandRotation);
         Vector3Utils.Serialize(writer, RightHandPosition);
         QuatUtils.Serialize(writer, RightHandRotation);
+        writer.Put(LeftPointer);
+        writer.Put(RightPointer);
     }
 
     public void Deserialize(NetDataReader reader)
@@ -31,5 +35,7 @@ public class PlayerState : INetSerializable
         LeftHandRotation = QuatUtils.Deserialize(reader);
         RightHandPosition = Vector3Utils.Deserialize(reader);
         RightHandRotation = QuatUtils.Deserialize(reader);
+        LeftPointer = reader.GetBool();
+        RightPointer = reader.GetBool();
     }
 }

@@ -1,38 +1,100 @@
 ﻿using System;
 using System.Collections.Generic;
+using Tilia.Interactions.Interactables.Interactables;
+using Tilia.Interactions.Interactables.Interactors;
 using UnityEngine;
 
 public class GameManagerClient : MonoBehaviour
 {
+    [ReadOnly]
+    public int avatarId;
+    [ReadOnly]
+    public NetworkGrabbableObject leftGrab;
+    [ReadOnly]
+    public NetworkGrabbableObject rightGrab;
+    [ReadOnly]
+    public bool leftShooting;
+    [ReadOnly]
+    public bool rightShooting;
+    [ReadOnly]
+    public bool leftPointer;
+    [ReadOnly]
+    public bool rightPointer;
     public GameClient gameClient;
     public GameObject playerPrefab;
     public GameObject bulletPrefab;
     public GameObject headGO;
     public GameObject leftGO;
     public GameObject rightGO;
-    public bool shooting;
-    private int avatarId;
+    public List<NetworkGrabbableObject> guns = new List<NetworkGrabbableObject>();
     private readonly List<Player> players = new List<Player>();
     private readonly List<NetworkObject> bullets = new List<NetworkObject>();
     private float sendRate = 50 / 1000f;
     private float sendTimer = 0f;
 
-    private void FixedUpdate()
+    private void Start()
+    {
+        guns.ForEach((NetworkGrabbableObject gun) =>
+        {
+            InteractableFacade interactable = gun.GetComponent<InteractableFacade>();
+            interactable.Grabbed.AddListener((InteractorFacade interactor) => SetGrab(gun, interactor.name == "LeftInteractor"));
+            interactable.Ungrabbed.AddListener((InteractorFacade interactor) => SetGrab(null, interactor.name == "LeftInteractor"));
+        });
+    }
+
+    public void SetGrab(NetworkGrabbableObject obj, bool leftHand)
+    {
+        if (leftHand)
+        {
+            leftGrab = obj;
+            if (obj != null)
+            {
+                obj.grabbed = true;
+                obj.leftHand = true;
+                obj.lastOwnerId = avatarId;
+            }
+            else
+            {
+                leftGrab.grabbed = false;
+            }
+        }
+        else
+        {
+            rightGrab = obj;
+            if (obj != null)
+            {
+                obj.grabbed = true;
+                obj.leftHand = false;
+                obj.lastOwnerId = avatarId;
+            }
+            else
+            {
+                rightGrab.grabbed = false;
+            }
+        }
+    }
+
+    private void Update()
     {
         sendTimer += Time.deltaTime;
         if (sendTimer >= sendRate)
         {
             if (gameClient.Connected)
             {
-                PlayerInput pi = GetPlayerState();
+                PlayerInput pi = GetPlayerInput();
                 gameClient.SendInput(pi);
             }
         }
     }
 
-    public void SetShooting(bool shooting)
+    public void SetShootingLeft(bool shooting)
     {
-        this.shooting = shooting;
+        leftShooting = shooting;
+    }
+
+    public void SetShootingRight(bool shooting)
+    {
+        rightShooting = shooting;
     }
 
     /// <summary>
@@ -88,6 +150,14 @@ public class GameManagerClient : MonoBehaviour
             }
         }
         DespawnOldBullets(sm.Bullets);
+        for (int i = 0; i < sm.Guns.Length; i++)
+        {
+            NetworkGrabbableObject gun = guns.Find(x => x.id == sm.Guns[i].Id);
+            if (!gun.grabbed)
+            {
+                SetGunState(gun, sm.Guns[i]);
+            }
+        }
     }
 
     private void SpawnPlayer(PlayerState ps)
@@ -153,8 +223,13 @@ public class GameManagerClient : MonoBehaviour
         bullet.transform.position = bs.Position;
         bullet.transform.rotation = bs.Rotation;
     }
+    private void SetGunState(NetworkGrabbableObject gun, EntityState gs)
+    {
+        gun.transform.position = gs.Position;
+        gun.transform.rotation = gs.Rotation;
+    }
 
-    private PlayerInput GetPlayerState()
+    private PlayerInput GetPlayerInput()
     {
         return new PlayerInput()
         {
@@ -164,7 +239,16 @@ public class GameManagerClient : MonoBehaviour
             LeftHandRotation = leftGO.transform.rotation,
             RightHandPosition = rightGO.transform.position,
             RightHandRotation = rightGO.transform.rotation,
+            LeftGrabId = leftGrab == null ? -1 : leftGrab.id,
+            LeftGrabPosition = leftGrab == null ? Vector3.zero : leftGrab.transform.position,
+            LeftGrabRotation = leftGrab == null ? Quaternion.identity : leftGrab.transform.rotation,
+            RightGrabId = rightGrab == null ? -1 : rightGrab.id,
+            RightGrabPosition = rightGrab == null ? Vector3.zero : rightGrab.transform.position,
+            RightGrabRotation = rightGrab == null ? Quaternion.identity : rightGrab.transform.rotation,
+            LeftShooting = leftShooting,
+            RightShooting = rightShooting,
+            LeftPointer = leftPointer,
+            RightPointer = rightPointer,
         };
     }
-
 }

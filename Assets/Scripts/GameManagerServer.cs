@@ -7,18 +7,24 @@ using UnityEngine;
 public class GameManagerServer : MonoBehaviour
 {
     [ReadOnly]
-    public bool shooting;
+    public bool leftShooting;
+    [ReadOnly]
+    public bool rightShooting;
     public GameServer server;
     public GameObject playerPrefab;
     public GameObject bulletPrefab;
     public GameObject headGO;
     public GameObject leftGO;
     public GameObject rightGO;
+    public List<NetworkGrabbableObject> guns = new List<NetworkGrabbableObject>();
     [ReadOnly]
     public NetworkGrabbableObject leftGrab;
     [ReadOnly]
     public NetworkGrabbableObject rightGrab;
-    public List<NetworkGrabbableObject> guns = new List<NetworkGrabbableObject>();
+    [ReadOnly]
+    public bool leftPointer;
+    [ReadOnly]
+    public bool rightPointer;
     private readonly List<Player> players = new List<Player>();
     private readonly List<NetworkObject> bullets = new List<NetworkObject>();
     private float sendRate = 50 / 1000f;
@@ -58,7 +64,7 @@ public class GameManagerServer : MonoBehaviour
             }
             else
             {
-                obj.grabbed = false;
+                leftGrab.grabbed = false;
             }
         }
         else
@@ -72,26 +78,26 @@ public class GameManagerServer : MonoBehaviour
             }
             else
             {
-                obj.grabbed = false;
+                rightGrab.grabbed = false;
             }
         }
     }
 
     public void SetShootingLeft(bool shooting)
     {
-        this.shooting = shooting;
+        leftShooting = shooting;
         if (shooting)
         {
             Transform spawnPoint = leftGrab.GetComponent<Gun>().spawnPoint.transform;
             NetworkObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation).GetComponent<NetworkObject>();
-            bullet.GetComponent<Rigidbody>().AddRelativeForce(bullet.transform.forward * 1, ForceMode.Impulse);
+            bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * 1, ForceMode.Impulse);
             bullets.Add(bullet);
         }
     }
 
     public void SetShootingRight(bool shooting)
     {
-        this.shooting = shooting;
+        rightShooting = shooting;
         if (shooting)
         {
             Transform spawnPoint = rightGrab.GetComponent<Gun>().spawnPoint.transform;
@@ -131,6 +137,40 @@ public class GameManagerServer : MonoBehaviour
         player.SetLeftHandRotationTarget(pi.LeftHandRotation);
         player.SetRightHandPositionTarget(pi.RightHandPosition);
         player.SetRightHandRotationTarget(pi.RightHandRotation);
+        player.leftGrabId = pi.LeftGrabId;
+        player.rightGrabId = pi.RightGrabId;
+        if (pi.LeftGrabId != -1)
+        {
+            NetworkGrabbableObject grabbed = guns.Find((NetworkGrabbableObject g) => g.id == pi.LeftGrabId);
+            grabbed.SetPositionTarget(pi.LeftGrabPosition);
+            grabbed.SetRotationTarget(pi.LeftGrabRotation);
+        }
+        if (pi.RightGrabId != -1)
+        {
+            NetworkGrabbableObject grabbed = guns.Find((NetworkGrabbableObject g) => g.id == pi.RightGrabId);
+            grabbed.SetPositionTarget(pi.RightGrabPosition);
+            grabbed.SetRotationTarget(pi.RightGrabRotation);
+        }
+        player.leftPointerActivated = pi.LeftPointer;
+        player.rightPointerActivated = pi.RightPointer;
+        if (!player.leftShooting && pi.LeftShooting && player.leftGrabId != -1)
+        {
+            NetworkGrabbableObject obj = guns.Find((NetworkGrabbableObject g) => g.id == player.leftGrabId);
+            Transform spawnPoint = obj.GetComponent<Gun>().spawnPoint.transform;
+            NetworkObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation).GetComponent<NetworkObject>();
+            bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * 1, ForceMode.Impulse);
+            bullets.Add(bullet);
+            player.leftShooting = pi.LeftShooting;
+        }
+        if (!player.rightShooting && pi.RightShooting && player.rightGrabId != -1)
+        {
+            NetworkGrabbableObject obj = guns.Find((NetworkGrabbableObject g) => g.id == player.rightGrabId);
+            Transform spawnPoint = obj.GetComponent<Gun>().spawnPoint.transform;
+            NetworkObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation).GetComponent<NetworkObject>();
+            bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * 1, ForceMode.Impulse);
+            bullets.Add(bullet);
+            player.rightShooting = pi.RightShooting;
+        }
     }
 
     private StateMessage GetWorldState()
@@ -148,6 +188,8 @@ public class GameManagerServer : MonoBehaviour
                 LeftHandRotation = p.leftGO.transform.rotation,
                 RightHandPosition = p.rightGO.transform.position,
                 RightHandRotation = p.rightGO.transform.rotation,
+                LeftPointer = p.leftPointerActivated,
+                RightPointer = p.rightPointerActivated
             };
         }
 
@@ -160,6 +202,8 @@ public class GameManagerServer : MonoBehaviour
             LeftHandRotation = leftGO.transform.rotation,
             RightHandPosition = rightGO.transform.position,
             RightHandRotation = rightGO.transform.rotation,
+            LeftPointer = leftPointer,
+            RightPointer = rightPointer,
         };
         EntityState[] bulletStates = new EntityState[bullets.Count];
         for (int i = 0; i < bullets.Count; i++)
@@ -178,19 +222,19 @@ public class GameManagerServer : MonoBehaviour
             NetworkGrabbableObject g = guns[i];
             Vector3 position = g.transform.position;
             Quaternion rotation = g.transform.rotation;
-            if (g.grabbed)
-            {
-                if (g.leftHand)
-                {
-                    position = g.lastOwnerId == -1 ? leftGrab.transform.position : players[g.lastOwnerId].leftGrabGO.transform.position;
-                    rotation = g.lastOwnerId == -1 ? leftGrab.transform.rotation : players[g.lastOwnerId].leftGrabGO.transform.rotation;
-                }
-                else
-                {
-                    position = g.lastOwnerId == -1 ? rightGrab.transform.position : players[g.lastOwnerId].rightGrabGO.transform.position;
-                    rotation = g.lastOwnerId == -1 ? rightGrab.transform.rotation : players[g.lastOwnerId].rightGrabGO.transform.rotation;
-                }
-            }
+            //if (g.grabbed)
+            //{
+            //    if (g.leftHand)
+            //    {
+            //        position = g.lastOwnerId == -1 ? leftGrab.transform.position : players[g.lastOwnerId].leftGrabGO.transform.position;
+            //        rotation = g.lastOwnerId == -1 ? leftGrab.transform.rotation : players[g.lastOwnerId].leftGrabGO.transform.rotation;
+            //    }
+            //    else
+            //    {
+            //        position = g.lastOwnerId == -1 ? rightGrab.transform.position : players[g.lastOwnerId].rightGrabGO.transform.position;
+            //        rotation = g.lastOwnerId == -1 ? rightGrab.transform.rotation : players[g.lastOwnerId].rightGrabGO.transform.rotation;
+            //    }
+            //}
             gunStates[i] = new EntityState()
             {
                 Id = g.id,
