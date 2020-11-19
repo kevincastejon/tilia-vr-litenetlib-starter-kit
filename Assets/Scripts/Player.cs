@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     public GameObject headGO;
     public GameObject leftGO;
     public GameObject rightGO;
+    public GameObject leftGrabGO;
+    public GameObject rightGrabGO;
     public TextMeshProUGUI playerName;
     public bool leftPointerActivated;
     public bool rightPointerActivated;
@@ -118,7 +120,7 @@ public class Player : MonoBehaviour
         {
             LeanTween.cancel(leftGrabbedMoveTween.id);
         }
-        leftGrabbedMoveTween = LeanTween.move(leftGO, posTarget, lastLeftGrabbedPosUpdate);
+        leftGrabbedMoveTween = LeanTween.move(leftGrabGO, posTarget, lastLeftGrabbedPosUpdate);
         leftGrabbedMoveTween.setOnComplete(() => leftGrabbedMoveTween = null);
         lastLeftGrabbedPosUpdate = 0;
     }
@@ -128,7 +130,7 @@ public class Player : MonoBehaviour
         {
             LeanTween.cancel(leftGrabbedRotTween.id);
         }
-        leftGrabbedRotTween = LeanTween.rotate(leftGO, rotTarget.eulerAngles, lastLeftGrabbedRotUpdate);
+        leftGrabbedRotTween = LeanTween.rotate(leftGrabGO, rotTarget.eulerAngles, lastLeftGrabbedRotUpdate);
         leftGrabbedRotTween.setOnComplete(() => leftGrabbedRotTween = null);
         lastLeftGrabbedRotUpdate = 0;
     }
@@ -138,7 +140,7 @@ public class Player : MonoBehaviour
         {
             LeanTween.cancel(rightGrabbedMoveTween.id);
         }
-        rightGrabbedMoveTween = LeanTween.move(rightGO, posTarget, lastRightGrabbedPosUpdate);
+        rightGrabbedMoveTween = LeanTween.move(rightGrabGO, posTarget, lastRightGrabbedPosUpdate);
         rightGrabbedMoveTween.setOnComplete(() => rightGrabbedMoveTween = null);
         lastRightGrabbedPosUpdate = 0;
     }
@@ -148,7 +150,7 @@ public class Player : MonoBehaviour
         {
             LeanTween.cancel(rightGrabbedRotTween.id);
         }
-        rightGrabbedRotTween = LeanTween.rotate(rightGO, rotTarget.eulerAngles, lastRightGrabbedRotUpdate);
+        rightGrabbedRotTween = LeanTween.rotate(rightGrabGO, rotTarget.eulerAngles, lastRightGrabbedRotUpdate);
         rightGrabbedRotTween.setOnComplete(() => rightGrabbedRotTween = null);
         lastRightGrabbedRotUpdate = 0;
     }

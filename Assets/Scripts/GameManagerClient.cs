@@ -13,7 +13,7 @@ public class GameManagerClient : MonoBehaviour
     public bool shooting;
     private int avatarId;
     private readonly List<Player> players = new List<Player>();
-    private readonly List<Bullet> bullets = new List<Bullet>();
+    private readonly List<NetworkObject> bullets = new List<NetworkObject>();
     private float sendRate = 50 / 1000f;
     private float sendTimer = 0f;
 
@@ -24,8 +24,8 @@ public class GameManagerClient : MonoBehaviour
         {
             if (gameClient.Connected)
             {
-                PlayerState avs = GetPlayerState();
-                gameClient.SendPlayerState(avs);
+                PlayerInput pi = GetPlayerState();
+                gameClient.SendInput(pi);
             }
         }
     }
@@ -74,14 +74,15 @@ public class GameManagerClient : MonoBehaviour
             }
         }
         DespawnOldPlayers(sm.Players);
+
         for (int i = 0; i < sm.Bullets.Length; i++)
         {
-            Bullet bullet = bullets.Find(x => x.id == sm.Bullets[i].Id);
+            NetworkObject bullet = bullets.Find(x => x.id == sm.Bullets[i].Id);
             if (bullet != null)
             {
                 SetBulletState(bullet, sm.Bullets[i]);
             }
-            else if (sm.Bullets[i].Id != avatarId)
+            else
             {
                 SpawnBullet(sm.Bullets[i]);
             }
@@ -124,11 +125,10 @@ public class GameManagerClient : MonoBehaviour
         player.leftGO.transform.rotation = ps.LeftHandRotation;
         player.rightGO.transform.position = ps.RightHandPosition;
         player.rightGO.transform.rotation = ps.RightHandRotation;
-        player.shooting = ps.Shooting;
     }
     private void SpawnBullet(EntityState bs)
     {
-        Bullet newBullet = Instantiate(bulletPrefab).GetComponent<Bullet>();
+        NetworkObject newBullet = Instantiate(bulletPrefab).GetComponent<NetworkObject>();
         newBullet.SetPositionTarget(bs.Position);
         newBullet.SetRotationTarget(bs.Rotation);
         newBullet.id = bs.Id;
@@ -139,7 +139,7 @@ public class GameManagerClient : MonoBehaviour
     {
         for (int i = 0; i < bullets.Count; i++)
         {
-            Bullet oldBullet = bullets[i];
+            NetworkObject oldBullet = bullets[i];
             if (Array.Find(bs, x => x.Id == oldBullet.id) == null)
             {
                 bullets.Remove(oldBullet);
@@ -148,15 +148,15 @@ public class GameManagerClient : MonoBehaviour
         }
     }
 
-    private void SetBulletState(Bullet bullet, EntityState bs)
+    private void SetBulletState(NetworkObject bullet, EntityState bs)
     {
         bullet.transform.position = bs.Position;
         bullet.transform.rotation = bs.Rotation;
     }
 
-    private PlayerState GetPlayerState()
+    private PlayerInput GetPlayerState()
     {
-        return new PlayerState()
+        return new PlayerInput()
         {
             HeadPosition = headGO.transform.position,
             HeadRotation = headGO.transform.rotation,
@@ -164,7 +164,6 @@ public class GameManagerClient : MonoBehaviour
             LeftHandRotation = leftGO.transform.rotation,
             RightHandPosition = rightGO.transform.position,
             RightHandRotation = rightGO.transform.rotation,
-            Shooting = shooting
         };
     }
 

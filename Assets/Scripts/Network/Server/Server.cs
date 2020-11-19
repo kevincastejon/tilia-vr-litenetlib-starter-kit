@@ -6,14 +6,17 @@ using LiteNetLib.Utils;
 using UnityEngine.Events;
 
 public class BaseServerPlayerEvent : UnityEvent<NetPeer> { };
-public class BaseServerPlayerStateEvent : UnityEvent<NetPeer, PlayerState> { };
+public class BaseServerPlayerInputEvent : UnityEvent<NetPeer, PlayerInput> { };
 
 public class Server : MonoBehaviour, INetEventListener, INetLogger
 {
     public BaseServerPlayerEvent onPlayerConnected = new BaseServerPlayerEvent();
     public BaseServerPlayerEvent onPlayerDisconnected = new BaseServerPlayerEvent();
-    public BaseServerPlayerStateEvent onPlayerState = new BaseServerPlayerStateEvent();
+    public BaseServerPlayerInputEvent onPlayerInput = new BaseServerPlayerInputEvent();
     public string token = "appsecret";
+    [Header("State packet size (bytes)")]
+    [ReadOnly]
+    public int packetSize;
     private NetManager _netServer;
     private readonly NetPacketProcessor _netPacketProcessor = new NetPacketProcessor();
 
@@ -24,7 +27,7 @@ public class Server : MonoBehaviour, INetEventListener, INetLogger
         _netPacketProcessor.RegisterNestedType(QuatUtils.Serialize, QuatUtils.Deserialize);
         _netPacketProcessor.RegisterNestedType(() => new PlayerState());
         _netPacketProcessor.RegisterNestedType(() => new EntityState());
-        _netPacketProcessor.SubscribeReusable<PlayerState, NetPeer>(OnPlayerState);
+        _netPacketProcessor.SubscribeReusable<PlayerInput, NetPeer>(OnPlayerInput);
     }
 
     void Update()
@@ -91,10 +94,10 @@ public class Server : MonoBehaviour, INetEventListener, INetLogger
         onPlayerDisconnected.Invoke(peer);
     }
 
-    private void OnPlayerState(PlayerState ps, NetPeer peer)
+    private void OnPlayerInput(PlayerInput pi, NetPeer peer)
     {
-        Debug.Log("received player state");
-        onPlayerState.Invoke(peer, ps);
+        //Debug.Log("received player state");
+        onPlayerInput.Invoke(peer, pi);
     }
 
     public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)
@@ -145,7 +148,7 @@ public class Server : MonoBehaviour, INetEventListener, INetLogger
     public void SendFastMessage<T>(T data, NetPeer peer, bool exclusion) where T : class, new()
     {
         byte[] ba = _netPacketProcessor.Write(data);
-        //Debug.Log(ba.Length + "b");
+        packetSize=ba.Length;
         if (peer != null)
         {
             if (exclusion)

@@ -58,9 +58,9 @@ public class GameClient : MonoBehaviour
     /// <summary>
     /// Sends the local player's state
     /// </summary>
-    public void SendPlayerState(PlayerState playerState)
+    public void SendInput(PlayerInput pi)
     {
-        client.SendFastMessage(playerState);
+        client.SendFastMessage(pi);
     }
     private void OnLANDiscovered(string name, IPEndPoint ip)
     {

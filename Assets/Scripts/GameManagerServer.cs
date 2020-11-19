@@ -1,20 +1,39 @@
 ﻿using System.Collections.Generic;
+using Tilia.Interactions.Interactables.Interactables;
+using Tilia.Interactions.Interactables.Interactors;
+using Unity.Collections;
 using UnityEngine;
 
 public class GameManagerServer : MonoBehaviour
 {
+    [ReadOnly]
+    public bool shooting;
     public GameServer server;
     public GameObject playerPrefab;
     public GameObject bulletPrefab;
     public GameObject headGO;
     public GameObject leftGO;
     public GameObject rightGO;
-    public Gun gun;
-    public bool shooting;
+    [ReadOnly]
+    public NetworkGrabbableObject leftGrab;
+    [ReadOnly]
+    public NetworkGrabbableObject rightGrab;
+    public List<NetworkGrabbableObject> guns = new List<NetworkGrabbableObject>();
     private readonly List<Player> players = new List<Player>();
-    private readonly List<Bullet> bullets = new List<Bullet>();
+    private readonly List<NetworkObject> bullets = new List<NetworkObject>();
     private float sendRate = 50 / 1000f;
     private float sendTimer = 0f;
+    private int serverId = -1;
+
+    private void Start()
+    {
+        guns.ForEach((NetworkGrabbableObject gun) =>
+        {
+            InteractableFacade interactable = gun.GetComponent<InteractableFacade>();
+            interactable.Grabbed.AddListener((InteractorFacade interactor) => SetGrab(gun, interactor.name == "LeftInteractor"));
+            interactable.Ungrabbed.AddListener((InteractorFacade interactor) => SetGrab(null, interactor.name == "LeftInteractor"));
+        });
+    }
 
     private void Update()
     {
@@ -26,17 +45,58 @@ public class GameManagerServer : MonoBehaviour
         }
     }
 
-    public void SetShooting(bool shooting)
+    public void SetGrab(NetworkGrabbableObject obj, bool leftHand)
+    {
+        if (leftHand)
+        {
+            leftGrab = obj;
+            if (obj != null)
+            {
+                obj.grabbed = true;
+                obj.leftHand = true;
+                obj.lastOwnerId = serverId;
+            }
+            else
+            {
+                obj.grabbed = false;
+            }
+        }
+        else
+        {
+            rightGrab = obj;
+            if (obj != null)
+            {
+                obj.grabbed = true;
+                obj.leftHand = false;
+                obj.lastOwnerId = serverId;
+            }
+            else
+            {
+                obj.grabbed = false;
+            }
+        }
+    }
+
+    public void SetShootingLeft(bool shooting)
     {
         this.shooting = shooting;
         if (shooting)
         {
-            Debug.Log("Spawn position: "+gun.spawnPoint.position);
-            Debug.Log("Spawn rotation: "+gun.spawnPoint.rotation);
-            Bullet bullet = Instantiate(bulletPrefab).GetComponent<Bullet>();
-            bullet.transform.position = gun.spawnPoint.position;
-            bullet.transform.rotation = gun.spawnPoint.rotation;
+            Transform spawnPoint = leftGrab.GetComponent<Gun>().spawnPoint.transform;
+            NetworkObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation).GetComponent<NetworkObject>();
             bullet.GetComponent<Rigidbody>().AddRelativeForce(bullet.transform.forward * 1, ForceMode.Impulse);
+            bullets.Add(bullet);
+        }
+    }
+
+    public void SetShootingRight(bool shooting)
+    {
+        this.shooting = shooting;
+        if (shooting)
+        {
+            Transform spawnPoint = rightGrab.GetComponent<Gun>().spawnPoint.transform;
+            NetworkObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation).GetComponent<NetworkObject>();
+            bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * 1, ForceMode.Impulse);
             bullets.Add(bullet);
         }
     }
@@ -61,17 +121,16 @@ public class GameManagerServer : MonoBehaviour
         Destroy(disconnectedPlayer);
     }
 
-    public void OnClientState(int peerID, PlayerState ps)
+    public void OnClientInput(int peerID, PlayerInput pi)
     {
         //Debug.Log("AvatarState : " + peerID);
         Player player = players.Find(x => x.GetComponent<Player>().id == peerID).GetComponent<Player>();
-        player.SetHeadPositionTarget(ps.HeadPosition);
-        player.SetHeadRotationTarget(ps.HeadRotation);
-        player.SetLeftHandPositionTarget(ps.LeftHandPosition);
-        player.SetLeftHandRotationTarget(ps.LeftHandRotation);
-        player.SetRightHandPositionTarget(ps.RightHandPosition);
-        player.SetRightHandRotationTarget(ps.RightHandRotation);
-        player.shooting = ps.Shooting;
+        player.SetHeadPositionTarget(pi.HeadPosition);
+        player.SetHeadRotationTarget(pi.HeadRotation);
+        player.SetLeftHandPositionTarget(pi.LeftHandPosition);
+        player.SetLeftHandRotationTarget(pi.LeftHandRotation);
+        player.SetRightHandPositionTarget(pi.RightHandPosition);
+        player.SetRightHandRotationTarget(pi.RightHandRotation);
     }
 
     private StateMessage GetWorldState()
@@ -89,25 +148,23 @@ public class GameManagerServer : MonoBehaviour
                 LeftHandRotation = p.leftGO.transform.rotation,
                 RightHandPosition = p.rightGO.transform.position,
                 RightHandRotation = p.rightGO.transform.rotation,
-                Shooting = p.shooting
             };
         }
 
         playerStates[players.Count] = new PlayerState()
         {
-            Id = -1,
+            Id = serverId,
             HeadPosition = headGO.transform.position,
             HeadRotation = headGO.transform.rotation,
             LeftHandPosition = leftGO.transform.position,
             LeftHandRotation = leftGO.transform.rotation,
             RightHandPosition = rightGO.transform.position,
             RightHandRotation = rightGO.transform.rotation,
-            Shooting = shooting
         };
         EntityState[] bulletStates = new EntityState[bullets.Count];
         for (int i = 0; i < bullets.Count; i++)
         {
-            Bullet b = bullets[i];
+            NetworkObject b = bullets[i];
             bulletStates[i] = new EntityState()
             {
                 Id = b.id,
@@ -115,10 +172,37 @@ public class GameManagerServer : MonoBehaviour
                 Rotation = b.transform.rotation,
             };
         }
+        EntityState[] gunStates = new EntityState[guns.Count];
+        for (int i = 0; i < guns.Count; i++)
+        {
+            NetworkGrabbableObject g = guns[i];
+            Vector3 position = g.transform.position;
+            Quaternion rotation = g.transform.rotation;
+            if (g.grabbed)
+            {
+                if (g.leftHand)
+                {
+                    position = g.lastOwnerId == -1 ? leftGrab.transform.position : players[g.lastOwnerId].leftGrabGO.transform.position;
+                    rotation = g.lastOwnerId == -1 ? leftGrab.transform.rotation : players[g.lastOwnerId].leftGrabGO.transform.rotation;
+                }
+                else
+                {
+                    position = g.lastOwnerId == -1 ? rightGrab.transform.position : players[g.lastOwnerId].rightGrabGO.transform.position;
+                    rotation = g.lastOwnerId == -1 ? rightGrab.transform.rotation : players[g.lastOwnerId].rightGrabGO.transform.rotation;
+                }
+            }
+            gunStates[i] = new EntityState()
+            {
+                Id = g.id,
+                Position = position,
+                Rotation = rotation,
+            };
+        }
         StateMessage sm = new StateMessage()
         {
             Players = playerStates,
-            Bullets = bulletStates
+            Bullets = bulletStates,
+            Guns = gunStates
         };
         return sm;
     }

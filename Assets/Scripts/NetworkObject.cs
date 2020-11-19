@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class NetworkObject : MonoBehaviour
 {
+    [ReadOnly]
     public int id;
     private LTDescr moveTween;
     private LTDescr rotTween;
     private float lastPosUpdate;
     private float lastRotUpdate;
-    
+
+    private void Start()
+    {
+        id = GetInstanceID();
+    }
+
     private void Update()
     {
         lastPosUpdate += Time.deltaTime;

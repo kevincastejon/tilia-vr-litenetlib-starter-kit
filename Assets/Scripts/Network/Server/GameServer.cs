@@ -6,7 +6,7 @@ using UnityEngine.Events;
 [Serializable]
 public class PlayerEvent : UnityEvent<int> { };
 [Serializable]
-public class PlayerStateEvent : UnityEvent<int, PlayerState> { };
+public class PlayerInputEvent : UnityEvent<int, PlayerInput> { };
 
 public class GameServer : MonoBehaviour
 {
@@ -14,7 +14,7 @@ public class GameServer : MonoBehaviour
     public bool autoStart = true;
     public PlayerEvent onPlayerConnected = new PlayerEvent();
     public PlayerEvent onPlayerDisconnected = new PlayerEvent();
-    public PlayerStateEvent onPlayerState = new PlayerStateEvent();
+    public PlayerInputEvent onPlayerInput = new PlayerInputEvent();
     private Server server;
     // Start is called before the first frame update
     void Start()
@@ -22,7 +22,7 @@ public class GameServer : MonoBehaviour
         server = GetComponentInChildren<Server>();
         server.onPlayerConnected.AddListener((NetPeer peer) => OnPeerConnected(peer));
         server.onPlayerDisconnected.AddListener((NetPeer peer) => OnPeerDisconnected(peer));
-        server.onPlayerState.AddListener((NetPeer peer, PlayerState ps) => OnPeerState(peer, ps));
+        server.onPlayerInput.AddListener((NetPeer peer, PlayerInput pi) => OnPeerInput(peer, pi));
         if (autoStart)
         {
             Listen();
@@ -38,7 +38,7 @@ public class GameServer : MonoBehaviour
     {
         server.onPlayerConnected.RemoveAllListeners();
         server.onPlayerConnected.RemoveAllListeners();
-        server.onPlayerState.RemoveAllListeners();
+        server.onPlayerInput.RemoveAllListeners();
     }
     private void Listen()
     {
@@ -52,9 +52,9 @@ public class GameServer : MonoBehaviour
     {
         onPlayerDisconnected.Invoke(peer.Id);
     }
-    private void OnPeerState(NetPeer peer, PlayerState ps)
+    private void OnPeerInput(NetPeer peer, PlayerInput pi)
     {
-        onPlayerState.Invoke(peer.Id, ps);
+        onPlayerInput.Invoke(peer.Id, pi);
     }
     public void SendInitMessage(InitMessage im, int peerId)
     {
