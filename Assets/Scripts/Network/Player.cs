@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Tilia.Indicators.ObjectPointers;
 
 public class Player : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class Player : MonoBehaviour
     public bool leftShooting;
     [ReadOnly]
     public bool rightShooting;
+    public PointerFacade leftPointer;
+    public PointerFacade rightPointer;
     private GameObject nameOrientationTarget;
     private LTDescr headMoveTween;
     private LTDescr headRotTween;
@@ -46,6 +49,32 @@ public class Player : MonoBehaviour
         lastLeftHandRotUpdate += Time.deltaTime;
         lastRightHandPosUpdate += Time.deltaTime;
         lastRightHandRotUpdate += Time.deltaTime;
+    }
+
+    public void SetLeftPointer(bool value)
+    {
+        leftPointerActivated = value;
+        if (leftPointerActivated)
+        {
+            leftPointer.Activate();
+        }
+        else
+        {
+            leftPointer.Deactivate();
+        }
+    }
+
+    public void SetRightPointer(bool value)
+    {
+        rightPointerActivated = value;
+        if (rightPointerActivated)
+        {
+            rightPointer.Activate();
+        }
+        else
+        {
+            rightPointer.Deactivate();
+        }
     }
 
     public void SetNameOrientationTarget(GameObject target)

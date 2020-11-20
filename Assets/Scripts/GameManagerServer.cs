@@ -160,8 +160,8 @@ public class GameManagerServer : MonoBehaviour
             grabbed.SetPositionTarget(pi.RightGrabPosition);
             grabbed.SetRotationTarget(pi.RightGrabRotation);
         }
-        player.leftPointerActivated = pi.LeftPointer;
-        player.rightPointerActivated = pi.RightPointer;
+        player.SetLeftPointer(pi.LeftPointer);
+        player.SetRightPointer(pi.RightPointer);
         if (!player.leftShooting && pi.LeftShooting && player.leftGrabId != -1)
         {
             NetworkGrabbableObject obj = guns.Find((NetworkGrabbableObject g) => g.id == player.leftGrabId);

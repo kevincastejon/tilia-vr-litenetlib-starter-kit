@@ -214,6 +214,8 @@ public class GameManagerClient : MonoBehaviour
         player.leftGO.transform.rotation = ps.LeftHandRotation;
         player.rightGO.transform.position = ps.RightHandPosition;
         player.rightGO.transform.rotation = ps.RightHandRotation;
+        player.SetLeftPointer(ps.LeftPointer);
+        player.SetRightPointer(ps.RightPointer);
     }
     private void SpawnBullet(EntityState bs)
     {
