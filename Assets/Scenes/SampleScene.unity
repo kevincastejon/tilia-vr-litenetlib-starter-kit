@@ -5021,7 +5021,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74bc7fb32c2b34341973cba88a531b2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isServer: 1
+  _isServer: 1
   server: {fileID: 691973308}
   client: {fileID: 2035483286}
 --- !u!4 &978153843
@@ -10695,10 +10695,13 @@ MonoBehaviour:
     type: 3}
   bulletPrefab: {fileID: 2024301931097442895, guid: 2910db0b28aba7b408e99e773670a592,
     type: 3}
+  gunPrefab: {fileID: 0}
   headGO: {fileID: 1253932596}
   leftGO: {fileID: 77620282}
   rightGO: {fileID: 1500526633}
-  guns: []
+  guns:
+  - {fileID: 30507604}
+  - {fileID: 381407655}
 --- !u!114 &2050020145 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3607323991379943426, guid: 702caa48c730e92469a1c5144fd8ed46,

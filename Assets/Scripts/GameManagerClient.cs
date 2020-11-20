@@ -23,7 +23,7 @@ public class GameManagerClient : MonoBehaviour
     public GameClient gameClient;
     public GameObject playerPrefab;
     public GameObject bulletPrefab;
-    public GameObject gunPrefab;
+    //public GameObject gunPrefab;
     public GameObject headGO;
     public GameObject leftGO;
     public GameObject rightGO;
