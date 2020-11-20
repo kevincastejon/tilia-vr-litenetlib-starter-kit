@@ -4,18 +4,22 @@ using UnityEngine;
 
 public class DEVNetworkSwitcher : MonoBehaviour
 {
-    public bool isServer;
+    
+    static public bool isServer;
+    public bool _isServer;
     public GameObject server;
     public GameObject client;
     private void Start()
     {
-        if (isServer)
+        if (_isServer)
         {
+            isServer = true;
             Destroy(client);
             server.SetActive(true);
         }
         else
         {
+            isServer = false;
             Destroy(server);
             client.SetActive(true);
         }

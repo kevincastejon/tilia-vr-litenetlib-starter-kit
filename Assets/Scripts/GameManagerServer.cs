@@ -106,6 +106,15 @@ public class GameManagerServer : MonoBehaviour
             bullets.Add(bullet);
         }
     }
+    public void SetPointerLeft(bool activated)
+    {
+        leftPointer = activated;
+    }
+
+    public void SetPointerRight(bool activated)
+    {
+        rightPointer = activated;
+    }
 
     public void OnClientConnected(int peerID)
     {

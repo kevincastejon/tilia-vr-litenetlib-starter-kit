@@ -23,6 +23,7 @@ public class GameManagerClient : MonoBehaviour
     public GameClient gameClient;
     public GameObject playerPrefab;
     public GameObject bulletPrefab;
+    public GameObject gunPrefab;
     public GameObject headGO;
     public GameObject leftGO;
     public GameObject rightGO;
@@ -97,6 +98,16 @@ public class GameManagerClient : MonoBehaviour
         rightShooting = shooting;
     }
 
+    public void SetPointerLeft(bool activated)
+    {
+        leftPointer = activated;
+    }
+
+    public void SetPointerRight(bool activated)
+    {
+        rightPointer = activated;
+    }
+
     /// <summary>
     /// Called when connected to the server
     /// </summary>
@@ -150,12 +161,20 @@ public class GameManagerClient : MonoBehaviour
             }
         }
         DespawnOldBullets(sm.Bullets);
+
         for (int i = 0; i < sm.Guns.Length; i++)
         {
             NetworkGrabbableObject gun = guns.Find(x => x.id == sm.Guns[i].Id);
-            if (!gun.grabbed)
+            if (gun != null)
             {
-                SetGunState(gun, sm.Guns[i]);
+                if (!gun.grabbed)
+                {
+                    SetGunState(gun, sm.Guns[i]);
+                }
+            }
+            else
+            {
+                LinkLocalGun(sm.Guns[i]);
             }
         }
     }
@@ -223,10 +242,20 @@ public class GameManagerClient : MonoBehaviour
         bullet.transform.position = bs.Position;
         bullet.transform.rotation = bs.Rotation;
     }
+
+    private void LinkLocalGun(EntityState gs)
+    {
+        NetworkGrabbableObject localGun = guns.Find((NetworkGrabbableObject g) => g.id == 0);
+        localGun.SetPositionTarget(gs.Position);
+        localGun.SetRotationTarget(gs.Rotation);
+        localGun.id = gs.Id;
+    }
+
     private void SetGunState(NetworkGrabbableObject gun, EntityState gs)
     {
         gun.transform.position = gs.Position;
         gun.transform.rotation = gs.Rotation;
+
     }
 
     private PlayerInput GetPlayerInput()

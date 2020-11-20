@@ -23,7 +23,10 @@ public class NetworkGrabbableObject : MonoBehaviour
 
     private void Start()
     {
-        id = GetInstanceID();
+        if (DEVNetworkSwitcher.isServer)
+        {
+            id = GetInstanceID();
+        }
     }
 
     private void Update()
