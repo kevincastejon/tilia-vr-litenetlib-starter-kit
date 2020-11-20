@@ -231,19 +231,6 @@ public class GameManagerServer : MonoBehaviour
             NetworkGrabbableObject g = guns[i];
             Vector3 position = g.transform.position;
             Quaternion rotation = g.transform.rotation;
-            //if (g.grabbed)
-            //{
-            //    if (g.leftHand)
-            //    {
-            //        position = g.lastOwnerId == -1 ? leftGrab.transform.position : players[g.lastOwnerId].leftGrabGO.transform.position;
-            //        rotation = g.lastOwnerId == -1 ? leftGrab.transform.rotation : players[g.lastOwnerId].leftGrabGO.transform.rotation;
-            //    }
-            //    else
-            //    {
-            //        position = g.lastOwnerId == -1 ? rightGrab.transform.position : players[g.lastOwnerId].rightGrabGO.transform.position;
-            //        rotation = g.lastOwnerId == -1 ? rightGrab.transform.rotation : players[g.lastOwnerId].rightGrabGO.transform.rotation;
-            //    }
-            //}
             gunStates[i] = new EntityState()
             {
                 Id = g.id,
@@ -254,8 +241,10 @@ public class GameManagerServer : MonoBehaviour
         StateMessage sm = new StateMessage()
         {
             Players = playerStates,
-            Bullets = bulletStates,
-            Guns = gunStates
+            //Bullets = bulletStates,
+            //Guns = gunStates
+            Bullets = new EntityState[0],
+            Guns = new EntityState[0]
         };
         return sm;
     }
