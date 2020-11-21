@@ -471,6 +471,7 @@ MonoBehaviour:
   grabbed: 0
   leftHand: 0
   lastOwnerId: 0
+  rigidBody: {fileID: 0}
 --- !u!1 &62202835
 GameObject:
   m_ObjectHideFlags: 0
@@ -654,6 +655,7 @@ MonoBehaviour:
   grabbed: 0
   leftHand: 0
   lastOwnerId: 0
+  rigidBody: {fileID: 0}
 --- !u!1 &151667565
 GameObject:
   m_ObjectHideFlags: 0
@@ -2267,6 +2269,7 @@ MonoBehaviour:
   grabbed: 0
   leftHand: 0
   lastOwnerId: 0
+  rigidBody: {fileID: 0}
 --- !u!114 &381407656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3082,6 +3085,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BowlingPin (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 5551891339497117443, guid: df11c9016cda4f741a7d306f3e542e1e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df11c9016cda4f741a7d306f3e542e1e, type: 3}
 --- !u!4 &545648608 stripped
@@ -3860,6 +3868,7 @@ MonoBehaviour:
   rightGrab: {fileID: 0}
   leftPointer: 0
   rightPointer: 0
+  maxBullets: 12
 --- !u!1 &705789048
 GameObject:
   m_ObjectHideFlags: 0
@@ -5244,6 +5253,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BowlingPin (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5551891339497117443, guid: df11c9016cda4f741a7d306f3e542e1e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df11c9016cda4f741a7d306f3e542e1e, type: 3}
@@ -11748,6 +11762,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BowlingPin
+      objectReference: {fileID: 0}
+    - target: {fileID: 5551891339497117443, guid: df11c9016cda4f741a7d306f3e542e1e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df11c9016cda4f741a7d306f3e542e1e, type: 3}

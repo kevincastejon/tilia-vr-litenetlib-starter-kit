@@ -26,6 +26,7 @@ public class GameManagerServer : MonoBehaviour
     public bool leftPointer;
     [ReadOnly]
     public bool rightPointer;
+    public int maxBullets = 12;
     private readonly List<Player> players = new List<Player>();
     private readonly List<NetworkObject> bullets = new List<NetworkObject>();
     private float sendRate = 50 / 1000f;
@@ -90,9 +91,7 @@ public class GameManagerServer : MonoBehaviour
         if (shooting)
         {
             Transform spawnPoint = leftGrab.GetComponent<Gun>().spawnPoint.transform;
-            NetworkObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation).GetComponent<NetworkObject>();
-            bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * 1, ForceMode.Impulse);
-            bullets.Add(bullet);
+            SpawnBullet(spawnPoint);
         }
     }
 
@@ -102,9 +101,7 @@ public class GameManagerServer : MonoBehaviour
         if (shooting)
         {
             Transform spawnPoint = rightGrab.GetComponent<Gun>().spawnPoint.transform;
-            NetworkObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation).GetComponent<NetworkObject>();
-            bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * 1, ForceMode.Impulse);
-            bullets.Add(bullet);
+            SpawnBullet(spawnPoint);
         }
     }
     public void SetPointerLeft(bool activated)
@@ -115,6 +112,19 @@ public class GameManagerServer : MonoBehaviour
     public void SetPointerRight(bool activated)
     {
         rightPointer = activated;
+    }
+
+    public void SpawnBullet(Transform spawnPoint)
+    {
+        if (bullets.Count == maxBullets)
+        {
+            NetworkObject oldBullet = bullets[0];
+            bullets.RemoveAt(0);
+            Destroy(oldBullet.gameObject);
+        }
+        NetworkObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation).GetComponent<NetworkObject>();
+        bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * 1, ForceMode.Impulse);
+        bullets.Add(bullet);
     }
 
     public void OnClientConnected(int peerID)
@@ -179,18 +189,14 @@ public class GameManagerServer : MonoBehaviour
         {
             NetworkGrabbableObject obj = guns.Find((NetworkGrabbableObject g) => g.id == player.leftGrabId);
             Transform spawnPoint = obj.GetComponent<Gun>().spawnPoint.transform;
-            NetworkObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation).GetComponent<NetworkObject>();
-            bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * 1, ForceMode.Impulse);
-            bullets.Add(bullet);
+            SpawnBullet(spawnPoint);
         }
             player.leftShooting = pi.LeftShooting;
         if (!player.rightShooting && pi.RightShooting && player.rightGrabId != 0)
         {
             NetworkGrabbableObject obj = guns.Find((NetworkGrabbableObject g) => g.id == player.rightGrabId);
             Transform spawnPoint = obj.GetComponent<Gun>().spawnPoint.transform;
-            NetworkObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation).GetComponent<NetworkObject>();
-            bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * 1, ForceMode.Impulse);
-            bullets.Add(bullet);
+            SpawnBullet(spawnPoint);
         }
             player.rightShooting = pi.RightShooting;
     }
@@ -256,6 +262,9 @@ public class GameManagerServer : MonoBehaviour
             Players = playerStates,
             Bullets = bulletStates,
             Guns = gunStates
+            //Players = new PlayerState[0],
+            //Bullets = new EntityState[0],
+            //Guns = new EntityState[0]
         };
         return sm;
     }
