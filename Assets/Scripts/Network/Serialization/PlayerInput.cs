@@ -4,16 +4,16 @@ using UnityEngine;
 public class PlayerInput : INetSerializable
 {
     public Vector3 HeadPosition { get; set; }
-    public Quaternion HeadRotation { get; set; }
+    public Vector3 HeadRotation { get; set; }
     public Vector3 LeftHandPosition { get; set; }
-    public Quaternion LeftHandRotation { get; set; }
+    public Vector3 LeftHandRotation { get; set; }
     public Vector3 RightHandPosition { get; set; }
-    public Quaternion RightHandRotation { get; set; }
+    public Vector3 RightHandRotation { get; set; }
     public int LeftGrabId { get; set; }
     public Vector3 LeftGrabPosition { get; set; }
-    public Quaternion LeftGrabRotation { get; set; }
+    public Vector3 LeftGrabRotation { get; set; }
     public Vector3 RightGrabPosition { get; set; }
-    public Quaternion RightGrabRotation { get; set; }
+    public Vector3 RightGrabRotation { get; set; }
     public int RightGrabId { get; set; }
     public bool LeftShooting { get; set; }
     public bool RightShooting { get; set; }
@@ -23,16 +23,16 @@ public class PlayerInput : INetSerializable
     public void Serialize(NetDataWriter writer)
     {
         Vector3Utils.Serialize(writer, HeadPosition);
-        QuatUtils.Serialize(writer, HeadRotation);
+        Vector3Utils.Serialize(writer, HeadRotation);
         Vector3Utils.Serialize(writer, LeftHandPosition);
-        QuatUtils.Serialize(writer, LeftHandRotation);
+        Vector3Utils.Serialize(writer, LeftHandRotation);
         Vector3Utils.Serialize(writer, RightHandPosition);
-        QuatUtils.Serialize(writer, RightHandRotation);
+        Vector3Utils.Serialize(writer, RightHandRotation);
         writer.Put(LeftGrabId);
         Vector3Utils.Serialize(writer, LeftGrabPosition);
-        QuatUtils.Serialize(writer, LeftGrabRotation);
+        Vector3Utils.Serialize(writer, LeftGrabRotation);
         Vector3Utils.Serialize(writer, RightGrabPosition);
-        QuatUtils.Serialize(writer, RightGrabRotation);
+        Vector3Utils.Serialize(writer, RightGrabRotation);
         writer.Put(RightGrabId);
         writer.Put(LeftShooting);
         writer.Put(RightShooting);
@@ -41,16 +41,16 @@ public class PlayerInput : INetSerializable
     public void Deserialize(NetDataReader reader)
     {
         HeadPosition = Vector3Utils.Deserialize(reader);
-        HeadRotation = QuatUtils.Deserialize(reader);
+        HeadRotation = Vector3Utils.Deserialize(reader);
         LeftHandPosition = Vector3Utils.Deserialize(reader);
-        LeftHandRotation = QuatUtils.Deserialize(reader);
+        LeftHandRotation = Vector3Utils.Deserialize(reader);
         RightHandPosition = Vector3Utils.Deserialize(reader);
-        RightHandRotation = QuatUtils.Deserialize(reader);
+        RightHandRotation = Vector3Utils.Deserialize(reader);
         LeftGrabId = reader.GetInt();
         LeftGrabPosition = Vector3Utils.Deserialize(reader);
-        LeftGrabRotation = QuatUtils.Deserialize(reader);
+        LeftGrabRotation = Vector3Utils.Deserialize(reader);
         RightGrabPosition = Vector3Utils.Deserialize(reader);
-        RightGrabRotation = QuatUtils.Deserialize(reader);
+        RightGrabRotation = Vector3Utils.Deserialize(reader);
         RightGrabId = reader.GetInt();
         LeftShooting = reader.GetBool();
         RightShooting = reader.GetBool();

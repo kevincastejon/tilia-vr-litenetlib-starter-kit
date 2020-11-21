@@ -92,13 +92,13 @@ public class Player : MonoBehaviour
         headMoveTween.setOnComplete(() => headMoveTween = null);
         lastHeadPosUpdate = 0;
     }
-    public void SetHeadRotationTarget(Quaternion rotTarget)
+    public void SetHeadRotationTarget(Vector3 rotTarget)
     {
         if (headRotTween != null)
         {
             LeanTween.cancel(headRotTween.id);
         }
-        headRotTween = LeanTween.rotate(headGO, rotTarget.eulerAngles, lastHeadRotUpdate);
+        headRotTween = LeanTween.rotate(headGO, rotTarget, lastHeadRotUpdate);
         headRotTween.setOnComplete(() => headRotTween = null);
         lastHeadRotUpdate = 0;
     }
@@ -112,13 +112,13 @@ public class Player : MonoBehaviour
         leftHandMoveTween.setOnComplete(() => leftHandMoveTween = null);
         lastLeftHandPosUpdate = 0;
     }
-    public void SetLeftHandRotationTarget(Quaternion rotTarget)
+    public void SetLeftHandRotationTarget(Vector3 rotTarget)
     {
         if (leftHandRotTween != null)
         {
             LeanTween.cancel(leftHandRotTween.id);
         }
-        leftHandRotTween = LeanTween.rotate(leftGO, rotTarget.eulerAngles, lastLeftHandRotUpdate);
+        leftHandRotTween = LeanTween.rotate(leftGO, rotTarget, lastLeftHandRotUpdate);
         leftHandRotTween.setOnComplete(() => leftHandRotTween = null);
         lastLeftHandRotUpdate = 0;
     }
@@ -132,13 +132,13 @@ public class Player : MonoBehaviour
         rightHandMoveTween.setOnComplete(() => rightHandMoveTween = null);
         lastRightHandPosUpdate = 0;
     }
-    public void SetRightHandRotationTarget(Quaternion rotTarget)
+    public void SetRightHandRotationTarget(Vector3 rotTarget)
     {
         if (rightHandRotTween != null)
         {
             LeanTween.cancel(rightHandRotTween.id);
         }
-        rightHandRotTween = LeanTween.rotate(rightGO, rotTarget.eulerAngles, lastRightHandRotUpdate);
+        rightHandRotTween = LeanTween.rotate(rightGO, rotTarget, lastRightHandRotUpdate);
         rightHandRotTween.setOnComplete(() => rightHandRotTween = null);
         lastRightHandRotUpdate = 0;
     }

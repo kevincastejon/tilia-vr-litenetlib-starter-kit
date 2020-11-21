@@ -54,13 +54,13 @@ public class NetworkGrabbableObject : MonoBehaviour
         lastPosUpdate = 0;
     }
 
-    public void SetRotationTarget(Quaternion rotTarget)
+    public void SetRotationTarget(Vector3 rotTarget)
     {
         if (rotTween != null)
         {
             LeanTween.cancel(rotTween.id);
         }
-        rotTween = LeanTween.rotate(gameObject, rotTarget.eulerAngles, lastRotUpdate);
+        rotTween = LeanTween.rotate(gameObject, rotTarget, lastRotUpdate);
         rotTween.setOnComplete(() => rotTween = null);
         lastRotUpdate = 0;
     }

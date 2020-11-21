@@ -211,11 +211,11 @@ public class GameManagerServer : MonoBehaviour
             {
                 Id = p.id,
                 HeadPosition = p.headGO.transform.position,
-                HeadRotation = p.headGO.transform.rotation,
+                HeadRotation = p.headGO.transform.rotation.eulerAngles,
                 LeftHandPosition = p.leftGO.transform.position,
-                LeftHandRotation = p.leftGO.transform.rotation,
+                LeftHandRotation = p.leftGO.transform.rotation.eulerAngles,
                 RightHandPosition = p.rightGO.transform.position,
-                RightHandRotation = p.rightGO.transform.rotation,
+                RightHandRotation = p.rightGO.transform.rotation.eulerAngles,
                 LeftPointer = p.leftPointerActivated,
                 RightPointer = p.rightPointerActivated
             };
@@ -225,11 +225,11 @@ public class GameManagerServer : MonoBehaviour
         {
             Id = serverId,
             HeadPosition = headGO.transform.position,
-            HeadRotation = headGO.transform.rotation,
+            HeadRotation = headGO.transform.rotation.eulerAngles,
             LeftHandPosition = leftGO.transform.position,
-            LeftHandRotation = leftGO.transform.rotation,
+            LeftHandRotation = leftGO.transform.rotation.eulerAngles,
             RightHandPosition = rightGO.transform.position,
-            RightHandRotation = rightGO.transform.rotation,
+            RightHandRotation = rightGO.transform.rotation.eulerAngles,
             LeftPointer = leftPointer,
             RightPointer = rightPointer,
         };
@@ -241,7 +241,7 @@ public class GameManagerServer : MonoBehaviour
             {
                 Id = b.id,
                 Position = b.transform.position,
-                Rotation = b.transform.rotation,
+                Rotation = b.transform.rotation.eulerAngles,
             };
         }
         EntityState[] gunStates = new EntityState[guns.Count];
@@ -254,7 +254,7 @@ public class GameManagerServer : MonoBehaviour
             {
                 Id = g.id,
                 Position = position,
-                Rotation = rotation,
+                Rotation = rotation.eulerAngles,
             };
         }
         StateMessage sm = new StateMessage()

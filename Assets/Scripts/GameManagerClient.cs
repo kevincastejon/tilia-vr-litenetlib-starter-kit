@@ -208,12 +208,12 @@ public class GameManagerClient : MonoBehaviour
 
     private void SetPlayerState(Player player, PlayerState ps)
     {
-        player.headGO.transform.position = ps.HeadPosition;
-        player.headGO.transform.rotation = ps.HeadRotation;
-        player.leftGO.transform.position = ps.LeftHandPosition;
-        player.leftGO.transform.rotation = ps.LeftHandRotation;
-        player.rightGO.transform.position = ps.RightHandPosition;
-        player.rightGO.transform.rotation = ps.RightHandRotation;
+        player.SetHeadPositionTarget(ps.HeadPosition);
+        player.SetHeadRotationTarget(ps.HeadRotation);
+        player.SetLeftHandPositionTarget(ps.LeftHandPosition);
+        player.SetLeftHandRotationTarget(ps.LeftHandRotation);
+        player.SetRightHandPositionTarget(ps.RightHandPosition);
+        player.SetRightHandRotationTarget(ps.RightHandRotation);
         player.SetLeftPointer(ps.LeftPointer);
         player.SetRightPointer(ps.RightPointer);
     }
@@ -242,7 +242,7 @@ public class GameManagerClient : MonoBehaviour
     private void SetBulletState(NetworkObject bullet, EntityState bs)
     {
         bullet.transform.position = bs.Position;
-        bullet.transform.rotation = bs.Rotation;
+        bullet.transform.eulerAngles = bs.Rotation;
     }
 
     private void LinkLocalGun(EntityState gs)
@@ -256,7 +256,7 @@ public class GameManagerClient : MonoBehaviour
     private void SetGunState(NetworkGrabbableObject gun, EntityState gs)
     {
         gun.transform.position = gs.Position;
-        gun.transform.rotation = gs.Rotation;
+        gun.transform.eulerAngles = gs.Rotation;
 
     }
 
@@ -265,17 +265,17 @@ public class GameManagerClient : MonoBehaviour
         return new PlayerInput()
         {
             HeadPosition = headGO.transform.position,
-            HeadRotation = headGO.transform.rotation,
+            HeadRotation = headGO.transform.rotation.eulerAngles,
             LeftHandPosition = leftGO.transform.position,
-            LeftHandRotation = leftGO.transform.rotation,
+            LeftHandRotation = leftGO.transform.rotation.eulerAngles,
             RightHandPosition = rightGO.transform.position,
-            RightHandRotation = rightGO.transform.rotation,
+            RightHandRotation = rightGO.transform.rotation.eulerAngles,
             LeftGrabId = leftGrab == null ? 0 : leftGrab.id,
             LeftGrabPosition = leftGrab == null ? Vector3.zero : leftGrab.transform.position,
-            LeftGrabRotation = leftGrab == null ? Quaternion.identity : leftGrab.transform.rotation,
+            LeftGrabRotation = leftGrab == null ? Vector3.zero : leftGrab.transform.rotation.eulerAngles,
             RightGrabId = rightGrab == null ? 0 : rightGrab.id,
             RightGrabPosition = rightGrab == null ? Vector3.zero : rightGrab.transform.position,
-            RightGrabRotation = rightGrab == null ? Quaternion.identity : rightGrab.transform.rotation,
+            RightGrabRotation = rightGrab == null ? Vector3.zero : rightGrab.transform.rotation.eulerAngles,
             LeftShooting = leftShooting,
             RightShooting = rightShooting,
             LeftPointer = leftPointer,
