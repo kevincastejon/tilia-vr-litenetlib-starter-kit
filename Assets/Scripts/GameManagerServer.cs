@@ -159,12 +159,12 @@ public class GameManagerServer : MonoBehaviour
         player.SetRightHandRotationTarget(pi.RightHandRotation);
         if (player.leftGrabId != 0 && pi.LeftGrabId == 0)
         {
-            NetworkGrabbableObject ungrabbed = guns.Find((NetworkGrabbableObject g) => g.id == pi.LeftGrabId);
+            NetworkGrabbableObject ungrabbed = guns.Find((NetworkGrabbableObject g) => g.id == player.leftGrabId);
             ungrabbed.rigidBody.isKinematic = false;
         }
         if (player.rightGrabId != 0 && pi.RightGrabId == 0)
         {
-            NetworkGrabbableObject ungrabbed = guns.Find((NetworkGrabbableObject g) => g.id == pi.RightGrabId);
+            NetworkGrabbableObject ungrabbed = guns.Find((NetworkGrabbableObject g) => g.id == player.rightGrabId);
             ungrabbed.rigidBody.isKinematic = false;
         }
         player.leftGrabId = pi.LeftGrabId;
