@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(InteractableFacade))]
+[RequireComponent(typeof(Rigidbody))]
 public class NetworkGrabbableObject : MonoBehaviour
 {
     [ReadOnly]
@@ -16,6 +17,8 @@ public class NetworkGrabbableObject : MonoBehaviour
     public bool leftHand;
     [ReadOnly]
     public int lastOwnerId;
+    [HideInInspector]
+    public Rigidbody rigidBody;
     private LTDescr moveTween;
     private LTDescr rotTween;
     private float lastPosUpdate;
@@ -23,9 +26,14 @@ public class NetworkGrabbableObject : MonoBehaviour
 
     private void Start()
     {
+        rigidBody = GetComponent<Rigidbody>();
         if (DEVNetworkSwitcher.isServer)
         {
             id = GetInstanceID();
+        }
+        else
+        {
+            rigidBody.isKinematic = true;
         }
     }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class NetworkObject : MonoBehaviour
 {
     [ReadOnly]
@@ -13,7 +14,14 @@ public class NetworkObject : MonoBehaviour
 
     private void Start()
     {
-        id = GetInstanceID();
+        if (DEVNetworkSwitcher.isServer)
+        {
+            id = GetInstanceID();
+        }
+        else
+        {
+            GetComponent<Rigidbody>().isKinematic = true;
+        }
     }
 
     private void Update()

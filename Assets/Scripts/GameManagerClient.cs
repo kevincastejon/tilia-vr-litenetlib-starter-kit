@@ -47,7 +47,6 @@ public class GameManagerClient : MonoBehaviour
     {
         if (leftHand)
         {
-            leftGrab = obj;
             if (obj != null)
             {
                 obj.grabbed = true;
@@ -58,10 +57,10 @@ public class GameManagerClient : MonoBehaviour
             {
                 leftGrab.grabbed = false;
             }
+            leftGrab = obj;
         }
         else
         {
-            rightGrab = obj;
             if (obj != null)
             {
                 obj.grabbed = true;
@@ -72,6 +71,7 @@ public class GameManagerClient : MonoBehaviour
             {
                 rightGrab.grabbed = false;
             }
+            rightGrab = obj;
         }
     }
 
@@ -270,10 +270,10 @@ public class GameManagerClient : MonoBehaviour
             LeftHandRotation = leftGO.transform.rotation,
             RightHandPosition = rightGO.transform.position,
             RightHandRotation = rightGO.transform.rotation,
-            LeftGrabId = leftGrab == null ? -1 : leftGrab.id,
+            LeftGrabId = leftGrab == null ? 0 : leftGrab.id,
             LeftGrabPosition = leftGrab == null ? Vector3.zero : leftGrab.transform.position,
             LeftGrabRotation = leftGrab == null ? Quaternion.identity : leftGrab.transform.rotation,
-            RightGrabId = rightGrab == null ? -1 : rightGrab.id,
+            RightGrabId = rightGrab == null ? 0 : rightGrab.id,
             RightGrabPosition = rightGrab == null ? Vector3.zero : rightGrab.transform.position,
             RightGrabRotation = rightGrab == null ? Quaternion.identity : rightGrab.transform.rotation,
             LeftShooting = leftShooting,

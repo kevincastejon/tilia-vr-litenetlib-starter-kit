@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Tilia.Indicators.ObjectPointers;
 using Tilia.Interactions.Interactables.Interactables;
 using Tilia.Interactions.Interactables.Interactors;
 using Unity.Collections;
@@ -55,7 +56,6 @@ public class GameManagerServer : MonoBehaviour
     {
         if (leftHand)
         {
-            leftGrab = obj;
             if (obj != null)
             {
                 obj.grabbed = true;
@@ -66,10 +66,10 @@ public class GameManagerServer : MonoBehaviour
             {
                 leftGrab.grabbed = false;
             }
+            leftGrab = obj;
         }
         else
         {
-            rightGrab = obj;
             if (obj != null)
             {
                 obj.grabbed = true;
@@ -80,6 +80,7 @@ public class GameManagerServer : MonoBehaviour
             {
                 rightGrab.grabbed = false;
             }
+            rightGrab = obj;
         }
     }
 
@@ -146,40 +147,52 @@ public class GameManagerServer : MonoBehaviour
         player.SetLeftHandRotationTarget(pi.LeftHandRotation);
         player.SetRightHandPositionTarget(pi.RightHandPosition);
         player.SetRightHandRotationTarget(pi.RightHandRotation);
+        if (player.leftGrabId != 0 && pi.LeftGrabId == 0)
+        {
+            NetworkGrabbableObject ungrabbed = guns.Find((NetworkGrabbableObject g) => g.id == pi.LeftGrabId);
+            ungrabbed.rigidBody.isKinematic = false;
+        }
+        if (player.rightGrabId != 0 && pi.RightGrabId == 0)
+        {
+            NetworkGrabbableObject ungrabbed = guns.Find((NetworkGrabbableObject g) => g.id == pi.RightGrabId);
+            ungrabbed.rigidBody.isKinematic = false;
+        }
         player.leftGrabId = pi.LeftGrabId;
         player.rightGrabId = pi.RightGrabId;
-        if (pi.LeftGrabId != -1)
+        if (pi.LeftGrabId != 0)
         {
             NetworkGrabbableObject grabbed = guns.Find((NetworkGrabbableObject g) => g.id == pi.LeftGrabId);
+            grabbed.rigidBody.isKinematic = true;
             grabbed.SetPositionTarget(pi.LeftGrabPosition);
             grabbed.SetRotationTarget(pi.LeftGrabRotation);
         }
-        if (pi.RightGrabId != -1)
+        if (pi.RightGrabId != 0)
         {
             NetworkGrabbableObject grabbed = guns.Find((NetworkGrabbableObject g) => g.id == pi.RightGrabId);
+            grabbed.rigidBody.isKinematic = true;
             grabbed.SetPositionTarget(pi.RightGrabPosition);
             grabbed.SetRotationTarget(pi.RightGrabRotation);
         }
         player.SetLeftPointer(pi.LeftPointer);
         player.SetRightPointer(pi.RightPointer);
-        if (!player.leftShooting && pi.LeftShooting && player.leftGrabId != -1)
+        if (!player.leftShooting && pi.LeftShooting && player.leftGrabId != 0)
         {
             NetworkGrabbableObject obj = guns.Find((NetworkGrabbableObject g) => g.id == player.leftGrabId);
             Transform spawnPoint = obj.GetComponent<Gun>().spawnPoint.transform;
             NetworkObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation).GetComponent<NetworkObject>();
             bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * 1, ForceMode.Impulse);
             bullets.Add(bullet);
-            player.leftShooting = pi.LeftShooting;
         }
-        if (!player.rightShooting && pi.RightShooting && player.rightGrabId != -1)
+            player.leftShooting = pi.LeftShooting;
+        if (!player.rightShooting && pi.RightShooting && player.rightGrabId != 0)
         {
             NetworkGrabbableObject obj = guns.Find((NetworkGrabbableObject g) => g.id == player.rightGrabId);
             Transform spawnPoint = obj.GetComponent<Gun>().spawnPoint.transform;
             NetworkObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation).GetComponent<NetworkObject>();
             bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * 1, ForceMode.Impulse);
             bullets.Add(bullet);
-            player.rightShooting = pi.RightShooting;
         }
+            player.rightShooting = pi.RightShooting;
     }
 
     private StateMessage GetWorldState()
@@ -241,10 +254,8 @@ public class GameManagerServer : MonoBehaviour
         StateMessage sm = new StateMessage()
         {
             Players = playerStates,
-            //Bullets = bulletStates,
-            //Guns = gunStates
-            Bullets = new EntityState[0],
-            Guns = new EntityState[0]
+            Bullets = bulletStates,
+            Guns = gunStates
         };
         return sm;
     }
