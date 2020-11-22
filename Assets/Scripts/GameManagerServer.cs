@@ -160,11 +160,15 @@ public class GameManagerServer : MonoBehaviour
         if (player.leftGrabId != 0 && pi.LeftGrabId == 0)
         {
             NetworkGrabbableObject ungrabbed = guns.Find((NetworkGrabbableObject g) => g.id == player.leftGrabId);
+            InteractableFacade interactable = ungrabbed.GetComponent<InteractableFacade>();
+            interactable.Ungrab();
             ungrabbed.rigidBody.isKinematic = false;
         }
         if (player.rightGrabId != 0 && pi.RightGrabId == 0)
         {
             NetworkGrabbableObject ungrabbed = guns.Find((NetworkGrabbableObject g) => g.id == player.rightGrabId);
+            InteractableFacade interactable = ungrabbed.GetComponent<InteractableFacade>();
+            interactable.Ungrab();
             ungrabbed.rigidBody.isKinematic = false;
         }
         player.leftGrabId = pi.LeftGrabId;
