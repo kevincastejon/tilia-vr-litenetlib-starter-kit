@@ -162,13 +162,15 @@ public class GameManagerServer : MonoBehaviour
         if (player.leftGrabId != 0 && pi.LeftGrabId == 0)
         {
             NetworkGrabbableObject ungrabbed = guns.Find((NetworkGrabbableObject g) => g.id == player.leftGrabId);
-            
+            ungrabbed.grabbed = false;
+            ungrabbed.leftHand = false;
             ungrabbed.rigidBody.isKinematic = false;
         }
         if (player.rightGrabId != 0 && pi.RightGrabId == 0)
         {
             NetworkGrabbableObject ungrabbed = guns.Find((NetworkGrabbableObject g) => g.id == player.rightGrabId);
-            
+            ungrabbed.grabbed = false;
+            ungrabbed.leftHand = false;
             ungrabbed.rigidBody.isKinematic = false;
         }
         player.leftGrabId = pi.LeftGrabId;
@@ -176,6 +178,14 @@ public class GameManagerServer : MonoBehaviour
         if (pi.LeftGrabId != 0)
         {
             NetworkGrabbableObject grabbed = guns.Find((NetworkGrabbableObject g) => g.id == pi.LeftGrabId);
+            if (grabbed.snapContainer != null)
+            {
+                grabbed.snapContainer.Unsnap();
+                grabbed.snapContainer = null;
+            }
+            grabbed.grabbed = true;
+            grabbed.leftHand = true;
+            grabbed.lastOwnerId = peerID;
             grabbed.rigidBody.isKinematic = true;
             grabbed.SetPositionTarget(pi.LeftGrabPosition);
             grabbed.SetRotationTarget(pi.LeftGrabRotation);
@@ -183,6 +193,14 @@ public class GameManagerServer : MonoBehaviour
         if (pi.RightGrabId != 0)
         {
             NetworkGrabbableObject grabbed = guns.Find((NetworkGrabbableObject g) => g.id == pi.RightGrabId);
+            if (grabbed.snapContainer != null)
+            {
+                grabbed.snapContainer.Unsnap();
+                grabbed.snapContainer = null;
+            }
+            grabbed.grabbed = true;
+            grabbed.leftHand = false;
+            grabbed.lastOwnerId = peerID;
             grabbed.rigidBody.isKinematic = true;
             grabbed.SetPositionTarget(pi.RightGrabPosition);
             grabbed.SetRotationTarget(pi.RightGrabRotation);

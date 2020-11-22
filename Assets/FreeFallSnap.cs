@@ -12,9 +12,15 @@ public class FreeFallSnap : MonoBehaviour
     }
     public void OnCollision(GameObject obj)
     {
-        if (!obj.GetComponent<InteractableFacade>().IsGrabbed)
+        NetworkGrabbableObject gobj = obj.GetComponent<NetworkGrabbableObject>();
+        if (!gobj.grabbed)
         {
             snapZone.Snap(obj);
         }
+    }
+    public void OnSnap(GameObject obj)
+    {
+        NetworkGrabbableObject gobj = obj.GetComponent<NetworkGrabbableObject>();
+        gobj.snapContainer = snapZone;
     }
 }

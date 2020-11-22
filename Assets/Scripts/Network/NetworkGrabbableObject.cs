@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Tilia.Interactions.Interactables.Interactables;
 using Tilia.Interactions.Interactables.Interactors;
+using Tilia.Interactions.SnapZone;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -17,6 +18,8 @@ public class NetworkGrabbableObject : MonoBehaviour
     public bool leftHand;
     [ReadOnly]
     public int lastOwnerId;
+    [ReadOnly]
+    public SnapZoneFacade snapContainer;
     [HideInInspector]
     public Rigidbody rigidBody;
     private LTDescr moveTween;
