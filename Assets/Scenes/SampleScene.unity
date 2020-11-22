@@ -2709,7 +2709,7 @@ PrefabInstance:
         type: 3}
       propertyPath: scaleModifier
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1810623537}
     - target: {fileID: 5740468288938378439, guid: 4b31a8fec775487449f2e9e977953e54,
         type: 3}
       propertyPath: applyOffset
@@ -5184,7 +5184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74bc7fb32c2b34341973cba88a531b2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isServer: 1
+  _isServer: 0
   server: {fileID: 691973308}
   client: {fileID: 2035483286}
 --- !u!4 &978153843
@@ -10133,6 +10133,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 34c0cb8bdc24787439e43b7f145ac31c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1810623537 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5740468288938378439, guid: 4b31a8fec775487449f2e9e977953e54,
+    type: 3}
+  m_PrefabInstance: {fileID: 452022517}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82e1be200ae387d4c95c60842582358d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1825171603 stripped
