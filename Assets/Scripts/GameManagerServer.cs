@@ -144,7 +144,7 @@ public class GameManagerServer : MonoBehaviour
     {
         Player disconnectedPlayer = players.Find(x => x.id == peerID);
         players.Remove(disconnectedPlayer);
-        Destroy(disconnectedPlayer);
+        Destroy(disconnectedPlayer.gameObject);
     }
 
     public void OnClientInput(int peerID, PlayerInput pi)
@@ -157,6 +157,8 @@ public class GameManagerServer : MonoBehaviour
         player.SetLeftHandRotationTarget(pi.LeftHandRotation);
         player.SetRightHandPositionTarget(pi.RightHandPosition);
         player.SetRightHandRotationTarget(pi.RightHandRotation);
+        player.SetLeftPointer(pi.LeftPointer);
+        player.SetRightPointer(pi.RightPointer);
         if (player.leftGrabId != 0 && pi.LeftGrabId == 0)
         {
             NetworkGrabbableObject ungrabbed = guns.Find((NetworkGrabbableObject g) => g.id == player.leftGrabId);
@@ -187,8 +189,6 @@ public class GameManagerServer : MonoBehaviour
             grabbed.SetPositionTarget(pi.RightGrabPosition);
             grabbed.SetRotationTarget(pi.RightGrabRotation);
         }
-        player.SetLeftPointer(pi.LeftPointer);
-        player.SetRightPointer(pi.RightPointer);
         if (!player.leftShooting && pi.LeftShooting && player.leftGrabId != 0)
         {
             NetworkGrabbableObject obj = guns.Find((NetworkGrabbableObject g) => g.id == player.leftGrabId);

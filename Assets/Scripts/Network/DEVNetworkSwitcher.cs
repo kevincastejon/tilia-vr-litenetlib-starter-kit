@@ -9,7 +9,7 @@ public class DEVNetworkSwitcher : MonoBehaviour
     public bool _isServer;
     public GameObject server;
     public GameObject client;
-    private void Start()
+    private void Awake()
     {
         if (_isServer)
         {
