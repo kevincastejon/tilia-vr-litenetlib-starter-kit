@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class GameManagerClient : MonoBehaviour
 {
+    public InteractorFacade leftInteractor;
+    public InteractorFacade rightInteractor;
     [ReadOnly]
     public int avatarId;
     [ReadOnly]
@@ -272,14 +274,14 @@ public class GameManagerClient : MonoBehaviour
             RightHandRotation = rightGO.transform.rotation.eulerAngles,
             LeftGrabId = leftGrab == null ? 0 : leftGrab.id,
             LeftGrabPosition = leftGrab == null ? Vector3.zero : leftGrab.transform.position,
-            LeftGrabVelocity = leftGrab == null ? Vector3.zero : leftGrab.rigidBody.velocity,
+            LeftGrabVelocity = leftGrab == null ? Vector3.zero : leftInteractor.VelocityTracker.GetVelocity(),
             LeftGrabRotation = leftGrab == null ? Vector3.zero : leftGrab.transform.rotation.eulerAngles,
-            LeftGrabAngularVelocity = leftGrab == null ? Vector3.zero : leftGrab.rigidBody.angularVelocity,
+            LeftGrabAngularVelocity = leftGrab == null ? Vector3.zero : leftInteractor.VelocityTracker.GetAngularVelocity(),
             RightGrabId = rightGrab == null ? 0 : rightGrab.id,
             RightGrabPosition = rightGrab == null ? Vector3.zero : rightGrab.transform.position,
-            RightGrabVelocity = rightGrab == null ? Vector3.zero : rightGrab.rigidBody.velocity,
+            RightGrabVelocity = rightGrab == null ? Vector3.zero : rightInteractor.VelocityTracker.GetVelocity(),
             RightGrabRotation = rightGrab == null ? Vector3.zero : rightGrab.transform.rotation.eulerAngles,
-            RightGrabAngularVelocity = rightGrab == null ? Vector3.zero : rightGrab.rigidBody.angularVelocity,
+            RightGrabAngularVelocity = rightGrab == null ? Vector3.zero : rightInteractor.VelocityTracker.GetAngularVelocity(),
             LeftShooting = leftShooting,
             RightShooting = rightShooting,
             LeftPointer = leftPointer,

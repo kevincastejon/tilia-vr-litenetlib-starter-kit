@@ -473,6 +473,8 @@ MonoBehaviour:
   lastOwnerId: 0
   snapContainer: {fileID: 0}
   rigidBody: {fileID: 0}
+  bufferVelocity: {x: 0, y: 0, z: 0}
+  bufferAngularVelocity: {x: 0, y: 0, z: 0}
 --- !u!1 &62202835
 GameObject:
   m_ObjectHideFlags: 0
@@ -658,6 +660,8 @@ MonoBehaviour:
   lastOwnerId: 0
   snapContainer: {fileID: 0}
   rigidBody: {fileID: 0}
+  bufferVelocity: {x: 0, y: 0, z: 0}
+  bufferAngularVelocity: {x: 0, y: 0, z: 0}
 --- !u!1 &151667565
 GameObject:
   m_ObjectHideFlags: 0
@@ -2273,6 +2277,8 @@ MonoBehaviour:
   lastOwnerId: 0
   snapContainer: {fileID: 0}
   rigidBody: {fileID: 0}
+  bufferVelocity: {x: 0, y: 0, z: 0}
+  bufferAngularVelocity: {x: 0, y: 0, z: 0}
 --- !u!114 &381407656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11119,6 +11125,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ada12defafa79d459d6281b1ec8ae59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftInteractor: {fileID: 1142066677}
+  rightInteractor: {fileID: 155289357}
   avatarId: 0
   leftGrab: {fileID: 0}
   rightGrab: {fileID: 0}

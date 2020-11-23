@@ -60,6 +60,7 @@ public class GameClient : MonoBehaviour
     /// </summary>
     public void SendInput(PlayerInput pi)
     {
+        //Debug.Log(pi.RightGrabVelocity);
         client.SendFastMessage(pi);
     }
     private void OnLANDiscovered(string name, IPEndPoint ip)

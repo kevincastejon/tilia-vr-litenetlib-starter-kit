@@ -144,6 +144,28 @@ public class GameManagerServer : MonoBehaviour
     {
         Player disconnectedPlayer = players.Find(x => x.id == peerID);
         players.Remove(disconnectedPlayer);
+        if (disconnectedPlayer.leftGrabId != 0)
+        {
+            NetworkGrabbableObject ungrabbed = guns.Find((NetworkGrabbableObject g) => g.id == disconnectedPlayer.leftGrabId);
+            ungrabbed.grabbed = false;
+            ungrabbed.leftHand = false;
+            ungrabbed.rigidBody.isKinematic = false;
+            ungrabbed.rigidBody.velocity = ungrabbed.bufferVelocity;
+            ungrabbed.bufferVelocity = Vector3.zero;
+            ungrabbed.rigidBody.angularVelocity = ungrabbed.bufferAngularVelocity;
+            ungrabbed.bufferAngularVelocity = Vector3.zero;
+        }
+        if (disconnectedPlayer.rightGrabId != 0)
+        {
+            NetworkGrabbableObject ungrabbed = guns.Find((NetworkGrabbableObject g) => g.id == disconnectedPlayer.rightGrabId);
+            ungrabbed.grabbed = false;
+            ungrabbed.leftHand = false;
+            ungrabbed.rigidBody.isKinematic = false;
+            ungrabbed.rigidBody.velocity = ungrabbed.bufferVelocity;
+            ungrabbed.bufferVelocity = Vector3.zero;
+            ungrabbed.rigidBody.angularVelocity = ungrabbed.bufferAngularVelocity;
+            ungrabbed.bufferAngularVelocity = Vector3.zero;
+        }
         Destroy(disconnectedPlayer.gameObject);
     }
 
