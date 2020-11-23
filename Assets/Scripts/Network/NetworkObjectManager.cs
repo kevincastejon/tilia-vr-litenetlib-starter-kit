@@ -34,6 +34,9 @@ public class NetworkObjectManager : MonoBehaviour
         if (DEVNetworkSwitcher.isServer)
         {
             server = FindObjectOfType<GameManagerServer>();
+        }
+        else
+        {
             client = FindObjectOfType<GameManagerClient>();
         }
     }
