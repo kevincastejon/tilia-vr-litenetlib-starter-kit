@@ -6,4 +6,5 @@ public class StateMessage
     public EntityState[] Bullets { get; set; }
     public EntityState[] Guns { get; set; }
     public EntityState[] Pins { get; set; }
+    public EntityState[] LinearLevers { get; set; }
 }

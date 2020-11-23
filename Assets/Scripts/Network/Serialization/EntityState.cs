@@ -6,7 +6,8 @@ public enum EntityType
     Bullet = 0,
     Ball = 1,
     Pin = 2,
-    Gun = 3
+    Gun = 3,
+    LinearLever = 4
 }
 public class EntityState : INetSerializable
 {

@@ -18,6 +18,7 @@ public class GameManagerServer : MonoBehaviour
     public GameObject leftGO;
     public GameObject rightGO;
     public List<NetworkGrabbableObject> guns = new List<NetworkGrabbableObject>();
+    public List<NetworkGrabbableObject> linearLevers = new List<NetworkGrabbableObject>();
     public List<NetworkObject> pins = new List<NetworkObject>();
     [ReadOnly]
     public NetworkGrabbableObject leftGrab;
@@ -40,6 +41,12 @@ public class GameManagerServer : MonoBehaviour
         {
             InteractableFacade interactable = gun.GetComponent<InteractableFacade>();
             interactable.Grabbed.AddListener((InteractorFacade interactor) => SetGrab(gun, interactor.name == "LeftInteractor"));
+            interactable.Ungrabbed.AddListener((InteractorFacade interactor) => SetGrab(null, interactor.name == "LeftInteractor"));
+        });
+        linearLevers.ForEach((NetworkGrabbableObject lever) =>
+        {
+            InteractableFacade interactable = lever.GetComponent<InteractableFacade>();
+            interactable.Grabbed.AddListener((InteractorFacade interactor) => SetGrab(lever, interactor.name == "LeftInteractor"));
             interactable.Ungrabbed.AddListener((InteractorFacade interactor) => SetGrab(null, interactor.name == "LeftInteractor"));
         });
     }
@@ -328,12 +335,27 @@ public class GameManagerServer : MonoBehaviour
                 Rotation = rotation.eulerAngles,
             };
         }
+        EntityState[] linearLeverStates = new EntityState[linearLevers.Count];
+        for (int i = 0; i < linearLevers.Count; i++)
+        {
+            NetworkGrabbableObject g = linearLevers[i];
+            Vector3 position = g.transform.position;
+            Quaternion rotation = g.transform.rotation;
+            linearLeverStates[i] = new EntityState()
+            {
+                Id = g.id,
+                Type = (byte)EntityType.LinearLever,
+                Position = position,
+                Rotation = rotation.eulerAngles,
+            };
+        }
         StateMessage sm = new StateMessage()
         {
             Players = playerStates,
             Bullets = bulletStates,
             Guns = gunStates,
             Pins = pinStates,
+            LinearLevers = linearLeverStates,
             //Players = new PlayerState[0],
             //Bullets = new EntityState[0],
             //Guns = new EntityState[0]

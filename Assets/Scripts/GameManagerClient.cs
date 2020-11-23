@@ -30,6 +30,7 @@ public class GameManagerClient : MonoBehaviour
     public GameObject leftGO;
     public GameObject rightGO;
     public List<NetworkGrabbableObject> guns = new List<NetworkGrabbableObject>();
+    public List<NetworkGrabbableObject> linearLevers = new List<NetworkGrabbableObject>();
     public List<NetworkObject> pins = new List<NetworkObject>();
     private readonly List<Player> players = new List<Player>();
     private readonly List<NetworkObject> bullets = new List<NetworkObject>();
@@ -42,6 +43,12 @@ public class GameManagerClient : MonoBehaviour
         {
             InteractableFacade interactable = gun.GetComponent<InteractableFacade>();
             interactable.Grabbed.AddListener((InteractorFacade interactor) => SetGrab(gun, interactor.name == "LeftInteractor"));
+            interactable.Ungrabbed.AddListener((InteractorFacade interactor) => SetGrab(null, interactor.name == "LeftInteractor"));
+        });
+        linearLevers.ForEach((NetworkGrabbableObject lever) =>
+        {
+            InteractableFacade interactable = lever.GetComponent<InteractableFacade>();
+            interactable.Grabbed.AddListener((InteractorFacade interactor) => SetGrab(lever, interactor.name == "LeftInteractor"));
             interactable.Ungrabbed.AddListener((InteractorFacade interactor) => SetGrab(null, interactor.name == "LeftInteractor"));
         });
     }
@@ -192,6 +199,18 @@ public class GameManagerClient : MonoBehaviour
                 LinkLocalPin(sm.Pins[i]);
             }
         }
+        for (int i = 0; i < sm.LinearLevers.Length; i++)
+        {
+            NetworkGrabbableObject lever = linearLevers.Find(x => x.id == sm.LinearLevers[i].Id);
+            if (lever != null)
+            {
+                SetLinearLeverState(lever, sm.LinearLevers[i]);
+            }
+            else
+            {
+                LinkLocalLinearLever(sm.LinearLevers[i]);
+            }
+        }
     }
 
     private void SpawnPlayer(PlayerState ps)
@@ -259,6 +278,11 @@ public class GameManagerClient : MonoBehaviour
         bullet.SetPositionTarget(bs.Position);
         bullet.SetRotationTarget(bs.Rotation);
     }
+    private void SetLinearLeverState(NetworkGrabbableObject lever, EntityState bs)
+    {
+        lever.SetPositionTarget(bs.Position);
+        lever.SetRotationTarget(bs.Rotation);
+    }
 
     private void LinkLocalGun(EntityState gs)
     {
@@ -279,6 +303,17 @@ public class GameManagerClient : MonoBehaviour
             localPin.transform.position=ps.Position;
             localPin.transform.eulerAngles = ps.Rotation;
             localPin.id = ps.Id;
+        }
+    }
+
+    private void LinkLocalLinearLever(EntityState gs)
+    {
+        NetworkGrabbableObject localLever = linearLevers.Find((NetworkGrabbableObject g) => g.id == 0);
+        if (localLever != null)
+        {
+            localLever.transform.position = gs.Position;
+            localLever.transform.eulerAngles = gs.Rotation;
+            localLever.id = gs.Id;
         }
     }
 
