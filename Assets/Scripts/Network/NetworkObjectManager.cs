@@ -233,7 +233,7 @@ public class NetworkObjectManager : MonoBehaviour
             entityStates[i] = new EntityState()
             {
                 Id = b.id,
-                Type = (byte)EntityType.Bullet,
+                Type = (byte)b.type,
                 Position = b.transform.position,
                 Rotation = b.transform.rotation.eulerAngles,
             };
