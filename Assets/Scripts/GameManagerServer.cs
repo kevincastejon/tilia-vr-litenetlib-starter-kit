@@ -192,6 +192,10 @@ public class GameManagerServer : MonoBehaviour
         if (player.leftGrabId != 0 && pi.LeftGrabId == 0)
         {
             NetworkGrabbableObject ungrabbed = guns.Find((NetworkGrabbableObject g) => g.id == player.leftGrabId);
+            if (ungrabbed==null)
+            {
+                ungrabbed = linearLevers.Find((NetworkGrabbableObject g) => g.id == player.leftGrabId);
+            }
             ungrabbed.grabbed = false;
             ungrabbed.leftHand = false;
             ungrabbed.rigidBody.isKinematic = false;
@@ -203,6 +207,10 @@ public class GameManagerServer : MonoBehaviour
         if (player.rightGrabId != 0 && pi.RightGrabId == 0)
         {
             NetworkGrabbableObject ungrabbed = guns.Find((NetworkGrabbableObject g) => g.id == player.rightGrabId);
+            if (ungrabbed == null)
+            {
+                ungrabbed = linearLevers.Find((NetworkGrabbableObject g) => g.id == player.rightGrabId);
+            }
             ungrabbed.grabbed = false;
             ungrabbed.leftHand = false;
             ungrabbed.rigidBody.isKinematic = false;
@@ -216,6 +224,10 @@ public class GameManagerServer : MonoBehaviour
         if (pi.LeftGrabId != 0)
         {
             NetworkGrabbableObject grabbed = guns.Find((NetworkGrabbableObject g) => g.id == pi.LeftGrabId);
+            if (grabbed == null)
+            {
+                grabbed = linearLevers.Find((NetworkGrabbableObject g) => g.id == pi.LeftGrabId);
+            }
             if (grabbed.snapContainer != null)
             {
                 grabbed.snapContainer.Unsnap();
@@ -233,6 +245,10 @@ public class GameManagerServer : MonoBehaviour
         if (pi.RightGrabId != 0)
         {
             NetworkGrabbableObject grabbed = guns.Find((NetworkGrabbableObject g) => g.id == pi.RightGrabId);
+            if (grabbed == null)
+            {
+                grabbed = linearLevers.Find((NetworkGrabbableObject g) => g.id == pi.RightGrabId);
+            }
             if (grabbed.snapContainer != null)
             {
                 grabbed.snapContainer.Unsnap();
