@@ -6,8 +6,8 @@ using Tilia.Interactions.SnapZone;
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(InteractableFacade))]
-[RequireComponent(typeof(Rigidbody))]
+//[RequireComponent(typeof(InteractableFacade))]
+//[RequireComponent(typeof(Rigidbody))]
 public class NetworkGrabbableObject : MonoBehaviour
 {
     [ReadOnly]

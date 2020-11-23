@@ -19,7 +19,7 @@ public class GameManagerServer : MonoBehaviour
     public GameObject rightGO;
     public List<NetworkGrabbableObject> guns = new List<NetworkGrabbableObject>();
     public List<NetworkGrabbableObject> linearLevers = new List<NetworkGrabbableObject>();
-    public List<NetworkObject> pins = new List<NetworkObject>();
+    public List<NetworkGrabbableObject> pins = new List<NetworkGrabbableObject>();
     [ReadOnly]
     public NetworkGrabbableObject leftGrab;
     [ReadOnly]
@@ -30,7 +30,7 @@ public class GameManagerServer : MonoBehaviour
     public bool rightPointer;
     public int maxBullets = 12;
     private readonly List<Player> players = new List<Player>();
-    private readonly List<NetworkObject> bullets = new List<NetworkObject>();
+    private readonly List<NetworkGrabbableObject> bullets = new List<NetworkGrabbableObject>();
     private float sendRate = 50 / 1000f;
     private float sendTimer = 0f;
     private int serverId = -1;
@@ -126,11 +126,11 @@ public class GameManagerServer : MonoBehaviour
     {
         if (bullets.Count == maxBullets)
         {
-            NetworkObject oldBullet = bullets[0];
+            NetworkGrabbableObject oldBullet = bullets[0];
             bullets.RemoveAt(0);
             Destroy(oldBullet.gameObject);
         }
-        NetworkObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation).GetComponent<NetworkObject>();
+        NetworkGrabbableObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation).GetComponent<NetworkGrabbableObject>();
         bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * 1, ForceMode.Impulse);
         bullets.Add(bullet);
     }
@@ -314,7 +314,7 @@ public class GameManagerServer : MonoBehaviour
         EntityState[] bulletStates = new EntityState[bullets.Count];
         for (int i = 0; i < bullets.Count; i++)
         {
-            NetworkObject b = bullets[i];
+            NetworkGrabbableObject b = bullets[i];
             bulletStates[i] = new EntityState()
             {
                 Id = b.id,
@@ -340,7 +340,7 @@ public class GameManagerServer : MonoBehaviour
         EntityState[] pinStates = new EntityState[pins.Count];
         for (int i = 0; i < pins.Count; i++)
         {
-            NetworkObject g = pins[i];
+            NetworkGrabbableObject g = pins[i];
             Vector3 position = g.transform.position;
             Quaternion rotation = g.transform.rotation;
             pinStates[i] = new EntityState()

@@ -31,9 +31,9 @@ public class GameManagerClient : MonoBehaviour
     public GameObject rightGO;
     public List<NetworkGrabbableObject> guns = new List<NetworkGrabbableObject>();
     public List<NetworkGrabbableObject> linearLevers = new List<NetworkGrabbableObject>();
-    public List<NetworkObject> pins = new List<NetworkObject>();
+    public List<NetworkGrabbableObject> pins = new List<NetworkGrabbableObject>();
     private readonly List<Player> players = new List<Player>();
-    private readonly List<NetworkObject> bullets = new List<NetworkObject>();
+    private readonly List<NetworkGrabbableObject> bullets = new List<NetworkGrabbableObject>();
     private float sendRate = 50 / 1000f;
     private float sendTimer = 0f;
 
@@ -160,7 +160,7 @@ public class GameManagerClient : MonoBehaviour
 
         for (int i = 0; i < sm.Bullets.Length; i++)
         {
-            NetworkObject bullet = bullets.Find(x => x.id == sm.Bullets[i].Id);
+            NetworkGrabbableObject bullet = bullets.Find(x => x.id == sm.Bullets[i].Id);
             if (bullet != null)
             {
                 SetBulletState(bullet, sm.Bullets[i]);
@@ -189,7 +189,7 @@ public class GameManagerClient : MonoBehaviour
         }
         for (int i = 0; i < sm.Pins.Length; i++)
         {
-            NetworkObject pin = pins.Find(x => x.id == sm.Pins[i].Id);
+            NetworkGrabbableObject pin = pins.Find(x => x.id == sm.Pins[i].Id);
             if (pin != null)
             {
                 SetPinState(pin, sm.Pins[i]);
@@ -253,7 +253,7 @@ public class GameManagerClient : MonoBehaviour
     }
     private void SpawnBullet(EntityState bs)
     {
-        NetworkObject newBullet = Instantiate(bulletPrefab).GetComponent<NetworkObject>();
+        NetworkGrabbableObject newBullet = Instantiate(bulletPrefab).GetComponent<NetworkGrabbableObject>();
         newBullet.transform.position = bs.Position;
         newBullet.transform.eulerAngles = bs.Rotation;
         newBullet.id = bs.Id;
@@ -264,7 +264,7 @@ public class GameManagerClient : MonoBehaviour
     {
         for (int i = 0; i < bullets.Count; i++)
         {
-            NetworkObject oldBullet = bullets[i];
+            NetworkGrabbableObject oldBullet = bullets[i];
             if (Array.Find(bs, x => x.Id == oldBullet.id) == null)
             {
                 bullets.Remove(oldBullet);
@@ -273,7 +273,7 @@ public class GameManagerClient : MonoBehaviour
         }
     }
 
-    private void SetBulletState(NetworkObject bullet, EntityState bs)
+    private void SetBulletState(NetworkGrabbableObject bullet, EntityState bs)
     {
         bullet.SetPositionTarget(bs.Position);
         bullet.SetRotationTarget(bs.Rotation);
@@ -297,7 +297,7 @@ public class GameManagerClient : MonoBehaviour
 
     private void LinkLocalPin(EntityState ps)
     {
-        NetworkObject localPin = pins.Find((NetworkObject g) => g.id == 0);
+        NetworkGrabbableObject localPin = pins.Find((NetworkGrabbableObject g) => g.id == 0);
         if (localPin != null)
         {
             localPin.transform.position=ps.Position;
@@ -323,7 +323,7 @@ public class GameManagerClient : MonoBehaviour
         gun.SetRotationTarget(gs.Rotation);
     }
 
-    private void SetPinState(NetworkObject pin, EntityState ps)
+    private void SetPinState(NetworkGrabbableObject pin, EntityState ps)
     {
         pin.SetPositionTarget(ps.Position);
         pin.SetRotationTarget(ps.Rotation);
