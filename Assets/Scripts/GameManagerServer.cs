@@ -198,7 +198,7 @@ public class GameManagerServer : MonoBehaviour
             }
             ungrabbed.grabbed = false;
             ungrabbed.leftHand = false;
-            ungrabbed.rigidBody.isKinematic = false;
+            ungrabbed.rigidBody.isKinematic = ungrabbed.kinematicInitValue;
             ungrabbed.rigidBody.velocity = ungrabbed.bufferVelocity;
             ungrabbed.bufferVelocity = Vector3.zero;
             ungrabbed.rigidBody.angularVelocity = ungrabbed.bufferAngularVelocity;
@@ -213,7 +213,7 @@ public class GameManagerServer : MonoBehaviour
             }
             ungrabbed.grabbed = false;
             ungrabbed.leftHand = false;
-            ungrabbed.rigidBody.isKinematic = false;
+            ungrabbed.rigidBody.isKinematic = ungrabbed.kinematicInitValue;
             ungrabbed.rigidBody.velocity = ungrabbed.bufferVelocity;
             ungrabbed.bufferVelocity = Vector3.zero;
             ungrabbed.rigidBody.angularVelocity = ungrabbed.bufferAngularVelocity;

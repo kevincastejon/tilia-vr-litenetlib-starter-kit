@@ -26,6 +26,8 @@ public class NetworkGrabbableObject : MonoBehaviour
     public Vector3 bufferVelocity;
     [HideInInspector]
     public Vector3 bufferAngularVelocity;
+    [HideInInspector]
+    public bool kinematicInitValue;
     private LTDescr moveTween;
     private LTDescr rotTween;
     private float lastPosUpdate;
@@ -34,6 +36,7 @@ public class NetworkGrabbableObject : MonoBehaviour
     private void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
+        kinematicInitValue = rigidBody.isKinematic;
         if (DEVNetworkSwitcher.isServer)
         {
             id = GetInstanceID();
