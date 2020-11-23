@@ -165,6 +165,8 @@ public class GameManagerServer : MonoBehaviour
             ungrabbed.grabbed = false;
             ungrabbed.leftHand = false;
             ungrabbed.rigidBody.isKinematic = false;
+            ungrabbed.rigidBody.velocity = pi.LeftGrabVelocity;
+            ungrabbed.rigidBody.angularVelocity = pi.LeftGrabAngularVelocity;
         }
         if (player.rightGrabId != 0 && pi.RightGrabId == 0)
         {
@@ -172,6 +174,8 @@ public class GameManagerServer : MonoBehaviour
             ungrabbed.grabbed = false;
             ungrabbed.leftHand = false;
             ungrabbed.rigidBody.isKinematic = false;
+            ungrabbed.rigidBody.velocity = pi.RightGrabVelocity;
+            ungrabbed.rigidBody.angularVelocity = pi.RightGrabAngularVelocity;
         }
         player.leftGrabId = pi.LeftGrabId;
         player.rightGrabId = pi.RightGrabId;
@@ -260,6 +264,7 @@ public class GameManagerServer : MonoBehaviour
             bulletStates[i] = new EntityState()
             {
                 Id = b.id,
+                Type = (byte)EntityType.Bullet,
                 Position = b.transform.position,
                 Rotation = b.transform.rotation.eulerAngles,
             };
@@ -273,6 +278,7 @@ public class GameManagerServer : MonoBehaviour
             gunStates[i] = new EntityState()
             {
                 Id = g.id,
+                Type = (byte)EntityType.Gun,
                 Position = position,
                 Rotation = rotation.eulerAngles,
             };

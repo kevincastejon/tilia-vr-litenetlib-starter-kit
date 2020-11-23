@@ -16,6 +16,9 @@ public class Client : MonoBehaviour, INetEventListener
     public int serverPort=5000;
     public string token = "appsecret";
     public bool autoConnect;
+    [Header("Input packet size (bytes)")]
+    [ReadOnly]
+    public int packetSize;
     public BaseClientEvent onConnected = new BaseClientEvent();
     public BaseClientEvent onDisconnected = new BaseClientEvent();
     public BaseClientInitEvent onInit = new BaseClientInitEvent();
@@ -149,7 +152,8 @@ public class Client : MonoBehaviour, INetEventListener
     }
     public void SendFastMessage<T>(T data) where T : class, new()
     {
+        byte[] ba = _netPacketProcessor.Write(data);
+        packetSize = ba.Length;
         _netPacketProcessor.Send(_netClient, data, DeliveryMethod.Sequenced);
-        //Debug.Log("sent state");
     }
 }

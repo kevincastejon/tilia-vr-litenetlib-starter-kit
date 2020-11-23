@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 2138677392}
-  m_IndirectSpecularColor: {r: 0.28498062, g: 0.37134537, b: 0.4959416, a: 1}
+  m_IndirectSpecularColor: {r: 0.28415093, g: 0.37026334, b: 0.49450025, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -11092,6 +11092,7 @@ MonoBehaviour:
   serverPort: 5000
   token: appsecret
   autoConnect: 1
+  packetSize: 0
 --- !u!4 &2035483289
 Transform:
   m_ObjectHideFlags: 0
