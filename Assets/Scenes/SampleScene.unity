@@ -475,6 +475,7 @@ MonoBehaviour:
   rigidBody: {fileID: 0}
   bufferVelocity: {x: 0, y: 0, z: 0}
   bufferAngularVelocity: {x: 0, y: 0, z: 0}
+  kinematicInitValue: 0
 --- !u!1 &62202835
 GameObject:
   m_ObjectHideFlags: 0
@@ -662,6 +663,7 @@ MonoBehaviour:
   rigidBody: {fileID: 0}
   bufferVelocity: {x: 0, y: 0, z: 0}
   bufferAngularVelocity: {x: 0, y: 0, z: 0}
+  kinematicInitValue: 0
 --- !u!1 &151667565
 GameObject:
   m_ObjectHideFlags: 0
@@ -2298,6 +2300,7 @@ MonoBehaviour:
   rigidBody: {fileID: 0}
   bufferVelocity: {x: 0, y: 0, z: 0}
   bufferAngularVelocity: {x: 0, y: 0, z: 0}
+  kinematicInitValue: 0
 --- !u!114 &381407656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10920,6 +10923,7 @@ MonoBehaviour:
   rigidBody: {fileID: 0}
   bufferVelocity: {x: 0, y: 0, z: 0}
   bufferAngularVelocity: {x: 0, y: 0, z: 0}
+  kinematicInitValue: 0
 --- !u!1 &2003953818
 GameObject:
   m_ObjectHideFlags: 0
