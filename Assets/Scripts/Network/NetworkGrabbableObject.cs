@@ -22,6 +22,10 @@ public class NetworkGrabbableObject : MonoBehaviour
     public SnapZoneFacade snapContainer;
     [HideInInspector]
     public Rigidbody rigidBody;
+    [HideInInspector]
+    public Vector3 bufferVelocity;
+    [HideInInspector]
+    public Vector3 bufferAngularVelocity;
     private LTDescr moveTween;
     private LTDescr rotTween;
     private float lastPosUpdate;

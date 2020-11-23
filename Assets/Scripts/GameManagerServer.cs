@@ -165,8 +165,10 @@ public class GameManagerServer : MonoBehaviour
             ungrabbed.grabbed = false;
             ungrabbed.leftHand = false;
             ungrabbed.rigidBody.isKinematic = false;
-            ungrabbed.rigidBody.velocity = pi.LeftGrabVelocity;
-            ungrabbed.rigidBody.angularVelocity = pi.LeftGrabAngularVelocity;
+            ungrabbed.rigidBody.velocity = ungrabbed.bufferVelocity;
+            ungrabbed.bufferVelocity = Vector3.zero;
+            ungrabbed.rigidBody.angularVelocity = ungrabbed.bufferAngularVelocity;
+            ungrabbed.bufferAngularVelocity = Vector3.zero;
         }
         if (player.rightGrabId != 0 && pi.RightGrabId == 0)
         {
@@ -174,8 +176,10 @@ public class GameManagerServer : MonoBehaviour
             ungrabbed.grabbed = false;
             ungrabbed.leftHand = false;
             ungrabbed.rigidBody.isKinematic = false;
-            ungrabbed.rigidBody.velocity = pi.RightGrabVelocity;
-            ungrabbed.rigidBody.angularVelocity = pi.RightGrabAngularVelocity;
+            ungrabbed.rigidBody.velocity = ungrabbed.bufferVelocity;
+            ungrabbed.bufferVelocity = Vector3.zero;
+            ungrabbed.rigidBody.angularVelocity = ungrabbed.bufferAngularVelocity;
+            ungrabbed.bufferAngularVelocity = Vector3.zero;
         }
         player.leftGrabId = pi.LeftGrabId;
         player.rightGrabId = pi.RightGrabId;
@@ -191,6 +195,8 @@ public class GameManagerServer : MonoBehaviour
             grabbed.leftHand = true;
             grabbed.lastOwnerId = peerID;
             grabbed.rigidBody.isKinematic = true;
+            grabbed.bufferVelocity = pi.LeftGrabVelocity;
+            grabbed.bufferAngularVelocity = pi.LeftGrabAngularVelocity;
             grabbed.SetPositionTarget(pi.LeftGrabPosition);
             grabbed.SetRotationTarget(pi.LeftGrabRotation);
         }
@@ -206,6 +212,8 @@ public class GameManagerServer : MonoBehaviour
             grabbed.leftHand = false;
             grabbed.lastOwnerId = peerID;
             grabbed.rigidBody.isKinematic = true;
+            grabbed.bufferVelocity = pi.RightGrabVelocity;
+            grabbed.bufferAngularVelocity = pi.RightGrabAngularVelocity;
             grabbed.SetPositionTarget(pi.RightGrabPosition);
             grabbed.SetRotationTarget(pi.RightGrabRotation);
         }
