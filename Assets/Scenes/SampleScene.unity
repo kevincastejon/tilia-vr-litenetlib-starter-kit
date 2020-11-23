@@ -4044,14 +4044,14 @@ MonoBehaviour:
   - {fileID: 30507604}
   - {fileID: 381407655}
   pins:
-  - {fileID: 1089835975}
-  - {fileID: 2055391844}
+  - {fileID: 1089835980}
+  - {fileID: 2055391849}
   - {fileID: 261660489}
   leftGrab: {fileID: 0}
   rightGrab: {fileID: 0}
   leftPointer: 0
   rightPointer: 0
-  maxBullets: 9
+  maxBullets: 6
 --- !u!1 &705789048
 GameObject:
   m_ObjectHideFlags: 0
@@ -6425,7 +6425,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2426681215457163040}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1089835975
+--- !u!114 &1089835980
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11193,7 +11193,10 @@ MonoBehaviour:
   guns:
   - {fileID: 30507604}
   - {fileID: 381407655}
-  pins: []
+  pins:
+  - {fileID: 1089835980}
+  - {fileID: 2055391849}
+  - {fileID: 261660489}
 --- !u!114 &2050020145 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3607323991379943426, guid: 702caa48c730e92469a1c5144fd8ed46,
@@ -11353,7 +11356,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1002318869}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2055391844
+--- !u!114 &2055391849
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
