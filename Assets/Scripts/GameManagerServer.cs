@@ -18,6 +18,7 @@ public class GameManagerServer : MonoBehaviour
     public GameObject leftGO;
     public GameObject rightGO;
     public List<NetworkGrabbableObject> guns = new List<NetworkGrabbableObject>();
+    public List<NetworkObject> pins = new List<NetworkObject>();
     [ReadOnly]
     public NetworkGrabbableObject leftGrab;
     [ReadOnly]
@@ -245,14 +246,14 @@ public class GameManagerServer : MonoBehaviour
             Transform spawnPoint = obj.GetComponent<Gun>().spawnPoint.transform;
             SpawnBullet(spawnPoint);
         }
-            player.leftShooting = pi.LeftShooting;
+        player.leftShooting = pi.LeftShooting;
         if (!player.rightShooting && pi.RightShooting && player.rightGrabId != 0)
         {
             NetworkGrabbableObject obj = guns.Find((NetworkGrabbableObject g) => g.id == player.rightGrabId);
             Transform spawnPoint = obj.GetComponent<Gun>().spawnPoint.transform;
             SpawnBullet(spawnPoint);
         }
-            player.rightShooting = pi.RightShooting;
+        player.rightShooting = pi.RightShooting;
     }
 
     private StateMessage GetWorldState()
@@ -313,11 +314,26 @@ public class GameManagerServer : MonoBehaviour
                 Rotation = rotation.eulerAngles,
             };
         }
+        EntityState[] pinStates = new EntityState[pins.Count];
+        for (int i = 0; i < pins.Count; i++)
+        {
+            NetworkObject g = pins[i];
+            Vector3 position = g.transform.position;
+            Quaternion rotation = g.transform.rotation;
+            pinStates[i] = new EntityState()
+            {
+                Id = g.id,
+                Type = (byte)EntityType.Pin,
+                Position = position,
+                Rotation = rotation.eulerAngles,
+            };
+        }
         StateMessage sm = new StateMessage()
         {
             Players = playerStates,
             Bullets = bulletStates,
-            Guns = gunStates
+            Guns = gunStates,
+            Pins = pinStates,
             //Players = new PlayerState[0],
             //Bullets = new EntityState[0],
             //Guns = new EntityState[0]

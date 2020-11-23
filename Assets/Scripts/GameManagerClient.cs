@@ -30,6 +30,7 @@ public class GameManagerClient : MonoBehaviour
     public GameObject leftGO;
     public GameObject rightGO;
     public List<NetworkGrabbableObject> guns = new List<NetworkGrabbableObject>();
+    public List<NetworkObject> pins = new List<NetworkObject>();
     private readonly List<Player> players = new List<Player>();
     private readonly List<NetworkObject> bullets = new List<NetworkObject>();
     private float sendRate = 50 / 1000f;
@@ -179,6 +180,18 @@ public class GameManagerClient : MonoBehaviour
                 LinkLocalGun(sm.Guns[i]);
             }
         }
+        for (int i = 0; i < sm.Pins.Length; i++)
+        {
+            NetworkObject pin = pins.Find(x => x.id == sm.Pins[i].Id);
+            if (pin != null)
+            {
+                SetPinState(pin, sm.Pins[i]);
+            }
+            else
+            {
+                LinkLocalPin(sm.Pins[i]);
+            }
+        }
     }
 
     private void SpawnPlayer(PlayerState ps)
@@ -222,8 +235,8 @@ public class GameManagerClient : MonoBehaviour
     private void SpawnBullet(EntityState bs)
     {
         NetworkObject newBullet = Instantiate(bulletPrefab).GetComponent<NetworkObject>();
-        newBullet.SetPositionTarget(bs.Position);
-        newBullet.SetRotationTarget(bs.Rotation);
+        newBullet.transform.position = bs.Position;
+        newBullet.transform.eulerAngles = bs.Rotation;
         newBullet.id = bs.Id;
         bullets.Add(newBullet);
     }
@@ -243,23 +256,42 @@ public class GameManagerClient : MonoBehaviour
 
     private void SetBulletState(NetworkObject bullet, EntityState bs)
     {
-        bullet.transform.position = bs.Position;
-        bullet.transform.eulerAngles = bs.Rotation;
+        bullet.SetPositionTarget(bs.Position);
+        bullet.SetRotationTarget(bs.Rotation);
     }
 
     private void LinkLocalGun(EntityState gs)
     {
         NetworkGrabbableObject localGun = guns.Find((NetworkGrabbableObject g) => g.id == 0);
-        localGun.SetPositionTarget(gs.Position);
-        localGun.SetRotationTarget(gs.Rotation);
-        localGun.id = gs.Id;
+        if (localGun != null)
+        {
+            localGun.transform.position = gs.Position;
+            localGun.transform.eulerAngles = gs.Rotation;
+            localGun.id = gs.Id;
+        }
+    }
+
+    private void LinkLocalPin(EntityState ps)
+    {
+        NetworkObject localPin = pins.Find((NetworkObject g) => g.id == 0);
+        if (localPin != null)
+        {
+            localPin.transform.position=ps.Position;
+            localPin.transform.eulerAngles = ps.Rotation;
+            localPin.id = ps.Id;
+        }
     }
 
     private void SetGunState(NetworkGrabbableObject gun, EntityState gs)
     {
-        gun.transform.position = gs.Position;
-        gun.transform.eulerAngles = gs.Rotation;
+        gun.SetPositionTarget(gs.Position);
+        gun.SetRotationTarget(gs.Rotation);
+    }
 
+    private void SetPinState(NetworkObject pin, EntityState ps)
+    {
+        pin.SetPositionTarget(ps.Position);
+        pin.SetRotationTarget(ps.Rotation);
     }
 
     private PlayerInput GetPlayerInput()

@@ -1239,6 +1239,25 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 248955313}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &261660488 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5551891339497117443, guid: df11c9016cda4f741a7d306f3e542e1e,
+    type: 3}
+  m_PrefabInstance: {fileID: 534417360}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &261660489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261660488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36e89546799f3bf46b9fe2c3d1d73006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
 --- !u!114 &263458604 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 104838613163759604, guid: 5381c6b0ade0a784ebf6f5f903c11182,
@@ -4024,11 +4043,15 @@ MonoBehaviour:
   guns:
   - {fileID: 30507604}
   - {fileID: 381407655}
+  pins:
+  - {fileID: 1089835975}
+  - {fileID: 2055391844}
+  - {fileID: 261660489}
   leftGrab: {fileID: 0}
   rightGrab: {fileID: 0}
   leftPointer: 0
   rightPointer: 0
-  maxBullets: 12
+  maxBullets: 9
 --- !u!1 &705789048
 GameObject:
   m_ObjectHideFlags: 0
@@ -6396,6 +6419,25 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1088944248}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1089835974 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5551891339497117443, guid: df11c9016cda4f741a7d306f3e542e1e,
+    type: 3}
+  m_PrefabInstance: {fileID: 2426681215457163040}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1089835975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089835974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36e89546799f3bf46b9fe2c3d1d73006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
 --- !u!114 &1095153908 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 470203017047531548, guid: 6daf3890678c90d42b5e603c1e27f0ac,
@@ -10844,6 +10886,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2426681215457163040}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1989508125 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5091309964541761066, guid: 345900e9a5776bb49a23e6dda2bc42e6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1756353077}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2003953818
 GameObject:
   m_ObjectHideFlags: 0
@@ -11145,6 +11193,7 @@ MonoBehaviour:
   guns:
   - {fileID: 30507604}
   - {fileID: 381407655}
+  pins: []
 --- !u!114 &2050020145 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3607323991379943426, guid: 702caa48c730e92469a1c5144fd8ed46,
@@ -11298,6 +11347,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b7e28f4d3868f8488c6a0258ff1180c, type: 3}
+--- !u!1 &2055391843 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5551891339497117443, guid: df11c9016cda4f741a7d306f3e542e1e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1002318869}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2055391844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2055391843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36e89546799f3bf46b9fe2c3d1d73006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
 --- !u!1001 &2084625787
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11714,8 +11782,7 @@ PrefabInstance:
         type: 3}
       propertyPath: elements.Array.data[0]
       value: 
-      objectReference: {fileID: 7162606841087562426, guid: 91a77c04a75f2644ba3688f95ced55e3,
-        type: 3}
+      objectReference: {fileID: 1989508125}
     - target: {fileID: 5539946387736140026, guid: 27357be074b04234fa032891fbbeb20b,
         type: 3}
       propertyPath: m_LocalPosition.x
