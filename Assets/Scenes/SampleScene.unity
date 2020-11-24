@@ -1934,7 +1934,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
-  rigidBody: {fileID: 0}
+  body: {fileID: 0}
   id: 0
   grabbed: 0
   leftHand: 0
@@ -9240,7 +9240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 4
-  rigidBody: {fileID: 0}
+  body: {fileID: 1887165483}
   id: 0
   grabbed: 0
   leftHand: 0
@@ -9249,6 +9249,12 @@ MonoBehaviour:
   bufferVelocity: {x: 0, y: 0, z: 0}
   bufferAngularVelocity: {x: 0, y: 0, z: 0}
   kinematicInitValue: 0
+--- !u!54 &1887165483 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 3606411769129453936, guid: df854889ba8b3b248bf96424a3b89e17,
+    type: 3}
+  m_PrefabInstance: {fileID: 729587656}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1933066471
 GameObject:
   m_ObjectHideFlags: 0
