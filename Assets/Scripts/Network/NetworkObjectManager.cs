@@ -69,6 +69,7 @@ public class NetworkObjectManager : MonoBehaviour
                 else
                 {
                     Destroy(obj.gameObject);
+                    Debug.Log(obj.gameObject);
                 }
             }
         }
@@ -112,16 +113,18 @@ public class NetworkObjectManager : MonoBehaviour
         newObject.transform.position = es.Position;
         newObject.transform.eulerAngles = es.Rotation;
         newObject.id = es.Id;
+        print("linked object " + newObject.gameObject);
     }
 
     public void ClientSideLinkOrSpawnLocalObject(EntityState es)
     {
-        NetworkObject localGun = objects.Find((NetworkObject g) => (byte)g.type == es.Type && g.id == 0);
-        if (localGun != null)
+        NetworkObject localObject = objects.Find((NetworkObject g) => (byte)g.type == es.Type && g.id == 0);
+        if (localObject != null)
         {
-            localGun.transform.position = es.Position;
-            localGun.transform.eulerAngles = es.Rotation;
-            localGun.id = es.Id;
+            localObject.transform.position = es.Position;
+            localObject.transform.eulerAngles = es.Rotation;
+            localObject.id = es.Id;
+            print("linked object "+localObject.gameObject);
         }
         else
         {

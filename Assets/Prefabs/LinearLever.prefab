@@ -694,7 +694,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3645097830049464401}
   - component: {fileID: 3645097830049464402}
-  - component: {fileID: 6540611589990783726}
   m_Layer: 0
   m_Name: LinearLever
   m_TagString: Untagged
@@ -808,28 +807,6 @@ MonoBehaviour:
   stepIncrement: 1
   driveLimit: 1
   gizmoCubeSize: {x: 0.015, y: 0.015, z: 0.015}
---- !u!114 &6540611589990783726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3645097830049464403}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 112e050a2773a7e49a9e2b12bf9d16cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
-  id: 0
-  grabbed: 0
-  leftHand: 0
-  lastOwnerId: 0
-  snapContainer: {fileID: 0}
-  rigidBody: {fileID: 0}
-  bufferVelocity: {x: 0, y: 0, z: 0}
-  bufferAngularVelocity: {x: 0, y: 0, z: 0}
-  kinematicInitValue: 0
 --- !u!114 &943616413389743168
 MonoBehaviour:
   m_ObjectHideFlags: 0
