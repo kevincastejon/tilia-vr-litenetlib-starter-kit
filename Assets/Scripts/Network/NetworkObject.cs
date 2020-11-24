@@ -11,6 +11,7 @@ using UnityEngine.Events;
 public class NetworkObject : MonoBehaviour
 {
     public EntityType type;
+    public Rigidbody rigidBody;
     [ReadOnly]
     public int id;
     [ReadOnly]
@@ -21,8 +22,6 @@ public class NetworkObject : MonoBehaviour
     public int lastOwnerId;
     [ReadOnly]
     public SnapZoneFacade snapContainer;
-    [HideInInspector]
-    public Rigidbody rigidBody;
     [HideInInspector]
     public Vector3 bufferVelocity;
     [HideInInspector]

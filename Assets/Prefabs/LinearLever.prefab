@@ -886,12 +886,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 4
+  rigidBody: {fileID: 5218181575839096454}
   id: 0
   grabbed: 0
   leftHand: 0
   lastOwnerId: 0
   snapContainer: {fileID: 0}
-  rigidBody: {fileID: 0}
   bufferVelocity: {x: 0, y: 0, z: 0}
   bufferAngularVelocity: {x: 0, y: 0, z: 0}
   kinematicInitValue: 0
@@ -997,6 +997,12 @@ PrefabInstance:
 --- !u!4 &8763267648433835569 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5406743248307111831, guid: 1bb7642ebf8d0a34aa23fc586ea87e6a,
+    type: 3}
+  m_PrefabInstance: {fileID: 3645097828302457254}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &5218181575839096454 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 8862883227734677280, guid: 1bb7642ebf8d0a34aa23fc586ea87e6a,
     type: 3}
   m_PrefabInstance: {fileID: 3645097828302457254}
   m_PrefabAsset: {fileID: 0}

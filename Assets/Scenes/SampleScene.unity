@@ -482,6 +482,34 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 657924474}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &97931967 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4094182479458500961, guid: 345900e9a5776bb49a23e6dda2bc42e6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1756353077}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &97931972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 97931967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 112e050a2773a7e49a9e2b12bf9d16cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  rigidBody: {fileID: 896117266}
+  id: 0
+  grabbed: 0
+  leftHand: 0
+  lastOwnerId: 0
+  snapContainer: {fileID: 0}
+  bufferVelocity: {x: 0, y: 0, z: 0}
+  bufferAngularVelocity: {x: 0, y: 0, z: 0}
+  kinematicInitValue: 0
 --- !u!1 &119020558
 GameObject:
   m_ObjectHideFlags: 0
@@ -1934,12 +1962,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
+  rigidBody: {fileID: 0}
   id: 0
   grabbed: 0
   leftHand: 0
   lastOwnerId: 0
   snapContainer: {fileID: 0}
-  rigidBody: {fileID: 0}
   bufferVelocity: {x: 0, y: 0, z: 0}
   bufferAngularVelocity: {x: 0, y: 0, z: 0}
   kinematicInitValue: 0
@@ -4280,6 +4308,12 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!54 &896117266 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 7881770749639878687, guid: 345900e9a5776bb49a23e6dda2bc42e6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1756353077}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &926429935 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7963084935562790992, guid: 5381c6b0ade0a784ebf6f5f903c11182,
@@ -9369,6 +9403,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1950b2150beec924d9cff768bb4e815c, type: 3}
+--- !u!1 &1887165480 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2528702931149130789, guid: df854889ba8b3b248bf96424a3b89e17,
+    type: 3}
+  m_PrefabInstance: {fileID: 729587656}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1887165481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887165480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 112e050a2773a7e49a9e2b12bf9d16cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 4
+  rigidBody: {fileID: 0}
+  id: 0
+  grabbed: 0
+  leftHand: 0
+  lastOwnerId: 0
+  snapContainer: {fileID: 0}
+  bufferVelocity: {x: 0, y: 0, z: 0}
+  bufferAngularVelocity: {x: 0, y: 0, z: 0}
+  kinematicInitValue: 0
 --- !u!1 &1933066471
 GameObject:
   m_ObjectHideFlags: 0
