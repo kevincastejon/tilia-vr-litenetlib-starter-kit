@@ -51,15 +51,12 @@ public class NetworkObjectManager : MonoBehaviour
     public void Add(NetworkObject obj)
     {
         EntityTypeSettings settings = entityTypesSettings[(int)obj.type];
-        Debug.Log(settings.max + " - " + settings.removeFirstEntity);
         if (settings.max > -1)
         {
             List<NetworkObject> objs = objects.FindAll((NetworkObject x) =>
             {
-                Debug.Log(x.type+" <-> "+obj.type);
                 return x.type == obj.type;
             });
-            Debug.Log(objs.Count + " / " + settings.max);
             if (objs.Count == settings.max)
             {
 
@@ -75,10 +72,8 @@ public class NetworkObjectManager : MonoBehaviour
                 }
             }
         }
-        Debug.Log("max:" + settings.max + " removeFirst:" + settings.removeFirstEntity + "  -  " + (settings.max == -1 || settings.removeFirstEntity));
         if (settings.max == -1 || settings.removeFirstEntity)
-        { 
-            Debug.Log("Added object "+obj.type);
+        {
             objects.Add(obj);
             InteractableFacade interactable = obj.GetComponent<InteractableFacade>();
             if (interactable != null)

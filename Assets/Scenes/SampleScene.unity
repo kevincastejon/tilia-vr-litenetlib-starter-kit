@@ -10680,13 +10680,17 @@ PrefabInstance:
       propertyPath: NormalizedValueChanged.m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
       objectReference: {fileID: 389331612}
+    - target: {fileID: 3645097830049464402, guid: 1d6ad7ab3c92dbe4d9c2bbac731e6e23,
+        type: 3}
+      propertyPath: NormalizedValueChanged.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: Scale
+      objectReference: {fileID: 0}
     - target: {fileID: 3645097830049464403, guid: 1d6ad7ab3c92dbe4d9c2bbac731e6e23,
         type: 3}
       propertyPath: m_Name
       value: LinearTransformDrive
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5990754277608858199, guid: 1d6ad7ab3c92dbe4d9c2bbac731e6e23, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d6ad7ab3c92dbe4d9c2bbac731e6e23, type: 3}
 --- !u!4 &7040976076780382341 stripped
 Transform:
