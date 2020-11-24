@@ -7804,6 +7804,10 @@ MonoBehaviour:
       type: 3}
     max: -1
     removeFirstEntity: 0
+  - prefab: {fileID: 8294077466749259228, guid: 63e5f58bb1d6ebd44b38a3e882508899,
+      type: 3}
+    max: -1
+    removeFirstEntity: 0
   onObjectAdd:
     m_PersistentCalls:
       m_Calls:
