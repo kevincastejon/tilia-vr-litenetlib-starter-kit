@@ -290,7 +290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
-  rigidBody: {fileID: 3898675009659404153}
+  body: {fileID: 3898675009659404153}
   id: 0
   grabbed: 0
   leftHand: 0

@@ -11,7 +11,7 @@ using UnityEngine.Events;
 public class NetworkObject : MonoBehaviour
 {
     public EntityType type;
-    public Rigidbody rigidBody;
+    public Rigidbody body;
     [ReadOnly]
     public int id;
     [ReadOnly]
@@ -35,20 +35,19 @@ public class NetworkObject : MonoBehaviour
 
     private void Start()
     {
-        rigidBody = GetComponent<Rigidbody>();
         if (DEVNetworkSwitcher.isServer)
         {
             id = GetInstanceID();
-            if (rigidBody)
+            if (body)
             {
-                kinematicInitValue = rigidBody.isKinematic;
+                kinematicInitValue = body.isKinematic;
             }
         }
         else
         {
-            if (rigidBody)
+            if (body)
             {
-                rigidBody.isKinematic = true;
+                body.isKinematic = true;
             }
         }
         NetworkObjectManager.GetInstance().Add(this);

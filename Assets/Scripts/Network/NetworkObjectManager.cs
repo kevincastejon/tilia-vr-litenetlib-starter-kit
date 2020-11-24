@@ -166,7 +166,7 @@ public class NetworkObjectManager : MonoBehaviour
             grabbed.grabbed = true;
             grabbed.leftHand = true;
             grabbed.lastOwnerId = peerID;
-            grabbed.rigidBody.isKinematic = true;
+            grabbed.body.isKinematic = true;
             grabbed.bufferVelocity = pi.LeftGrabVelocity;
             grabbed.bufferAngularVelocity = pi.LeftGrabAngularVelocity;
             grabbed.SetPositionTarget(pi.LeftGrabPosition);
@@ -183,7 +183,7 @@ public class NetworkObjectManager : MonoBehaviour
             grabbed.grabbed = true;
             grabbed.leftHand = false;
             grabbed.lastOwnerId = peerID;
-            grabbed.rigidBody.isKinematic = true;
+            grabbed.body.isKinematic = true;
             grabbed.bufferVelocity = pi.RightGrabVelocity;
             grabbed.bufferAngularVelocity = pi.RightGrabAngularVelocity;
             grabbed.SetPositionTarget(pi.RightGrabPosition);
@@ -197,10 +197,10 @@ public class NetworkObjectManager : MonoBehaviour
             NetworkObject ungrabbed = objects.Find((NetworkObject g) => g.id == leftUngrabbedId);
             ungrabbed.grabbed = false;
             ungrabbed.leftHand = false;
-            ungrabbed.rigidBody.isKinematic = ungrabbed.kinematicInitValue;
-            ungrabbed.rigidBody.velocity = ungrabbed.bufferVelocity;
+            ungrabbed.body.isKinematic = ungrabbed.kinematicInitValue;
+            ungrabbed.body.velocity = ungrabbed.bufferVelocity;
             ungrabbed.bufferVelocity = Vector3.zero;
-            ungrabbed.rigidBody.angularVelocity = ungrabbed.bufferAngularVelocity;
+            ungrabbed.body.angularVelocity = ungrabbed.bufferAngularVelocity;
             ungrabbed.bufferAngularVelocity = Vector3.zero;
         }
         if (rightUngrabbedId != 0)
@@ -208,10 +208,10 @@ public class NetworkObjectManager : MonoBehaviour
             NetworkObject ungrabbed = objects.Find((NetworkObject g) => g.id == rightUngrabbedId);
             ungrabbed.grabbed = false;
             ungrabbed.leftHand = false;
-            ungrabbed.rigidBody.isKinematic = ungrabbed.kinematicInitValue;
-            ungrabbed.rigidBody.velocity = ungrabbed.bufferVelocity;
+            ungrabbed.body.isKinematic = ungrabbed.kinematicInitValue;
+            ungrabbed.body.velocity = ungrabbed.bufferVelocity;
             ungrabbed.bufferVelocity = Vector3.zero;
-            ungrabbed.rigidBody.angularVelocity = ungrabbed.bufferAngularVelocity;
+            ungrabbed.body.angularVelocity = ungrabbed.bufferAngularVelocity;
             ungrabbed.bufferAngularVelocity = Vector3.zero;
         }
     }
