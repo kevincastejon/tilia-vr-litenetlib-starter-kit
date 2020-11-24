@@ -31,8 +31,6 @@ public class GameManagerClient : MonoBehaviour
     public GameObject rightGO;
     private NetworkObjectManager networkObjectManager;
     private readonly List<Player> players = new List<Player>();
-    private readonly List<NetworkObject> bullets = new List<NetworkObject>();
-    private readonly List<NetworkObject> guns = new List<NetworkObject>();
     private float sendRate = 50 / 1000f;
     private float sendTimer = 0f;
 
@@ -46,6 +44,7 @@ public class GameManagerClient : MonoBehaviour
         sendTimer += Time.deltaTime;
         if (sendTimer >= sendRate)
         {
+            sendTimer = 0;
             if (gameClient.Connected)
             {
                 PlayerInput pi = GetPlayerInput();

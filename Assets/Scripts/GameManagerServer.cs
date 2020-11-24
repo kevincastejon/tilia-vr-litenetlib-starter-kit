@@ -45,6 +45,7 @@ public class GameManagerServer : MonoBehaviour
         sendTimer += Time.deltaTime;
         if (sendTimer >= sendRate)
         {
+            sendTimer = 0;
             StateMessage sm = GetWorldState();
             server.SendWorldState(sm);
         }
