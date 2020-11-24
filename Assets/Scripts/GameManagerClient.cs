@@ -44,7 +44,7 @@ public class GameManagerClient : MonoBehaviour
         sendTimer += Time.deltaTime;
         if (sendTimer >= sendRate)
         {
-            sendTimer = 0;
+            sendTimer = 0f;
             if (gameClient.Connected)
             {
                 PlayerInput pi = GetPlayerInput();

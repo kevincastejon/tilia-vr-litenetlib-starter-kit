@@ -30,7 +30,7 @@ public class GameManagerServer : MonoBehaviour
     public int maxBullets = 12;
     private NetworkObjectManager networkObjectManager;
     private readonly List<Player> players = new List<Player>();
-    private readonly List<GameObject> bullets = new List<GameObject>();
+    //private readonly List<GameObject> bullets = new List<GameObject>();
     private readonly List<NetworkObject> guns = new List<NetworkObject>();
     private float sendRate = 50 / 1000f;
     private float sendTimer = 0f;
@@ -45,7 +45,7 @@ public class GameManagerServer : MonoBehaviour
         sendTimer += Time.deltaTime;
         if (sendTimer >= sendRate)
         {
-            sendTimer = 0;
+            sendTimer = 0f;
             StateMessage sm = GetWorldState();
             server.SendWorldState(sm);
         }
@@ -55,7 +55,7 @@ public class GameManagerServer : MonoBehaviour
     {
         if (obj.type == EntityType.Bullet)
         {
-            bullets.Add(obj.gameObject);
+            //bullets.Add(obj.gameObject);
         }
         else if (obj.type == EntityType.Gun)
         {
@@ -66,7 +66,7 @@ public class GameManagerServer : MonoBehaviour
     {
         if (obj.type == EntityType.Bullet)
         {
-            bullets.Remove(obj.gameObject);
+            //bullets.Remove(obj.gameObject);
         }
         else if (obj.type == EntityType.Gun)
         {
@@ -105,15 +105,8 @@ public class GameManagerServer : MonoBehaviour
 
     public void SpawnBullet(Transform spawnPoint)
     {
-        if (bullets.Count == maxBullets)
-        {
-            GameObject oldBullet = bullets[0];
-            bullets.RemoveAt(0);
-            Destroy(oldBullet);
-        }
         GameObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation);
         bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * 1, ForceMode.Impulse);
-        bullets.Add(bullet);
     }
 
     public void OnClientConnected(int peerID)

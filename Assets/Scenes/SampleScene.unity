@@ -4376,7 +4376,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74bc7fb32c2b34341973cba88a531b2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isServer: 0
+  _isServer: 1
   server: {fileID: 691973308}
   client: {fileID: 2035483286}
 --- !u!4 &978153843
@@ -7815,12 +7815,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaf39c780fe3e2b4889d2a353e5b3818, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabs:
-  - {fileID: 2024301931097442895, guid: 2910db0b28aba7b408e99e773670a592, type: 3}
-  - {fileID: 8992251628154233010, guid: fe9829b3374244f4c82818e637963579, type: 3}
-  - {fileID: 5551891339497117443, guid: df11c9016cda4f741a7d306f3e542e1e, type: 3}
-  - {fileID: 2810718740724660780, guid: 27ae812f993ef204dab9cf941d8fec55, type: 3}
-  - {fileID: 3645097830049464403, guid: 1d6ad7ab3c92dbe4d9c2bbac731e6e23, type: 3}
+  entityTypesSettings:
+  - prefab: {fileID: 2024301931097442895, guid: 2910db0b28aba7b408e99e773670a592,
+      type: 3}
+    max: 4
+    removeFirstEntity: 1
+  - prefab: {fileID: 8992251628154233010, guid: fe9829b3374244f4c82818e637963579,
+      type: 3}
+    max: -1
+    removeFirstEntity: 0
+  - prefab: {fileID: 5551891339497117443, guid: df11c9016cda4f741a7d306f3e542e1e,
+      type: 3}
+    max: -1
+    removeFirstEntity: 0
+  - prefab: {fileID: 2810718740724660780, guid: 27ae812f993ef204dab9cf941d8fec55,
+      type: 3}
+    max: -1
+    removeFirstEntity: 0
+  - prefab: {fileID: 3645097830049464403, guid: 1d6ad7ab3c92dbe4d9c2bbac731e6e23,
+      type: 3}
+    max: -1
+    removeFirstEntity: 0
   onObjectAdd:
     m_PersistentCalls:
       m_Calls:

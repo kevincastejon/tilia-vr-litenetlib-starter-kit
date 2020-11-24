@@ -7,11 +7,18 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [Serializable]
+public class EntityTypeSettings
+{
+    public GameObject prefab;
+    public int max;
+    public bool removeFirstEntity;
+}
+[Serializable]
 public class NetworkObjectEvent : UnityEvent<NetworkObject> { }
 
 public class NetworkObjectManager : MonoBehaviour
 {
-    public List<GameObject> prefabs = new List<GameObject>();
+    public List<EntityTypeSettings> entityTypesSettings = new List<EntityTypeSettings>();
     public NetworkObjectEvent onObjectAdd = new NetworkObjectEvent();
     public NetworkObjectEvent onObjectRemove = new NetworkObjectEvent();
     private static NetworkObjectManager _instance;
@@ -43,19 +50,52 @@ public class NetworkObjectManager : MonoBehaviour
 
     public void Add(NetworkObject obj)
     {
-        objects.Add(obj);
-        InteractableFacade interactable = obj.GetComponent<InteractableFacade>();
-        if (interactable != null)
+        EntityTypeSettings settings = entityTypesSettings[(int)obj.type];
+        Debug.Log(settings.max + " - " + settings.removeFirstEntity);
+        if (settings.max > -1)
         {
-            interactable.Grabbed.AddListener((InteractorFacade interactor) => SetGrab(obj, interactor.name == "LeftInteractor"));
-            interactable.Ungrabbed.AddListener((InteractorFacade interactor) => SetGrab(null, interactor.name == "LeftInteractor"));
+            List<NetworkObject> objs = objects.FindAll((NetworkObject x) =>
+            {
+                Debug.Log(x.type+" <-> "+obj.type);
+                return x.type == obj.type;
+            });
+            Debug.Log(objs.Count + " / " + settings.max);
+            if (objs.Count == settings.max)
+            {
+
+                if (settings.removeFirstEntity)
+                {
+                    NetworkObject oldObj = objs[0];
+                    objects.Remove(oldObj);
+                    Destroy(oldObj.gameObject);
+                }
+                else
+                {
+                    Destroy(obj.gameObject);
+                }
+            }
         }
-        onObjectAdd.Invoke(obj);
+        Debug.Log("max:" + settings.max + " removeFirst:" + settings.removeFirstEntity + "  -  " + (settings.max == -1 || settings.removeFirstEntity));
+        if (settings.max == -1 || settings.removeFirstEntity)
+        { 
+            Debug.Log("Added object "+obj.type);
+            objects.Add(obj);
+            InteractableFacade interactable = obj.GetComponent<InteractableFacade>();
+            if (interactable != null)
+            {
+                interactable.Grabbed.AddListener((InteractorFacade interactor) => SetGrab(obj, interactor.name == "LeftInteractor"));
+                interactable.Ungrabbed.AddListener((InteractorFacade interactor) => SetGrab(null, interactor.name == "LeftInteractor"));
+            }
+            onObjectAdd.Invoke(obj);
+        }
     }
     public void Remove(NetworkObject obj)
     {
-        objects.Remove(obj);
-        onObjectRemove.Invoke(obj);
+        if (objects.Contains(obj))
+        {
+            objects.Remove(obj);
+            onObjectRemove.Invoke(obj);
+        }
     }
 
     public void ClientSideRemoveOldObjects(EntityState[] esArr)
@@ -63,7 +103,8 @@ public class NetworkObjectManager : MonoBehaviour
         for (int i = 0; i < objects.Count; i++)
         {
             NetworkObject oldObject = objects[i];
-            if (Array.Find(esArr, x => x.Id == oldObject.id) == null)
+            bool isOld = Array.Find(esArr, x => x.Id == oldObject.id) == null;
+            if (isOld)
             {
                 Destroy(oldObject.gameObject);
             }
@@ -72,11 +113,10 @@ public class NetworkObjectManager : MonoBehaviour
 
     public void ClientSideSpawn(EntityState es)
     {
-        NetworkObject newObject = Instantiate(prefabs[es.Type]).GetComponent<NetworkObject>();
+        NetworkObject newObject = Instantiate(entityTypesSettings[es.Type].prefab).GetComponent<NetworkObject>();
         newObject.transform.position = es.Position;
         newObject.transform.eulerAngles = es.Rotation;
         newObject.id = es.Id;
-        objects.Add(newObject);
     }
 
     public void ClientSideLinkOrSpawnLocalObject(EntityState es)
