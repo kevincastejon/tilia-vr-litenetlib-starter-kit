@@ -7,7 +7,8 @@ public enum EntityType
     Ball = 1,
     Pin = 2,
     Gun = 3,
-    LinearLever = 4
+    LinearLever = 4,
+    Door = 5
 }
 public class EntityState : INetSerializable
 {
