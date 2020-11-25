@@ -244,7 +244,10 @@ public class NetworkManager : MonoBehaviour
             else
             {
                 leftGrab.grabbed = false;
-                leftGrab.body.isKinematic = leftGrab.kinematicInitValue;
+                if (!DEVNetworkSwitcher.isServer)
+                {
+                    leftGrab.body.isKinematic = leftGrab.kinematicInitValue;
+                }
             }
             if (DEVNetworkSwitcher.isServer)
             {
@@ -266,7 +269,10 @@ public class NetworkManager : MonoBehaviour
             else
             {
                 rightGrab.grabbed = false;
-                rightGrab.body.isKinematic = leftGrab.kinematicInitValue;
+                if (!DEVNetworkSwitcher.isServer)
+                {
+                    rightGrab.body.isKinematic = leftGrab.kinematicInitValue;
+                }
             }
             if (DEVNetworkSwitcher.isServer)
             {
