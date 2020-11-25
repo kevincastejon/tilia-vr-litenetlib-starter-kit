@@ -113,7 +113,7 @@ public class NetworkManager : MonoBehaviour
         newObject.transform.position = es.Position;
         newObject.transform.eulerAngles = es.Rotation;
         newObject.id = es.Id;
-        print("linked object " + newObject.gameObject);
+        print("spawned object " + newObject.gameObject);
     }
 
     public void ClientSideLinkOrSpawnLocalObject(EntityState es)
@@ -244,6 +244,7 @@ public class NetworkManager : MonoBehaviour
             else
             {
                 leftGrab.grabbed = false;
+                leftGrab.body.isKinematic = leftGrab.kinematicInitValue;
             }
             if (DEVNetworkSwitcher.isServer)
             {
@@ -265,6 +266,7 @@ public class NetworkManager : MonoBehaviour
             else
             {
                 rightGrab.grabbed = false;
+                rightGrab.body.isKinematic = leftGrab.kinematicInitValue;
             }
             if (DEVNetworkSwitcher.isServer)
             {
