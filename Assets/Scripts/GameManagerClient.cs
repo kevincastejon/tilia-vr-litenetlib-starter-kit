@@ -55,6 +55,7 @@ public class GameManagerClient : MonoBehaviour
 
     public void SetShootingLeft(bool shooting)
     {
+        Debug.Log("SET SHOOTING LEFT");
         leftShooting = shooting;
     }
 
