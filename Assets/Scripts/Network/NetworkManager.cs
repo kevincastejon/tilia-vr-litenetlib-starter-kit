@@ -16,17 +16,17 @@ public class EntityTypeSettings
 [Serializable]
 public class NetworkObjectEvent : UnityEvent<NetworkObject> { }
 
-public class NetworkObjectManager : MonoBehaviour
+public class NetworkManager : MonoBehaviour
 {
     public List<EntityTypeSettings> entityTypesSettings = new List<EntityTypeSettings>();
     public NetworkObjectEvent onObjectAdd = new NetworkObjectEvent();
     public NetworkObjectEvent onObjectRemove = new NetworkObjectEvent();
-    private static NetworkObjectManager _instance;
+    private static NetworkManager _instance;
     private readonly List<NetworkObject> objects = new List<NetworkObject>();
     private GameManagerServer server;
     private GameManagerClient client;
 
-    static public NetworkObjectManager GetInstance()
+    static public NetworkManager GetInstance()
     {
         return _instance;
     }
@@ -124,7 +124,7 @@ public class NetworkObjectManager : MonoBehaviour
             localObject.transform.position = es.Position;
             localObject.transform.eulerAngles = es.Rotation;
             localObject.id = es.Id;
-            print("linked object "+localObject.gameObject);
+            print("linked object " + localObject.gameObject);
         }
         else
         {
@@ -166,9 +166,12 @@ public class NetworkObjectManager : MonoBehaviour
             grabbed.grabbed = true;
             grabbed.leftHand = true;
             grabbed.lastOwnerId = peerID;
-            grabbed.body.isKinematic = true;
-            grabbed.bufferVelocity = pi.LeftGrabVelocity;
-            grabbed.bufferAngularVelocity = pi.LeftGrabAngularVelocity;
+            if (grabbed.body != null)
+            {
+                grabbed.body.isKinematic = true;
+                grabbed.bufferVelocity = pi.LeftGrabVelocity;
+                grabbed.bufferAngularVelocity = pi.LeftGrabAngularVelocity;
+            }
             grabbed.SetPositionTarget(pi.LeftGrabPosition);
             grabbed.SetRotationTarget(pi.LeftGrabRotation);
         }
@@ -183,9 +186,12 @@ public class NetworkObjectManager : MonoBehaviour
             grabbed.grabbed = true;
             grabbed.leftHand = false;
             grabbed.lastOwnerId = peerID;
-            grabbed.body.isKinematic = true;
-            grabbed.bufferVelocity = pi.RightGrabVelocity;
-            grabbed.bufferAngularVelocity = pi.RightGrabAngularVelocity;
+            if (grabbed.body != null)
+            {
+                grabbed.body.isKinematic = true;
+                grabbed.bufferVelocity = pi.RightGrabVelocity;
+                grabbed.bufferAngularVelocity = pi.RightGrabAngularVelocity;
+            }
             grabbed.SetPositionTarget(pi.RightGrabPosition);
             grabbed.SetRotationTarget(pi.RightGrabRotation);
         }
@@ -197,22 +203,28 @@ public class NetworkObjectManager : MonoBehaviour
             NetworkObject ungrabbed = objects.Find((NetworkObject g) => g.id == leftUngrabbedId);
             ungrabbed.grabbed = false;
             ungrabbed.leftHand = false;
-            ungrabbed.body.isKinematic = ungrabbed.kinematicInitValue;
-            ungrabbed.body.velocity = ungrabbed.bufferVelocity;
-            ungrabbed.bufferVelocity = Vector3.zero;
-            ungrabbed.body.angularVelocity = ungrabbed.bufferAngularVelocity;
-            ungrabbed.bufferAngularVelocity = Vector3.zero;
+            if (ungrabbed.body != null)
+            {
+                ungrabbed.body.isKinematic = ungrabbed.kinematicInitValue;
+                ungrabbed.body.velocity = ungrabbed.bufferVelocity;
+                ungrabbed.bufferVelocity = Vector3.zero;
+                ungrabbed.body.angularVelocity = ungrabbed.bufferAngularVelocity;
+                ungrabbed.bufferAngularVelocity = Vector3.zero;
+            }
         }
         if (rightUngrabbedId != 0)
         {
             NetworkObject ungrabbed = objects.Find((NetworkObject g) => g.id == rightUngrabbedId);
             ungrabbed.grabbed = false;
             ungrabbed.leftHand = false;
-            ungrabbed.body.isKinematic = ungrabbed.kinematicInitValue;
-            ungrabbed.body.velocity = ungrabbed.bufferVelocity;
-            ungrabbed.bufferVelocity = Vector3.zero;
-            ungrabbed.body.angularVelocity = ungrabbed.bufferAngularVelocity;
-            ungrabbed.bufferAngularVelocity = Vector3.zero;
+            if (ungrabbed.body != null)
+            {
+                ungrabbed.body.isKinematic = ungrabbed.kinematicInitValue;
+                ungrabbed.body.velocity = ungrabbed.bufferVelocity;
+                ungrabbed.bufferVelocity = Vector3.zero;
+                ungrabbed.body.angularVelocity = ungrabbed.bufferAngularVelocity;
+                ungrabbed.bufferAngularVelocity = Vector3.zero;
+            }
         }
     }
 

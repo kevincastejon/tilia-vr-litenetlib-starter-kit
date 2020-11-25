@@ -29,14 +29,14 @@ public class GameManagerClient : MonoBehaviour
     public GameObject headGO;
     public GameObject leftGO;
     public GameObject rightGO;
-    private NetworkObjectManager networkObjectManager;
+    private NetworkManager networkObjectManager;
     private readonly List<Player> players = new List<Player>();
     private float sendRate = 50 / 1000f;
     private float sendTimer = 0f;
 
     private void Start()
     {
-        networkObjectManager = NetworkObjectManager.GetInstance();
+        networkObjectManager = NetworkManager.GetInstance();
     }
 
     private void Update()

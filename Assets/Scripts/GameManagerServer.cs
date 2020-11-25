@@ -28,7 +28,7 @@ public class GameManagerServer : MonoBehaviour
     [ReadOnly]
     public bool rightShooting;
     public int maxBullets = 12;
-    private NetworkObjectManager networkObjectManager;
+    private NetworkManager networkObjectManager;
     private readonly List<Player> players = new List<Player>();
     //private readonly List<GameObject> bullets = new List<GameObject>();
     private readonly List<NetworkObject> guns = new List<NetworkObject>();
@@ -37,7 +37,7 @@ public class GameManagerServer : MonoBehaviour
 
     private void Start()
     {
-        networkObjectManager = NetworkObjectManager.GetInstance();
+        networkObjectManager = NetworkManager.GetInstance();
     }
 
     private void Update()

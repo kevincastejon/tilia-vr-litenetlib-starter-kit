@@ -50,7 +50,7 @@ public class NetworkObject : MonoBehaviour
                 body.isKinematic = true;
             }
         }
-        NetworkObjectManager.GetInstance().Add(this);
+        NetworkManager.GetInstance().Add(this);
     }
 
     private void Update()
@@ -82,6 +82,6 @@ public class NetworkObject : MonoBehaviour
     }
     private void OnDestroy()
     {
-        NetworkObjectManager.GetInstance().Remove(this);
+        NetworkManager.GetInstance().Remove(this);
     }
 }

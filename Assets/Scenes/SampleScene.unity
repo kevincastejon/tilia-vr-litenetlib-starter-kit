@@ -7063,14 +7063,6 @@ MonoBehaviour:
       type: 3}
     max: -1
     removeFirstEntity: 0
-  - prefab: {fileID: 3645097830049464403, guid: 1d6ad7ab3c92dbe4d9c2bbac731e6e23,
-      type: 3}
-    max: -1
-    removeFirstEntity: 0
-  - prefab: {fileID: 8294077466749259228, guid: 63e5f58bb1d6ebd44b38a3e882508899,
-      type: 3}
-    max: -1
-    removeFirstEntity: 0
   onObjectAdd:
     m_PersistentCalls:
       m_Calls:
@@ -8492,40 +8484,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1950b2150beec924d9cff768bb4e815c, type: 3}
---- !u!1 &1887165480 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2528702931149130789, guid: df854889ba8b3b248bf96424a3b89e17,
-    type: 3}
-  m_PrefabInstance: {fileID: 729587656}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1887165481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1887165480}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 112e050a2773a7e49a9e2b12bf9d16cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 4
-  body: {fileID: 1887165483}
-  id: 0
-  grabbed: 0
-  leftHand: 0
-  lastOwnerId: 0
-  snapContainer: {fileID: 0}
-  bufferVelocity: {x: 0, y: 0, z: 0}
-  bufferAngularVelocity: {x: 0, y: 0, z: 0}
-  kinematicInitValue: 0
---- !u!54 &1887165483 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 3606411769129453936, guid: df854889ba8b3b248bf96424a3b89e17,
-    type: 3}
-  m_PrefabInstance: {fileID: 729587656}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1933066471
 GameObject:
   m_ObjectHideFlags: 0
