@@ -246,8 +246,7 @@ public class NetworkManager : MonoBehaviour
                 leftGrab.grabbed = false;
                 if (!DEVNetworkSwitcher.isServer)
                 {
-                    Debug.Log("SET KINEMATIC BACK");
-                    leftGrab.body.isKinematic = leftGrab.kinematicInitValue;
+                    leftGrab.body.isKinematic = true;
                 }
             }
             if (DEVNetworkSwitcher.isServer)
@@ -272,8 +271,7 @@ public class NetworkManager : MonoBehaviour
                 rightGrab.grabbed = false;
                 if (!DEVNetworkSwitcher.isServer)
                 {
-                    Debug.Log("SET KINEMATIC BACK");
-                    rightGrab.body.isKinematic = leftGrab.kinematicInitValue;
+                    rightGrab.body.isKinematic = true;
                 }
             }
             if (DEVNetworkSwitcher.isServer)
