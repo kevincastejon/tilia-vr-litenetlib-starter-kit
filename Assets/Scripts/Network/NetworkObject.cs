@@ -88,9 +88,17 @@ public class NetworkObject : MonoBehaviour
     {
         if (DEVNetworkSwitcher.isServer)
         {
-            Debug.Log("object state added "+es.Position);
+            Debug.Log("object state added " + es.Position);
         }
         stateBuffer.Add(es);
+    }
+
+    public void ClearBuffer()
+    {
+        stateBuffer.Clear();
+        stateA = null;
+        stateB = null;
+        lerpTimer = 0f;
     }
 
     private void OnDestroy()

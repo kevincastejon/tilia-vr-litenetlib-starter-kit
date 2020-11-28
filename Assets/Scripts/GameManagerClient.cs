@@ -145,9 +145,13 @@ public class GameManagerClient : MonoBehaviour
             }
         }
     }
-    
+
     private PlayerInput GetPlayerInput()
     {
+        if (rightGrab != null)
+        {
+            Debug.Log(rightGrab.transform.position);
+        }
         return new PlayerInput()
         {
             HeadPosition = headGO.transform.position,
@@ -159,7 +163,7 @@ public class GameManagerClient : MonoBehaviour
             LeftGrabId = leftGrab == null ? 0 : leftGrab.id,
             LeftGrabPosition = leftGrab == null ? Vector3.zero : leftGrab.transform.position,
             LeftGrabVelocity = leftGrab == null ? Vector3.zero : leftInteractor.VelocityTracker.GetVelocity(),
-            LeftGrabRotation = leftGrab == null ? Quaternion.identity: leftGrab.transform.rotation,
+            LeftGrabRotation = leftGrab == null ? Quaternion.identity : leftGrab.transform.rotation,
             LeftGrabAngularVelocity = leftGrab == null ? Vector3.zero : leftInteractor.VelocityTracker.GetAngularVelocity(),
             RightGrabId = rightGrab == null ? 0 : rightGrab.id,
             RightGrabPosition = rightGrab == null ? Vector3.zero : rightGrab.transform.position,
