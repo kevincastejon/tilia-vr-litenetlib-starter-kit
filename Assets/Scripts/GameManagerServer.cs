@@ -30,8 +30,6 @@ public class GameManagerServer : MonoBehaviour
     public int maxBullets = 12;
     private NetworkManager networkObjectManager;
     private readonly List<Player> players = new List<Player>();
-    //private readonly List<GameObject> bullets = new List<GameObject>();
-    private readonly List<NetworkObject> guns = new List<NetworkObject>();
     private float sendRate = 50 / 1000f;
     private float sendTimer = 0f;
 
@@ -49,29 +47,6 @@ public class GameManagerServer : MonoBehaviour
             sendTimer = 0f;
             StateMessage sm = GetWorldState();
             server.SendWorldState(sm);
-        }
-    }
-
-    public void ObjectAdded(NetworkObject obj)
-    {
-        if (obj.type == EntityType.Bullet)
-        {
-            //bullets.Add(obj.gameObject);
-        }
-        else if (obj.type == EntityType.Gun)
-        {
-            guns.Add(obj);
-        }
-    }
-    public void ObjectRemoved(NetworkObject obj)
-    {
-        if (obj.type == EntityType.Bullet)
-        {
-            //bullets.Remove(obj.gameObject);
-        }
-        else if (obj.type == EntityType.Gun)
-        {
-            guns.Remove(obj);
         }
     }
 
@@ -154,21 +129,21 @@ public class GameManagerServer : MonoBehaviour
         int rightUngrabbedId = player.rightGrabId != 0 && pi.RightGrabId == 0 ? player.rightGrabId : 0;
         player.leftGrabId = pi.LeftGrabId;
         player.rightGrabId = pi.RightGrabId;
-        //networkObjectManager.ServerSideSyncClientUngrabbed(leftUngrabbedId, rightUngrabbedId);
-        //networkObjectManager.ServerSideSyncClientGrabbing(peerID, pi);
-        //if (!player.leftShooting && pi.LeftShooting && player.leftGrabId != 0)
-        //{
-        //    NetworkObject obj = guns.Find((NetworkObject g) => g.id == player.leftGrabId);
-        //    Transform spawnPoint = obj.GetComponent<Gun>().spawnPoint.transform;
-        //    SpawnBullet(spawnPoint);
-        //}
+        networkObjectManager.ServerSideSyncClientUngrabbed(leftUngrabbedId, rightUngrabbedId);
+        networkObjectManager.ServerSideSyncClientGrabbing(peerID, pi);
+        if (!player.leftShooting && pi.LeftShooting && player.leftGrabId != 0)
+        {
+            NetworkObject obj = networkObjectManager.GetObject(player.leftGrabId);
+            Transform spawnPoint = obj.GetComponent<Gun>().spawnPoint.transform;
+            SpawnBullet(spawnPoint);
+        }
         player.leftShooting = pi.LeftShooting;
-        //if (!player.rightShooting && pi.RightShooting && player.rightGrabId != 0)
-        //{
-        //    NetworkObject obj = guns.Find((NetworkObject g) => g.id == player.rightGrabId);
-        //    Transform spawnPoint = obj.GetComponent<Gun>().spawnPoint.transform;
-        //    SpawnBullet(spawnPoint);
-        //}
+        if (!player.rightShooting && pi.RightShooting && player.rightGrabId != 0)
+        {
+            NetworkObject obj = networkObjectManager.GetObject(player.rightGrabId);
+            Transform spawnPoint = obj.GetComponent<Gun>().spawnPoint.transform;
+            SpawnBullet(spawnPoint);
+        }
         player.rightShooting = pi.RightShooting;
     }
 

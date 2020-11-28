@@ -69,7 +69,6 @@ public class NetworkManager : MonoBehaviour
                 else
                 {
                     Destroy(obj.gameObject);
-                    Debug.Log(obj.gameObject);
                 }
             }
         }
@@ -92,6 +91,11 @@ public class NetworkManager : MonoBehaviour
             objects.Remove(obj);
             onObjectRemove.Invoke(obj);
         }
+    }
+
+    public NetworkObject GetObject(int id)
+    {
+        return (objects.Find((NetworkObject no) => no.id == id));
     }
 
     public void ClientSideRemoveOldObjects(EntityState[] esArr)
