@@ -28,10 +28,11 @@ public class NetworkObject : MonoBehaviour
     public Vector3 bufferAngularVelocity;
     [HideInInspector]
     public bool kinematicInitValue;
-    private LTDescr moveTween;
-    private LTDescr rotTween;
-    private float lastPosUpdate;
-    private float lastRotUpdate;
+    public readonly List<EntityState> stateBuffer = new List<EntityState>();
+    private EntityState stateA;
+    private EntityState stateB;
+    private float lerpMax = 1 / 60f;
+    private float lerpTimer = 0f;
 
     private void Start()
     {
@@ -55,31 +56,32 @@ public class NetworkObject : MonoBehaviour
 
     private void Update()
     {
-        lastPosUpdate += Time.deltaTime;
-        lastRotUpdate += Time.deltaTime;
-    }
-
-
-    public void SetPositionTarget(Vector3 posTarget)
-    {
-        if (moveTween != null)
+        bool isLerping = stateA != null && stateB != null;
+        if (stateBuffer.Count >= 3 && !isLerping)
         {
-            LeanTween.cancel(moveTween.id);
+            if (stateA == null)
+            {
+                stateA = stateBuffer[0];
+                stateBuffer.RemoveAt(0);
+            }
+            stateB = stateBuffer[0];
+            stateBuffer.RemoveAt(0);
+            isLerping = true;
         }
-        moveTween = LeanTween.move(gameObject, posTarget, lastPosUpdate);
-        moveTween.setOnComplete(() => moveTween = null);
-        lastPosUpdate = 0;
-    }
-
-    public void SetRotationTarget(Quaternion rotTarget)
-    {
-        if (rotTween != null)
+        if (isLerping)
         {
-            LeanTween.cancel(rotTween.id);
+            EntityState esA = stateA;
+            EntityState esB = stateB;
+            transform.position = Vector3.Lerp(esA.Position, esB.Position, lerpTimer / lerpMax);
+            transform.rotation = Quaternion.Lerp(esA.Rotation, esB.Rotation, lerpTimer / lerpMax);
         }
-        rotTween = LeanTween.rotate(gameObject, rotTarget.eulerAngles, lastRotUpdate);
-        rotTween.setOnComplete(() => rotTween = null);
-        lastRotUpdate = 0;
+        lerpTimer += Time.fixedDeltaTime;
+        if (lerpTimer >= lerpMax)
+        {
+            lerpTimer = 0f;
+            stateA = stateB;
+            stateB = null;
+        }
     }
 
     private void OnDestroy()
