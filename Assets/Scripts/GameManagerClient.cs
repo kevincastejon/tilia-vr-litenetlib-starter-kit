@@ -42,7 +42,8 @@ public class GameManagerClient : MonoBehaviour
     private void Update()
     {
         sendTimer += Time.deltaTime;
-        if (sendTimer >= sendRate)
+        if (true)
+        //if (sendTimer >= sendRate)
         {
             sendTimer = 0f;
             if (gameClient.Connected)
