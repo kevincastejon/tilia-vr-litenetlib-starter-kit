@@ -141,10 +141,10 @@ public class GameManagerServer : MonoBehaviour
         {
             HeadPosition = pi.HeadPosition,
             HeadRotation = pi.HeadRotation,
-            LeftHandPosition = pi.HeadPosition,
-            LeftHandRotation = pi.HeadRotation,
-            RightHandPosition = pi.HeadPosition,
-            RightHandRotation = pi.HeadRotation,
+            LeftHandPosition = pi.LeftHandPosition,
+            LeftHandRotation = pi.LeftHandRotation,
+            RightHandPosition = pi.RightHandPosition,
+            RightHandRotation = pi.RightHandRotation,
             LeftPointer = pi.LeftPointer,
             RightPointer = pi.RightPointer
         });

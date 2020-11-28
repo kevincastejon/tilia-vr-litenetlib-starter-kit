@@ -106,7 +106,7 @@ public class GameManagerClient : MonoBehaviour
             Player player = players.Find(x => x.id == sm.Players[i].Id);
             if (player != null)
             {
-                player.stateBuffer.Add(sm.Players[i]);
+                player.stateBuffer.Add(sm.Players[i].Clone());
             }
             else if (sm.Players[i].Id != avatarId)
             {

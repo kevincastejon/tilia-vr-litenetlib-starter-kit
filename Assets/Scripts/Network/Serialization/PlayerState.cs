@@ -38,4 +38,20 @@ public class PlayerState : INetSerializable
         LeftPointer = reader.GetBool();
         RightPointer = reader.GetBool();
     }
+
+    public PlayerState Clone()
+    {
+        PlayerState clone = new PlayerState()
+        {
+            HeadPosition = new Vector3(HeadPosition.x, HeadPosition.y, HeadPosition.z),
+            HeadRotation = new Quaternion(HeadRotation.x, HeadRotation.y, HeadRotation.z, HeadRotation.w),
+            LeftHandPosition = new Vector3(LeftHandPosition.x, LeftHandPosition.y, LeftHandPosition.z),
+            LeftHandRotation = new Quaternion(LeftHandRotation.x, LeftHandRotation.y, LeftHandRotation.z, LeftHandRotation.w),
+            RightHandPosition = new Vector3(RightHandPosition.x, RightHandPosition.y, RightHandPosition.z),
+            RightHandRotation = new Quaternion(RightHandRotation.x, RightHandRotation.y, RightHandRotation.z, RightHandRotation.w),
+            LeftPointer = LeftPointer,
+            RightPointer = RightPointer,
+        };
+        return clone;
+    }
 }
