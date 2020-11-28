@@ -59,6 +59,7 @@ public class NetworkObject : MonoBehaviour
         lastRotUpdate += Time.deltaTime;
     }
 
+
     public void SetPositionTarget(Vector3 posTarget)
     {
         if (moveTween != null)
@@ -70,16 +71,17 @@ public class NetworkObject : MonoBehaviour
         lastPosUpdate = 0;
     }
 
-    public void SetRotationTarget(Vector3 rotTarget)
+    public void SetRotationTarget(Quaternion rotTarget)
     {
         if (rotTween != null)
         {
             LeanTween.cancel(rotTween.id);
         }
-        rotTween = LeanTween.rotate(gameObject, rotTarget, lastRotUpdate);
+        rotTween = LeanTween.rotate(gameObject, rotTarget.eulerAngles, lastRotUpdate);
         rotTween.setOnComplete(() => rotTween = null);
         lastRotUpdate = 0;
     }
+
     private void OnDestroy()
     {
         NetworkManager.GetInstance().Remove(this);

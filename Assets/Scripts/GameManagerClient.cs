@@ -105,7 +105,7 @@ public class GameManagerClient : MonoBehaviour
             Player player = players.Find(x => x.id == sm.Players[i].Id);
             if (player != null)
             {
-                SetPlayerState(player, sm.Players[i]);
+                player.stateBuffer.Add(sm.Players[i]);
             }
             else if (sm.Players[i].Id != avatarId)
             {
@@ -120,13 +120,15 @@ public class GameManagerClient : MonoBehaviour
     {
         Player newPlayer = Instantiate(playerPrefab).GetComponent<Player>();
         newPlayer.SetNameOrientationTarget(headGO);
-        newPlayer.SetHeadPositionTarget(ps.HeadPosition);
-        newPlayer.SetHeadRotationTarget(ps.HeadRotation);
-        newPlayer.SetLeftHandPositionTarget(ps.LeftHandPosition);
-        newPlayer.SetLeftHandRotationTarget(ps.LeftHandRotation);
-        newPlayer.SetRightHandPositionTarget(ps.RightHandPosition);
-        newPlayer.SetRightHandRotationTarget(ps.RightHandRotation);
         newPlayer.id = ps.Id;
+        newPlayer.headGO.transform.position = ps.HeadPosition;
+        newPlayer.headGO.transform.rotation = ps.HeadRotation;
+        newPlayer.leftGO.transform.position = ps.LeftHandPosition;
+        newPlayer.leftGO.transform.rotation = ps.LeftHandRotation;
+        newPlayer.rightGO.transform.position = ps.RightHandPosition;
+        newPlayer.rightGO.transform.rotation = ps.RightHandRotation;
+        newPlayer.SetLeftPointer(ps.LeftPointer);
+        newPlayer.SetRightPointer(ps.RightPointer);
         players.Add(newPlayer);
     }
 
@@ -142,39 +144,27 @@ public class GameManagerClient : MonoBehaviour
             }
         }
     }
-
-    private void SetPlayerState(Player player, PlayerState ps)
-    {
-        player.SetHeadPositionTarget(ps.HeadPosition);
-        player.SetHeadRotationTarget(ps.HeadRotation);
-        player.SetLeftHandPositionTarget(ps.LeftHandPosition);
-        player.SetLeftHandRotationTarget(ps.LeftHandRotation);
-        player.SetRightHandPositionTarget(ps.RightHandPosition);
-        player.SetRightHandRotationTarget(ps.RightHandRotation);
-        player.SetLeftPointer(ps.LeftPointer);
-        player.SetRightPointer(ps.RightPointer);
-    }
     
     private PlayerInput GetPlayerInput()
     {
         return new PlayerInput()
         {
             HeadPosition = headGO.transform.position,
-            HeadRotation = headGO.transform.rotation.eulerAngles,
+            HeadRotation = headGO.transform.rotation,
             LeftHandPosition = leftGO.transform.position,
-            LeftHandRotation = leftGO.transform.rotation.eulerAngles,
+            LeftHandRotation = leftGO.transform.rotation,
             RightHandPosition = rightGO.transform.position,
-            RightHandRotation = rightGO.transform.rotation.eulerAngles,
-            LeftGrabId = leftGrab == null ? 0 : leftGrab.id,
-            LeftGrabPosition = leftGrab == null ? Vector3.zero : leftGrab.transform.position,
-            LeftGrabVelocity = leftGrab == null ? Vector3.zero : leftInteractor.VelocityTracker.GetVelocity(),
-            LeftGrabRotation = leftGrab == null ? Vector3.zero : leftGrab.transform.rotation.eulerAngles,
-            LeftGrabAngularVelocity = leftGrab == null ? Vector3.zero : leftInteractor.VelocityTracker.GetAngularVelocity(),
-            RightGrabId = rightGrab == null ? 0 : rightGrab.id,
-            RightGrabPosition = rightGrab == null ? Vector3.zero : rightGrab.transform.position,
-            RightGrabVelocity = rightGrab == null ? Vector3.zero : rightInteractor.VelocityTracker.GetVelocity(),
-            RightGrabRotation = rightGrab == null ? Vector3.zero : rightGrab.transform.rotation.eulerAngles,
-            RightGrabAngularVelocity = rightGrab == null ? Vector3.zero : rightInteractor.VelocityTracker.GetAngularVelocity(),
+            RightHandRotation = rightGO.transform.rotation,
+            //LeftGrabId = leftGrab == null ? 0 : leftGrab.id,
+            //LeftGrabPosition = leftGrab == null ? Vector3.zero : leftGrab.transform.position,
+            //LeftGrabVelocity = leftGrab == null ? Vector3.zero : leftInteractor.VelocityTracker.GetVelocity(),
+            //LeftGrabRotation = leftGrab == null ? Vector3.zero : leftGrab.transform.rotation.eulerAngles,
+            //LeftGrabAngularVelocity = leftGrab == null ? Vector3.zero : leftInteractor.VelocityTracker.GetAngularVelocity(),
+            //RightGrabId = rightGrab == null ? 0 : rightGrab.id,
+            //RightGrabPosition = rightGrab == null ? Vector3.zero : rightGrab.transform.position,
+            //RightGrabVelocity = rightGrab == null ? Vector3.zero : rightInteractor.VelocityTracker.GetVelocity(),
+            //RightGrabRotation = rightGrab == null ? Vector3.zero : rightGrab.transform.rotation.eulerAngles,
+            //RightGrabAngularVelocity = rightGrab == null ? Vector3.zero : rightInteractor.VelocityTracker.GetAngularVelocity(),
             LeftShooting = leftShooting,
             RightShooting = rightShooting,
             LeftPointer = leftPointer,

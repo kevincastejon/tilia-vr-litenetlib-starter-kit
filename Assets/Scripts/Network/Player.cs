@@ -27,28 +27,46 @@ public class Player : MonoBehaviour
     public PointerFacade leftPointer;
     public PointerFacade rightPointer;
     private GameObject nameOrientationTarget;
-    private LTDescr headMoveTween;
-    private LTDescr headRotTween;
-    private LTDescr leftHandMoveTween;
-    private LTDescr leftHandRotTween;
-    private LTDescr rightHandMoveTween;
-    private LTDescr rightHandRotTween;
-    private float lastHeadPosUpdate;
-    private float lastHeadRotUpdate;
-    private float lastLeftHandPosUpdate;
-    private float lastLeftHandRotUpdate;
-    private float lastRightHandPosUpdate;
-    private float lastRightHandRotUpdate;
+    public readonly List<PlayerState> stateBuffer = new List<PlayerState>();
+    private PlayerState stateA;
+    private PlayerState stateB;
+    private float lerpMax = 1 / 60f;
+    private float lerpTimer = 0f;
 
     private void Update()
     {
         playerName.transform.rotation = Quaternion.LookRotation(playerName.transform.position - nameOrientationTarget.transform.position);
-        lastHeadPosUpdate += Time.deltaTime;
-        lastHeadRotUpdate += Time.deltaTime;
-        lastLeftHandPosUpdate += Time.deltaTime;
-        lastLeftHandRotUpdate += Time.deltaTime;
-        lastRightHandPosUpdate += Time.deltaTime;
-        lastRightHandRotUpdate += Time.deltaTime;
+
+        bool isLerping = stateA != null && stateB != null;
+        if (stateBuffer.Count >= 3 && !isLerping)
+        {
+            if (stateA == null)
+            {
+                stateA = stateBuffer[0];
+                stateBuffer.RemoveAt(0);
+            }
+            stateB = stateBuffer[0];
+            stateBuffer.RemoveAt(0);
+            isLerping = true;
+        }
+        if (isLerping)
+        {
+            PlayerState esA = stateA;
+            PlayerState esB = stateB;
+            headGO.transform.position = Vector3.Lerp(esA.HeadPosition, esB.HeadPosition, lerpTimer / lerpMax);
+            headGO.transform.rotation = Quaternion.Lerp(esA.HeadRotation, esB.HeadRotation, lerpTimer / lerpMax);
+            leftGO.transform.position = Vector3.Lerp(esA.LeftHandPosition, esB.LeftHandPosition, lerpTimer / lerpMax);
+            leftGO.transform.rotation = Quaternion.Lerp(esA.LeftHandRotation, esB.LeftHandRotation, lerpTimer / lerpMax);
+            rightGO.transform.position = Vector3.Lerp(esA.RightHandPosition, esB.RightHandPosition, lerpTimer / lerpMax);
+            rightGO.transform.rotation = Quaternion.Lerp(esA.RightHandRotation, esB.RightHandRotation, lerpTimer / lerpMax);
+        }
+        lerpTimer += Time.fixedDeltaTime;
+        if (lerpTimer >= lerpMax)
+        {
+            lerpTimer = 0f;
+            stateA = stateB;
+            stateB = null;
+        }
     }
 
     public void SetLeftPointer(bool value)
@@ -80,67 +98,6 @@ public class Player : MonoBehaviour
     public void SetNameOrientationTarget(GameObject target)
     {
         nameOrientationTarget = target;
-    }
-
-    public void SetHeadPositionTarget(Vector3 posTarget)
-    {
-        if (headMoveTween != null)
-        {
-            LeanTween.cancel(headMoveTween.id);
-        }
-        headMoveTween = LeanTween.move(headGO, posTarget, lastHeadPosUpdate);
-        headMoveTween.setOnComplete(() => headMoveTween = null);
-        lastHeadPosUpdate = 0;
-    }
-    public void SetHeadRotationTarget(Vector3 rotTarget)
-    {
-        if (headRotTween != null)
-        {
-            LeanTween.cancel(headRotTween.id);
-        }
-        headRotTween = LeanTween.rotate(headGO, rotTarget, lastHeadRotUpdate);
-        headRotTween.setOnComplete(() => headRotTween = null);
-        lastHeadRotUpdate = 0;
-    }
-    public void SetLeftHandPositionTarget(Vector3 posTarget)
-    {
-        if (leftHandMoveTween != null)
-        {
-            LeanTween.cancel(leftHandMoveTween.id);
-        }
-        leftHandMoveTween = LeanTween.move(leftGO, posTarget, lastLeftHandPosUpdate);
-        leftHandMoveTween.setOnComplete(() => leftHandMoveTween = null);
-        lastLeftHandPosUpdate = 0;
-    }
-    public void SetLeftHandRotationTarget(Vector3 rotTarget)
-    {
-        if (leftHandRotTween != null)
-        {
-            LeanTween.cancel(leftHandRotTween.id);
-        }
-        leftHandRotTween = LeanTween.rotate(leftGO, rotTarget, lastLeftHandRotUpdate);
-        leftHandRotTween.setOnComplete(() => leftHandRotTween = null);
-        lastLeftHandRotUpdate = 0;
-    }
-    public void SetRightHandPositionTarget(Vector3 posTarget)
-    {
-        if (rightHandMoveTween != null)
-        {
-            LeanTween.cancel(rightHandMoveTween.id);
-        }
-        rightHandMoveTween = LeanTween.move(rightGO, posTarget, lastRightHandPosUpdate);
-        rightHandMoveTween.setOnComplete(() => rightHandMoveTween = null);
-        lastRightHandPosUpdate = 0;
-    }
-    public void SetRightHandRotationTarget(Vector3 rotTarget)
-    {
-        if (rightHandRotTween != null)
-        {
-            LeanTween.cancel(rightHandRotTween.id);
-        }
-        rightHandRotTween = LeanTween.rotate(rightGO, rotTarget, lastRightHandRotUpdate);
-        rightHandRotTween.setOnComplete(() => rightHandRotTween = null);
-        lastRightHandRotUpdate = 0;
     }
 
     public void SetName(string name)

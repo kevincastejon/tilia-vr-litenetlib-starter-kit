@@ -136,33 +136,38 @@ public class GameManagerServer : MonoBehaviour
     {
         //Debug.Log("AvatarState : " + peerID);
         Player player = players.Find(x => x.GetComponent<Player>().id == peerID).GetComponent<Player>();
-        player.SetHeadPositionTarget(pi.HeadPosition);
-        player.SetHeadRotationTarget(pi.HeadRotation);
-        player.SetLeftHandPositionTarget(pi.LeftHandPosition);
-        player.SetLeftHandRotationTarget(pi.LeftHandRotation);
-        player.SetRightHandPositionTarget(pi.RightHandPosition);
-        player.SetRightHandRotationTarget(pi.RightHandRotation);
+        player.stateBuffer.Add(new PlayerState()
+        {
+            HeadPosition = pi.HeadPosition,
+            HeadRotation = pi.HeadRotation,
+            LeftHandPosition = pi.HeadPosition,
+            LeftHandRotation = pi.HeadRotation,
+            RightHandPosition = pi.HeadPosition,
+            RightHandRotation = pi.HeadRotation,
+            LeftPointer = pi.LeftPointer,
+            RightPointer = pi.RightPointer
+        });
         player.SetLeftPointer(pi.LeftPointer);
         player.SetRightPointer(pi.RightPointer);
         int leftUngrabbedId = player.leftGrabId != 0 && pi.LeftGrabId == 0 ? player.leftGrabId : 0;
         int rightUngrabbedId = player.rightGrabId != 0 && pi.RightGrabId == 0 ? player.rightGrabId : 0;
         player.leftGrabId = pi.LeftGrabId;
         player.rightGrabId = pi.RightGrabId;
-        networkObjectManager.ServerSideSyncClientUngrabbed(leftUngrabbedId, rightUngrabbedId);
-        networkObjectManager.ServerSideSyncClientGrabbing(peerID, pi);
-        if (!player.leftShooting && pi.LeftShooting && player.leftGrabId != 0)
-        {
-            NetworkObject obj = guns.Find((NetworkObject g) => g.id == player.leftGrabId);
-            Transform spawnPoint = obj.GetComponent<Gun>().spawnPoint.transform;
-            SpawnBullet(spawnPoint);
-        }
+        //networkObjectManager.ServerSideSyncClientUngrabbed(leftUngrabbedId, rightUngrabbedId);
+        //networkObjectManager.ServerSideSyncClientGrabbing(peerID, pi);
+        //if (!player.leftShooting && pi.LeftShooting && player.leftGrabId != 0)
+        //{
+        //    NetworkObject obj = guns.Find((NetworkObject g) => g.id == player.leftGrabId);
+        //    Transform spawnPoint = obj.GetComponent<Gun>().spawnPoint.transform;
+        //    SpawnBullet(spawnPoint);
+        //}
         player.leftShooting = pi.LeftShooting;
-        if (!player.rightShooting && pi.RightShooting && player.rightGrabId != 0)
-        {
-            NetworkObject obj = guns.Find((NetworkObject g) => g.id == player.rightGrabId);
-            Transform spawnPoint = obj.GetComponent<Gun>().spawnPoint.transform;
-            SpawnBullet(spawnPoint);
-        }
+        //if (!player.rightShooting && pi.RightShooting && player.rightGrabId != 0)
+        //{
+        //    NetworkObject obj = guns.Find((NetworkObject g) => g.id == player.rightGrabId);
+        //    Transform spawnPoint = obj.GetComponent<Gun>().spawnPoint.transform;
+        //    SpawnBullet(spawnPoint);
+        //}
         player.rightShooting = pi.RightShooting;
     }
 
@@ -176,11 +181,11 @@ public class GameManagerServer : MonoBehaviour
             {
                 Id = p.id,
                 HeadPosition = p.headGO.transform.position,
-                HeadRotation = p.headGO.transform.rotation.eulerAngles,
+                HeadRotation = p.headGO.transform.rotation,
                 LeftHandPosition = p.leftGO.transform.position,
-                LeftHandRotation = p.leftGO.transform.rotation.eulerAngles,
+                LeftHandRotation = p.leftGO.transform.rotation,
                 RightHandPosition = p.rightGO.transform.position,
-                RightHandRotation = p.rightGO.transform.rotation.eulerAngles,
+                RightHandRotation = p.rightGO.transform.rotation,
                 LeftPointer = p.leftPointerActivated,
                 RightPointer = p.rightPointerActivated
             };
@@ -190,11 +195,11 @@ public class GameManagerServer : MonoBehaviour
         {
             Id = serverId,
             HeadPosition = headGO.transform.position,
-            HeadRotation = headGO.transform.rotation.eulerAngles,
+            HeadRotation = headGO.transform.rotation,
             LeftHandPosition = leftGO.transform.position,
-            LeftHandRotation = leftGO.transform.rotation.eulerAngles,
+            LeftHandRotation = leftGO.transform.rotation,
             RightHandPosition = rightGO.transform.position,
-            RightHandRotation = rightGO.transform.rotation.eulerAngles,
+            RightHandRotation = rightGO.transform.rotation,
             LeftPointer = leftPointer,
             RightPointer = rightPointer,
         };

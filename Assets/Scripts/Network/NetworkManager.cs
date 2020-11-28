@@ -111,7 +111,7 @@ public class NetworkManager : MonoBehaviour
     {
         NetworkObject newObject = Instantiate(entityTypesSettings[es.Type].prefab).GetComponent<NetworkObject>();
         newObject.transform.position = es.Position;
-        newObject.transform.eulerAngles = es.Rotation;
+        newObject.transform.rotation = es.Rotation;
         newObject.id = es.Id;
         print("spawned object " + newObject.gameObject);
     }
@@ -122,7 +122,7 @@ public class NetworkManager : MonoBehaviour
         if (localObject != null)
         {
             localObject.transform.position = es.Position;
-            localObject.transform.eulerAngles = es.Rotation;
+            localObject.transform.rotation = es.Rotation;
             localObject.id = es.Id;
             print("linked object " + localObject.gameObject);
         }
@@ -296,7 +296,7 @@ public class NetworkManager : MonoBehaviour
                 Id = b.id,
                 Type = (byte)b.type,
                 Position = b.transform.position,
-                Rotation = b.transform.rotation.eulerAngles,
+                Rotation = b.transform.rotation,
             };
         }
         return (entityStates);
