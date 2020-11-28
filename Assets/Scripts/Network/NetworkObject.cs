@@ -28,7 +28,7 @@ public class NetworkObject : MonoBehaviour
     public Vector3 bufferAngularVelocity;
     [HideInInspector]
     public bool kinematicInitValue;
-    public readonly List<EntityState> stateBuffer = new List<EntityState>();
+    private readonly List<EntityState> stateBuffer = new List<EntityState>();
     private EntityState stateA;
     private EntityState stateB;
     private float lerpMax = 1 / 60f;
@@ -82,6 +82,15 @@ public class NetworkObject : MonoBehaviour
             stateA = stateB;
             stateB = null;
         }
+    }
+
+    public void AddStateToBuffer(EntityState es)
+    {
+        if (DEVNetworkSwitcher.isServer)
+        {
+            Debug.Log("object state added "+es.Position);
+        }
+        stateBuffer.Add(es);
     }
 
     private void OnDestroy()

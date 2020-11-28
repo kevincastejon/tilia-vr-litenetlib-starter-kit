@@ -145,7 +145,7 @@ public class NetworkManager : MonoBehaviour
             {
                 if (!obj.grabbed)
                 {
-                    obj.stateBuffer.Add(esArr[i].Clone());
+                    obj.AddStateToBuffer(esArr[i].Clone());
                 }
             }
             else
@@ -175,7 +175,7 @@ public class NetworkManager : MonoBehaviour
                 grabbed.bufferVelocity = pi.LeftGrabVelocity;
                 grabbed.bufferAngularVelocity = pi.LeftGrabAngularVelocity;
             }
-            grabbed.stateBuffer.Add(new EntityState() { Position = pi.LeftGrabPosition, Rotation = pi.LeftGrabRotation });
+            grabbed.AddStateToBuffer(new EntityState() { Position = pi.LeftGrabPosition, Rotation = pi.LeftGrabRotation });
         }
         if (pi.RightGrabId != 0)
         {
@@ -194,7 +194,7 @@ public class NetworkManager : MonoBehaviour
                 grabbed.bufferVelocity = pi.RightGrabVelocity;
                 grabbed.bufferAngularVelocity = pi.RightGrabAngularVelocity;
             }
-            grabbed.stateBuffer.Add(new EntityState() { Position = pi.RightGrabPosition, Rotation = pi.RightGrabRotation });
+            grabbed.AddStateToBuffer(new EntityState() { Position = pi.RightGrabPosition, Rotation = pi.RightGrabRotation });
         }
     }
     public void ServerSideSyncClientUngrabbed(int leftUngrabbedId, int rightUngrabbedId)
