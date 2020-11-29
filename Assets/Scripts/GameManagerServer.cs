@@ -112,7 +112,7 @@ public class GameManagerServer : MonoBehaviour
     {
         //Debug.Log("AvatarState : " + peerID);
         Player player = players.Find(x => x.GetComponent<Player>().id == peerID).GetComponent<Player>();
-        player.stateBuffer.Add(new PlayerState()
+        player.AddStateToBuffer(new PlayerState()
         {
             HeadPosition = pi.HeadPosition,
             HeadRotation = pi.HeadRotation,

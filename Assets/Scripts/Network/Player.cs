@@ -27,11 +27,12 @@ public class Player : MonoBehaviour
     public PointerFacade leftPointer;
     public PointerFacade rightPointer;
     private GameObject nameOrientationTarget;
-    public readonly List<PlayerState> stateBuffer = new List<PlayerState>();
+    private readonly List<PlayerState> stateBuffer = new List<PlayerState>();
     private PlayerState stateA;
     private PlayerState stateB;
     private float lerpMax = 1 / 60f;
     private float lerpTimer = 0f;
+    public int stateBufferLength;
 
     private void Update()
     {
@@ -47,6 +48,7 @@ public class Player : MonoBehaviour
             }
             stateB = stateBuffer[0];
             stateBuffer.RemoveAt(0);
+            stateBufferLength = stateBuffer.Count;
             isLerping = true;
         }
         if (isLerping)
@@ -61,12 +63,31 @@ public class Player : MonoBehaviour
             rightGO.transform.rotation = Quaternion.Lerp(esA.RightHandRotation, esB.RightHandRotation, lerpTimer / lerpMax);
         }
         lerpTimer += Time.deltaTime;
-        if (lerpTimer >= lerpMax)
+        if (true)
+        //if (lerpTimer >= lerpMax)
         {
             lerpTimer = 0f;
             stateA = stateB;
             stateB = null;
         }
+    }
+
+    public void AddStateToBuffer(PlayerState ps)
+    {
+        //if (DEVNetworkSwitcher.isServer)
+        //{
+        //Debug.Log("added state");
+        //}
+        stateBuffer.Add(ps);
+        stateBufferLength = stateBuffer.Count;
+    }
+
+    public void ClearBuffer()
+    {
+        stateBuffer.Clear();
+        stateA = null;
+        stateB = null;
+        lerpTimer = 0f;
     }
 
     public void SetLeftPointer(bool value)
