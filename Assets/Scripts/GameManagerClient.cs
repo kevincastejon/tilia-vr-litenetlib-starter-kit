@@ -148,10 +148,6 @@ public class GameManagerClient : MonoBehaviour
 
     private PlayerInput GetPlayerInput()
     {
-        if (rightGrab != null)
-        {
-            Debug.Log(rightGrab.transform.position);
-        }
         return new PlayerInput()
         {
             HeadPosition = headGO.transform.position,
