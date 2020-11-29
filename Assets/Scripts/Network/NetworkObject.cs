@@ -13,6 +13,8 @@ public class NetworkObject : MonoBehaviour
     public EntityType type;
     public Rigidbody body;
     [ReadOnly]
+    public int stateBufferLength;
+    [ReadOnly]
     public int id;
     [ReadOnly]
     public bool grabbed;
@@ -66,6 +68,8 @@ public class NetworkObject : MonoBehaviour
             }
             stateB = stateBuffer[0];
             stateBuffer.RemoveAt(0);
+            //Debug.Log("removed state");
+            stateBufferLength = stateBuffer.Count;
             isLerping = true;
         }
         if (isLerping)
@@ -75,8 +79,9 @@ public class NetworkObject : MonoBehaviour
             transform.position = Vector3.Lerp(esA.Position, esB.Position, lerpTimer / lerpMax);
             transform.rotation = Quaternion.Lerp(esA.Rotation, esB.Rotation, lerpTimer / lerpMax);
         }
-        lerpTimer += Time.fixedDeltaTime;
-        if (lerpTimer >= lerpMax)
+        lerpTimer += Time.deltaTime;
+        if (true)
+        //if (lerpTimer >= lerpMax)
         {
             lerpTimer = 0f;
             stateA = stateB;
@@ -86,11 +91,12 @@ public class NetworkObject : MonoBehaviour
 
     public void AddStateToBuffer(EntityState es)
     {
-        if (DEVNetworkSwitcher.isServer)
-        {
-            Debug.Log("object state added " + es.Position);
-        }
+        //if (DEVNetworkSwitcher.isServer)
+        //{
+            //Debug.Log("added state");
+        //}
         stateBuffer.Add(es);
+        stateBufferLength = stateBuffer.Count;
     }
 
     public void ClearBuffer()

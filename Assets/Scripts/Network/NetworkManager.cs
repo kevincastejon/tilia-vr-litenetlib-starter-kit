@@ -175,7 +175,6 @@ public class NetworkManager : MonoBehaviour
                 grabbed.bufferVelocity = pi.LeftGrabVelocity;
                 grabbed.bufferAngularVelocity = pi.LeftGrabAngularVelocity;
             }
-            grabbed.ClearBuffer();
             grabbed.AddStateToBuffer(new EntityState() { Position = pi.LeftGrabPosition, Rotation = pi.LeftGrabRotation });
         }
         if (pi.RightGrabId != 0)
@@ -195,7 +194,6 @@ public class NetworkManager : MonoBehaviour
                 grabbed.bufferVelocity = pi.RightGrabVelocity;
                 grabbed.bufferAngularVelocity = pi.RightGrabAngularVelocity;
             }
-            grabbed.ClearBuffer();
             grabbed.AddStateToBuffer(new EntityState() { Position = pi.RightGrabPosition, Rotation = pi.RightGrabRotation });
         }
     }
@@ -243,6 +241,7 @@ public class NetworkManager : MonoBehaviour
                 obj.grabbed = true;
                 obj.leftHand = true;
                 obj.lastOwnerId = ownId;
+                obj.ClearBuffer();
             }
             else
             {
@@ -268,6 +267,7 @@ public class NetworkManager : MonoBehaviour
                 obj.grabbed = true;
                 obj.leftHand = false;
                 obj.lastOwnerId = ownId;
+                obj.ClearBuffer();
             }
             else
             {

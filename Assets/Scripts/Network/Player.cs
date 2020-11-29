@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
             rightGO.transform.position = Vector3.Lerp(esA.RightHandPosition, esB.RightHandPosition, lerpTimer / lerpMax);
             rightGO.transform.rotation = Quaternion.Lerp(esA.RightHandRotation, esB.RightHandRotation, lerpTimer / lerpMax);
         }
-        lerpTimer += Time.fixedDeltaTime;
+        lerpTimer += Time.deltaTime;
         if (lerpTimer >= lerpMax)
         {
             lerpTimer = 0f;
