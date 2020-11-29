@@ -38,9 +38,9 @@ public class GameManagerServer : MonoBehaviour
         networkObjectManager = NetworkManager.GetInstance();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        sendTimer += Time.deltaTime;
+        sendTimer += Time.fixedDeltaTime;
         if (true)
         //if (sendTimer >= sendRate)
         {

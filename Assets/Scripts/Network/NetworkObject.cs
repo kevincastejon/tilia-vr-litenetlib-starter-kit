@@ -56,7 +56,7 @@ public class NetworkObject : MonoBehaviour
         NetworkManager.GetInstance().Add(this);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         bool isLerping = stateA != null && stateB != null;
         if (stateBuffer.Count >= 3 && !isLerping)
@@ -79,7 +79,7 @@ public class NetworkObject : MonoBehaviour
             transform.position = Vector3.Lerp(esA.Position, esB.Position, lerpTimer / lerpMax);
             transform.rotation = Quaternion.Lerp(esA.Rotation, esB.Rotation, lerpTimer / lerpMax);
         }
-        lerpTimer += Time.deltaTime;
+        lerpTimer += Time.fixedDeltaTime;
         if (true)
         //if (lerpTimer >= lerpMax)
         {

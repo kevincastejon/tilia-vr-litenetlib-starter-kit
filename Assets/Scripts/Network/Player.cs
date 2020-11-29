@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
     private float lerpTimer = 0f;
     public int stateBufferLength;
 
-    private void Update()
+    private void FixedUpdate()
     {
         playerName.transform.rotation = Quaternion.LookRotation(playerName.transform.position - nameOrientationTarget.transform.position);
 
@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
             rightGO.transform.position = Vector3.Lerp(esA.RightHandPosition, esB.RightHandPosition, lerpTimer / lerpMax);
             rightGO.transform.rotation = Quaternion.Lerp(esA.RightHandRotation, esB.RightHandRotation, lerpTimer / lerpMax);
         }
-        lerpTimer += Time.deltaTime;
+        lerpTimer += Time.fixedDeltaTime;
         if (true)
         //if (lerpTimer >= lerpMax)
         {
