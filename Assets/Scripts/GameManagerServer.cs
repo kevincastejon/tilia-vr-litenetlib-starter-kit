@@ -110,16 +110,22 @@ public class GameManagerServer : MonoBehaviour
 
     public void OnClientInput(int peerID, PlayerInput pi)
     {
-        Debug.Log("AvatarState : " + pi.HeadPosition);
+        Debug.Log("AvatarState : " + pi.LeftHandPosition);
         Player player = players.Find(x => x.GetComponent<Player>().id == peerID).GetComponent<Player>();
+        Vector3 hp = pi.HeadPosition;
+        Quaternion hr = pi.HeadRotation;
+        Vector3 lp = pi.LeftHandPosition;
+        Quaternion lr = pi.LeftHandRotation;
+        Vector3 rp = pi.RightHandPosition;
+        Quaternion rr = pi.RightHandRotation;
         player.AddStateToBuffer(new PlayerState()
         {
-            HeadPosition = pi.HeadPosition,
-            HeadRotation = pi.HeadRotation,
-            LeftHandPosition = pi.LeftHandPosition,
-            LeftHandRotation = pi.LeftHandRotation,
-            RightHandPosition = pi.RightHandPosition,
-            RightHandRotation = pi.RightHandRotation,
+            HeadPosition = new Vector3(hp.x,hp.y,hp.z),
+            HeadRotation = new Quaternion(hr.x,hr.y,hr.z,hr.w),
+            LeftHandPosition = new Vector3(lp.x,lp.y,lp.z),
+            LeftHandRotation = new Quaternion(lr.x, lr.y, lr.z, lr.w),
+            RightHandPosition = new Vector3(rp.x,rp.y,rp.z),
+            RightHandRotation = new Quaternion(rr.x, rr.y, rr.z, rr.w),
             LeftPointer = pi.LeftPointer,
             RightPointer = pi.RightPointer
         });
