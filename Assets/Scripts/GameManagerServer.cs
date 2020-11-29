@@ -110,7 +110,7 @@ public class GameManagerServer : MonoBehaviour
 
     public void OnClientInput(int peerID, PlayerInput pi)
     {
-        //Debug.Log("AvatarState : " + peerID);
+        Debug.Log("AvatarState : " + pi.HeadPosition);
         Player player = players.Find(x => x.GetComponent<Player>().id == peerID).GetComponent<Player>();
         player.AddStateToBuffer(new PlayerState()
         {
