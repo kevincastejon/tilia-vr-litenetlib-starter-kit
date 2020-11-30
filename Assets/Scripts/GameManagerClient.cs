@@ -58,80 +58,81 @@ public class GameManagerClient : MonoBehaviour
                 gameClient.SendInput(pi);
             }
         }
-        bool isLerping = stateA != null && stateB != null;
-        if (stateBuffer.Count >= 3 && !isLerping)
-        {
-            if (stateA == null)
-            {
-                stateA = stateBuffer[0];
-                stateBuffer.RemoveAt(0);
-            }
-            stateB = stateBuffer[0];
-            stateBuffer.RemoveAt(0);
-            //Debug.Log("removed state");
-            stateBufferLength = stateBuffer.Count;
-            isLerping = true;
-            for (int i = 0; i < stateB.Players.Length; i++)
-            {
-                Player player = players.Find(x => x.id == stateB.Players[i].Id);
-                Debug.Log(stateB.Players[i].Id + " - "+ avatarId);
-                if (player != null)
-                {
-                    //player.AddStateToBuffer(stateB.Players[i].Clone());
-                }
-                else if (stateB.Players[i].Id != avatarId)
-                {
-                    SpawnPlayer(stateB.Players[i]);
-                }
-            }
-            DespawnOldPlayers(stateB.Players);
-            for (int i = 0; i < stateB.Entities.Length; i++)
-            {
-                NetworkObject obj = networkObjects.Find(x => x.id == stateB.Entities[i].Id);
-                if (obj != null)
-                {
-                    if (!obj.grabbed)
-                    {
-                        //obj.AddStateToBuffer(stateB.Entities[i].Clone());
-                    }
-                }
-                else
-                {
-                    LinkOrSpawnLocalObject(stateB.Entities[i]);
-                }
-            }
-            DespawnOldObjects(stateB.Entities);
-        }
-        if (isLerping)
-        {
-            for (int i = 0; i < stateB.Players.Length; i++)
-            {
-                Player player = players.Find(x => x.id == stateB.Players[i].Id);
-                player.headGO.transform.position = Vector3.Lerp(stateA.Players[i].HeadPosition, stateB.Players[i].HeadPosition, lerpTimer / lerpMax);
-                player.headGO.transform.rotation = Quaternion.Lerp(stateA.Players[i].HeadRotation, stateB.Players[i].HeadRotation, lerpTimer / lerpMax);
-                player.leftGO.transform.position = Vector3.Lerp(stateA.Players[i].LeftHandPosition, stateB.Players[i].LeftHandPosition, lerpTimer / lerpMax);
-                player.leftGO.transform.rotation = Quaternion.Lerp(stateA.Players[i].LeftHandRotation, stateB.Players[i].LeftHandRotation, lerpTimer / lerpMax);
-                player.rightGO.transform.position = Vector3.Lerp(stateA.Players[i].RightHandPosition, stateB.Players[i].RightHandPosition, lerpTimer / lerpMax);
-                player.rightGO.transform.rotation = Quaternion.Lerp(stateA.Players[i].RightHandRotation, stateB.Players[i].RightHandRotation, lerpTimer / lerpMax);
-            }
-            for (int i = 0; i < stateB.Entities.Length; i++)
-            {
-                NetworkObject obj = networkObjects.Find(x => x.id == stateB.Entities[i].Id);
-                if (!obj.grabbed)
-                {
-                    obj.transform.position = Vector3.Lerp(stateA.Entities[i].Position, stateB.Entities[i].Position, lerpTimer / lerpMax);
-                    obj.transform.rotation = Quaternion.Lerp(stateA.Entities[i].Rotation, stateB.Entities[i].Rotation, lerpTimer / lerpMax);
-                }
-            }
-        }
-        lerpTimer += Time.fixedDeltaTime;
-        if (true)
-        //if (lerpTimer >= lerpMax)
-        {
-            lerpTimer = 0f;
-            stateA = stateB;
-            stateB = null;
-        }
+        //bool isLerping = stateA != null && stateB != null;
+        //if (stateBuffer.Count >= 3 && !isLerping)
+        //{
+        //    if (stateA == null)
+        //    {
+        //        stateA = stateBuffer[0];
+        //        stateBuffer.RemoveAt(0);
+        //    }
+        //    stateB = stateBuffer[0];
+        //    stateBuffer.RemoveAt(0);
+        //    //Debug.Log("removed state");
+        //    stateBufferLength = stateBuffer.Count;
+        //    isLerping = true;
+        //    Debug.Log("start looping");
+        //    for (int i = 0; i < stateB.Players.Length; i++)
+        //    {
+        //        Player player = players.Find(x => x.id == stateB.Players[i].Id);
+        //        Debug.Log(stateB.Players[i].Id + " - "+ avatarId);
+        //        if (player != null)
+        //        {
+        //            //player.AddStateToBuffer(stateB.Players[i].Clone());
+        //        }
+        //        else if (stateB.Players[i].Id != avatarId)
+        //        {
+        //            SpawnPlayer(stateB.Players[i]);
+        //        }
+        //    }
+        //    DespawnOldPlayers(stateB.Players);
+        //    for (int i = 0; i < stateB.Entities.Length; i++)
+        //    {
+        //        NetworkObject obj = networkObjects.Find(x => x.id == stateB.Entities[i].Id);
+        //        if (obj != null)
+        //        {
+        //            if (!obj.grabbed)
+        //            {
+        //                //obj.AddStateToBuffer(stateB.Entities[i].Clone());
+        //            }
+        //        }
+        //        else
+        //        {
+        //            LinkOrSpawnLocalObject(stateB.Entities[i]);
+        //        }
+        //    }
+        //    DespawnOldObjects(stateB.Entities);
+        //}
+        //if (isLerping)
+        //{
+        //    for (int i = 0; i < stateB.Players.Length; i++)
+        //    {
+        //        Player player = players.Find(x => x.id == stateB.Players[i].Id);
+        //        player.headGO.transform.position = Vector3.Lerp(stateA.Players[i].HeadPosition, stateB.Players[i].HeadPosition, lerpTimer / lerpMax);
+        //        player.headGO.transform.rotation = Quaternion.Lerp(stateA.Players[i].HeadRotation, stateB.Players[i].HeadRotation, lerpTimer / lerpMax);
+        //        player.leftGO.transform.position = Vector3.Lerp(stateA.Players[i].LeftHandPosition, stateB.Players[i].LeftHandPosition, lerpTimer / lerpMax);
+        //        player.leftGO.transform.rotation = Quaternion.Lerp(stateA.Players[i].LeftHandRotation, stateB.Players[i].LeftHandRotation, lerpTimer / lerpMax);
+        //        player.rightGO.transform.position = Vector3.Lerp(stateA.Players[i].RightHandPosition, stateB.Players[i].RightHandPosition, lerpTimer / lerpMax);
+        //        player.rightGO.transform.rotation = Quaternion.Lerp(stateA.Players[i].RightHandRotation, stateB.Players[i].RightHandRotation, lerpTimer / lerpMax);
+        //    }
+        //    for (int i = 0; i < stateB.Entities.Length; i++)
+        //    {
+        //        NetworkObject obj = networkObjects.Find(x => x.id == stateB.Entities[i].Id);
+        //        if (!obj.grabbed)
+        //        {
+        //            obj.transform.position = Vector3.Lerp(stateA.Entities[i].Position, stateB.Entities[i].Position, lerpTimer / lerpMax);
+        //            obj.transform.rotation = Quaternion.Lerp(stateA.Entities[i].Rotation, stateB.Entities[i].Rotation, lerpTimer / lerpMax);
+        //        }
+        //    }
+        //}
+        //lerpTimer += Time.fixedDeltaTime;
+        //if (true)
+        ////if (lerpTimer >= lerpMax)
+        //{
+        //    lerpTimer = 0f;
+        //    stateA = stateB;
+        //    stateB = null;
+        //}
     }
 
     public void LinkOrSpawnLocalObject(EntityState es)

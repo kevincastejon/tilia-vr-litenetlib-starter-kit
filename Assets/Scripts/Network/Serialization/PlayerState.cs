@@ -43,6 +43,7 @@ public class PlayerState : INetSerializable
     {
         PlayerState clone = new PlayerState()
         {
+            Id = Id,
             HeadPosition = new Vector3(HeadPosition.x, HeadPosition.y, HeadPosition.z),
             HeadRotation = new Quaternion(HeadRotation.x, HeadRotation.y, HeadRotation.z, HeadRotation.w),
             LeftHandPosition = new Vector3(LeftHandPosition.x, LeftHandPosition.y, LeftHandPosition.z),
