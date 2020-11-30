@@ -71,4 +71,31 @@ public class PlayerInput : INetSerializable
         LeftPointer = reader.GetBool();
         RightPointer = reader.GetBool();
     }
+
+    public PlayerInput Clone()
+    {
+        return new PlayerInput()
+        {
+            HeadPosition = new Vector3(HeadPosition.x, HeadPosition.y, HeadPosition.z),
+            HeadRotation = new Quaternion(HeadRotation.x, HeadRotation.y, HeadRotation.z, HeadRotation.w),
+            LeftHandPosition = new Vector3(LeftHandPosition.x, LeftHandPosition.y, LeftHandPosition.z),
+            LeftHandRotation = new Quaternion(LeftHandRotation.x, LeftHandRotation.y, LeftHandRotation.z, LeftHandRotation.w),
+            RightHandPosition = new Vector3(RightHandPosition.x, RightHandPosition.y, RightHandPosition.z),
+            RightHandRotation = new Quaternion(RightHandRotation.x, RightHandRotation.y, RightHandRotation.z, RightHandRotation.w),
+            LeftGrabId = LeftGrabId,
+            LeftGrabPosition = LeftGrabPosition,
+            LeftGrabRotation = LeftGrabRotation,
+            LeftGrabVelocity = LeftGrabVelocity,
+            LeftGrabAngularVelocity = LeftGrabAngularVelocity,
+            RightGrabId = RightGrabId,
+            RightGrabPosition = RightGrabPosition,
+            RightGrabRotation = RightGrabRotation,
+            RightGrabVelocity = RightGrabVelocity,
+            RightGrabAngularVelocity = RightGrabAngularVelocity,
+            LeftPointer = LeftPointer,
+            RightPointer = RightPointer,
+            LeftShooting = LeftShooting,
+            RightShooting = RightShooting,
+        };
+    }
 }
