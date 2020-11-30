@@ -60,12 +60,12 @@ public class GameManagerServer : MonoBehaviour
             server.SendWorldState(sm);
         }
 
-        for (int i = 0; i < players.Count; i++)
+        foreach (KeyValuePair<int, PlayersInputManager> entry in playersInputManager)
         {
-            Player player = players[i];
-            List<PlayerInput> inputBuffer = playersInputManager[player.id].playerInputsBuffer;
-            PlayerInput inputA = playersInputManager[player.id].inputA;
-            PlayerInput inputB = playersInputManager[player.id].inputB;
+            Player player = players.Find(x => x.id == entry.Key);
+            List<PlayerInput> inputBuffer = entry.Value.playerInputsBuffer;
+            PlayerInput inputA = entry.Value.inputA;
+            PlayerInput inputB = entry.Value.inputB;
             bool isLerping = inputA != null && inputB != null;
             if (inputBuffer.Count >= 3 && !isLerping)
             {
