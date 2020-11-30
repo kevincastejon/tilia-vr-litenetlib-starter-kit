@@ -48,6 +48,7 @@ public class GameManagerClient : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Debug.Log("NEW FRAME");
         sendTimer += Time.fixedDeltaTime;
         if (true)
         //if (sendTimer >= sendRate)
@@ -60,8 +61,10 @@ public class GameManagerClient : MonoBehaviour
             }
         }
         bool isLerping = stateA != null && stateB != null;
-        if (stateBuffer.Count >= 3 && !isLerping)
+        Debug.Log(stateBuffer.Count+" - "+isLerping);
+        if (stateBuffer.Count >= 2 && !isLerping)
         {
+            Debug.Log("SWITCH STATE A TO B");
             if (stateA == null)
             {
                 stateA = stateBuffer[0];
@@ -105,6 +108,7 @@ public class GameManagerClient : MonoBehaviour
         }
         if (isLerping)
         {
+            Debug.Log("LERPING");
             for (int i = 0; i < stateB.Players.Length; i++)
             {
                 if (stateB.Players[i].Id == avatarId || stateA.Players.Length-1 < i)
@@ -264,6 +268,7 @@ public class GameManagerClient : MonoBehaviour
     public void OnState(StateMessage sm)
     {
         stateBuffer.Add(sm.Clone());
+        Debug.Log("added state");
         stateBufferLength = stateBuffer.Count;
         //for (int i = 0; i < sm.Players.Length; i++)
         //{
