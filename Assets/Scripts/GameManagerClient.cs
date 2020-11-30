@@ -263,6 +263,7 @@ public class GameManagerClient : MonoBehaviour
     public void OnState(StateMessage sm)
     {
         stateBuffer.Add(sm.Clone());
+        stateBufferLength = stateBuffer.Count;
         //for (int i = 0; i < sm.Players.Length; i++)
         //{
         //    Player player = players.Find(x => x.id == sm.Players[i].Id);
