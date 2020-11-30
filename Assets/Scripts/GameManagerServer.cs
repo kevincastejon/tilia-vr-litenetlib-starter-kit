@@ -63,7 +63,6 @@ public class GameManagerServer : MonoBehaviour
         foreach (KeyValuePair<int, PlayersInputManager> entry in playersInputManager)
         {
             Player player = players.Find(x => x.id == entry.Key);
-            Debug.Log(player);
             List<PlayerInput> inputBuffer = entry.Value.playerInputsBuffer;
             PlayerInput inputA = entry.Value.inputA;
             PlayerInput inputB = entry.Value.inputB;
@@ -78,6 +77,7 @@ public class GameManagerServer : MonoBehaviour
                 entry.Value.inputB = inputBuffer[0];
                 inputBuffer.RemoveAt(0);
                 isLerping = true;
+                Debug.Log(inputA);
                 player.SetLeftPointer(inputA.LeftPointer);
                 player.SetRightPointer(inputA.RightPointer);
                 int leftUngrabbedId = player.leftGrabId != 0 && inputA.LeftGrabId == 0 ? player.leftGrabId : 0;
