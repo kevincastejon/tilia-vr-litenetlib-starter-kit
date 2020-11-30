@@ -270,7 +270,7 @@ public class GameManagerServer : MonoBehaviour
 
     public void OnClientConnected(int peerID)
     {
-        Debug.Log("new player connected as "+peerID);
+        Debug.Log("new player connected as " + peerID);
         Player newPlayer = Instantiate(playerPrefab).GetComponent<Player>();
         newPlayer.SetNameOrientationTarget(headGO);
         newPlayer.id = peerID;
@@ -398,11 +398,15 @@ public class GameManagerServer : MonoBehaviour
             LeftPointer = leftPointer,
             RightPointer = rightPointer,
         };
+        for (int i = 0; i < playerStates.Length; i++)
+        {
+            Debug.Log(playerStates[i].Id);
+        }
         EntityState[] entityStates = new EntityState[networkObjects.Count];
         for (int i = 0; i < networkObjects.Count; i++)
         {
             NetworkObject b = networkObjects[i];
-             entityStates[i] = new EntityState()
+            entityStates[i] = new EntityState()
             {
                 Id = b.id,
                 Type = (byte)b.type,
