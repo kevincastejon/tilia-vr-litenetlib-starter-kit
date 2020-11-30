@@ -62,7 +62,8 @@ public class GameManagerServer : MonoBehaviour
 
         foreach (KeyValuePair<int, PlayersInputManager> entry in playersInputManager)
         {
-            Player player = players.Find(x => {Debug.Log(x.id+" - "+entry.Key); return x.id == entry.Key; });
+            Player player = players.Find(x => x.id == entry.Key);
+            Debug.Log(player);
             List<PlayerInput> inputBuffer = entry.Value.playerInputsBuffer;
             PlayerInput inputA = entry.Value.inputA;
             PlayerInput inputB = entry.Value.inputB;
