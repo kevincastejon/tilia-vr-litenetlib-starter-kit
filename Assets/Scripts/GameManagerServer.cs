@@ -64,26 +64,24 @@ public class GameManagerServer : MonoBehaviour
         {
             Player player = players.Find(x => x.id == entry.Key);
             List<PlayerInput> inputBuffer = entry.Value.playerInputsBuffer;
-            PlayerInput inputA = entry.Value.inputA;
-            PlayerInput inputB = entry.Value.inputB;
-            bool isLerping = inputA != null && inputB != null;
+            bool isLerping = entry.Value.inputA != null && entry.Value.inputB != null;
             if (inputBuffer.Count >= 3 && !isLerping)
             {
-                if (inputA == null)
+                if (entry.Value.inputA == null)
                 {
                     entry.Value.inputA = inputBuffer[0];
                     inputBuffer.RemoveAt(0);
+                    Debug.Log(entry.Value.inputA);
                 }
                 entry.Value.inputB = inputBuffer[0];
                 inputBuffer.RemoveAt(0);
                 isLerping = true;
-                Debug.Log(inputA);
-                player.SetLeftPointer(inputA.LeftPointer);
-                player.SetRightPointer(inputA.RightPointer);
-                int leftUngrabbedId = player.leftGrabId != 0 && inputA.LeftGrabId == 0 ? player.leftGrabId : 0;
-                int rightUngrabbedId = player.rightGrabId != 0 && inputA.RightGrabId == 0 ? player.rightGrabId : 0;
-                player.leftGrabId = inputA.LeftGrabId;
-                player.rightGrabId = inputA.RightGrabId;
+                player.SetLeftPointer(entry.Value.inputA.LeftPointer);
+                player.SetRightPointer(entry.Value.inputA.RightPointer);
+                int leftUngrabbedId = player.leftGrabId != 0 && entry.Value.inputA.LeftGrabId == 0 ? player.leftGrabId : 0;
+                int rightUngrabbedId = player.rightGrabId != 0 && entry.Value.inputA.RightGrabId == 0 ? player.rightGrabId : 0;
+                player.leftGrabId = entry.Value.inputA.LeftGrabId;
+                player.rightGrabId = entry.Value.inputA.RightGrabId;
                 if (leftUngrabbedId != 0)
                 {
                     NetworkObject ungrabbed = networkObjects.Find((NetworkObject g) => g.id == leftUngrabbedId);
@@ -112,9 +110,9 @@ public class GameManagerServer : MonoBehaviour
                         ungrabbed.bufferAngularVelocity = Vector3.zero;
                     }
                 }
-                if (inputA.LeftGrabId != 0)
+                if (entry.Value.inputA.LeftGrabId != 0)
                 {
-                    NetworkObject grabbed = networkObjects.Find((NetworkObject g) => g.id == inputA.LeftGrabId);
+                    NetworkObject grabbed = networkObjects.Find((NetworkObject g) => g.id == entry.Value.inputA.LeftGrabId);
                     if (grabbed.snapContainer != null)
                     {
                         grabbed.snapContainer.Unsnap();
@@ -126,14 +124,14 @@ public class GameManagerServer : MonoBehaviour
                     if (grabbed.body != null)
                     {
                         grabbed.body.isKinematic = true;
-                        grabbed.bufferVelocity = inputA.LeftGrabVelocity;
-                        grabbed.bufferAngularVelocity = inputA.LeftGrabAngularVelocity;
+                        grabbed.bufferVelocity = entry.Value.inputA.LeftGrabVelocity;
+                        grabbed.bufferAngularVelocity = entry.Value.inputA.LeftGrabAngularVelocity;
                     }
                     //grabbed.AddStateToBuffer(new EntityState() { Position = inputA.LeftGrabPosition, Rotation = inputA.LeftGrabRotation });
                 }
-                if (inputA.RightGrabId != 0)
+                if (entry.Value.inputA.RightGrabId != 0)
                 {
-                    NetworkObject grabbed = networkObjects.Find((NetworkObject g) => g.id == inputA.RightGrabId);
+                    NetworkObject grabbed = networkObjects.Find((NetworkObject g) => g.id == entry.Value.inputA.RightGrabId);
                     if (grabbed.snapContainer != null)
                     {
                         grabbed.snapContainer.Unsnap();
@@ -145,47 +143,47 @@ public class GameManagerServer : MonoBehaviour
                     if (grabbed.body != null)
                     {
                         grabbed.body.isKinematic = true;
-                        grabbed.bufferVelocity = inputA.RightGrabVelocity;
-                        grabbed.bufferAngularVelocity = inputA.RightGrabAngularVelocity;
+                        grabbed.bufferVelocity = entry.Value.inputA.RightGrabVelocity;
+                        grabbed.bufferAngularVelocity = entry.Value.inputA.RightGrabAngularVelocity;
                     }
                     //grabbed.AddStateToBuffer(new EntityState() { Position = inputA.RightGrabPosition, Rotation = inputA.RightGrabRotation });
                 }
                 //networkObjectManager.ServerSideSyncClientUngrabbed(leftUngrabbedId, rightUngrabbedId);
                 //networkObjectManager.ServerSideSyncClientGrabbing(peerID, inputA);
-                if (!player.leftShooting && inputA.LeftShooting && player.leftGrabId != 0)
+                if (!player.leftShooting && entry.Value.inputA.LeftShooting && player.leftGrabId != 0)
                 {
                     NetworkObject obj = networkObjects.Find((NetworkObject g) => g.id == player.leftGrabId);
                     Transform spawnPoint = obj.GetComponent<Gun>().spawnPoint.transform;
                     SpawnBullet(spawnPoint);
                 }
-                player.leftShooting = inputA.LeftShooting;
-                if (!player.rightShooting && inputA.RightShooting && player.rightGrabId != 0)
+                player.leftShooting = entry.Value.inputA.LeftShooting;
+                if (!player.rightShooting && entry.Value.inputA.RightShooting && player.rightGrabId != 0)
                 {
                     NetworkObject obj = networkObjects.Find((NetworkObject g) => g.id == player.rightGrabId);
                     Transform spawnPoint = obj.GetComponent<Gun>().spawnPoint.transform;
                     SpawnBullet(spawnPoint);
                 }
-                player.rightShooting = inputA.RightShooting;
+                player.rightShooting = entry.Value.inputA.RightShooting;
             }
             if (isLerping)
             {
-                player.headGO.transform.position = Vector3.Lerp(inputA.HeadPosition, inputB.HeadPosition, lerpTimer / lerpMax);
-                player.headGO.transform.rotation = Quaternion.Lerp(inputA.HeadRotation, inputB.HeadRotation, lerpTimer / lerpMax);
-                player.leftGO.transform.position = Vector3.Lerp(inputA.LeftHandPosition, inputB.LeftHandPosition, lerpTimer / lerpMax);
-                player.leftGO.transform.rotation = Quaternion.Lerp(inputA.LeftHandRotation, inputB.LeftHandRotation, lerpTimer / lerpMax);
-                player.rightGO.transform.position = Vector3.Lerp(inputA.RightHandPosition, inputB.RightHandPosition, lerpTimer / lerpMax);
-                player.rightGO.transform.rotation = Quaternion.Lerp(inputA.RightHandRotation, inputB.RightHandRotation, lerpTimer / lerpMax);
-                NetworkObject leftGrabbed = networkObjects.Find((NetworkObject g) => g.id == inputB.LeftGrabId);
-                NetworkObject rightGrabbed = networkObjects.Find((NetworkObject g) => g.id == inputB.RightGrabId);
+                player.headGO.transform.position = Vector3.Lerp(entry.Value.inputA.HeadPosition, entry.Value.inputB.HeadPosition, lerpTimer / lerpMax);
+                player.headGO.transform.rotation = Quaternion.Lerp(entry.Value.inputA.HeadRotation, entry.Value.inputB.HeadRotation, lerpTimer / lerpMax);
+                player.leftGO.transform.position = Vector3.Lerp(entry.Value.inputA.LeftHandPosition, entry.Value.inputB.LeftHandPosition, lerpTimer / lerpMax);
+                player.leftGO.transform.rotation = Quaternion.Lerp(entry.Value.inputA.LeftHandRotation, entry.Value.inputB.LeftHandRotation, lerpTimer / lerpMax);
+                player.rightGO.transform.position = Vector3.Lerp(entry.Value.inputA.RightHandPosition, entry.Value.inputB.RightHandPosition, lerpTimer / lerpMax);
+                player.rightGO.transform.rotation = Quaternion.Lerp(entry.Value.inputA.RightHandRotation, entry.Value.inputB.RightHandRotation, lerpTimer / lerpMax);
+                NetworkObject leftGrabbed = networkObjects.Find((NetworkObject g) => g.id == entry.Value.inputB.LeftGrabId);
+                NetworkObject rightGrabbed = networkObjects.Find((NetworkObject g) => g.id == entry.Value.inputB.RightGrabId);
                 if (leftGrabbed != null)
                 {
-                    leftGrabbed.transform.position = Vector3.Lerp(inputA.LeftGrabPosition, inputB.LeftGrabPosition, lerpTimer / lerpMax);
-                    leftGrabbed.transform.rotation = Quaternion.Lerp(inputA.LeftGrabRotation, inputB.LeftGrabRotation, lerpTimer / lerpMax);
+                    leftGrabbed.transform.position = Vector3.Lerp(entry.Value.inputA.LeftGrabPosition, entry.Value.inputB.LeftGrabPosition, lerpTimer / lerpMax);
+                    leftGrabbed.transform.rotation = Quaternion.Lerp(entry.Value.inputA.LeftGrabRotation, entry.Value.inputB.LeftGrabRotation, lerpTimer / lerpMax);
                 }
                 if (rightGrabbed != null)
                 {
-                    rightGrabbed.transform.position = Vector3.Lerp(inputA.RightGrabPosition, inputB.RightGrabPosition, lerpTimer / lerpMax);
-                    rightGrabbed.transform.rotation = Quaternion.Lerp(inputA.RightGrabRotation, inputB.RightGrabRotation, lerpTimer / lerpMax);
+                    rightGrabbed.transform.position = Vector3.Lerp(entry.Value.inputA.RightGrabPosition, entry.Value.inputB.RightGrabPosition, lerpTimer / lerpMax);
+                    rightGrabbed.transform.rotation = Quaternion.Lerp(entry.Value.inputA.RightGrabRotation, entry.Value.inputB.RightGrabRotation, lerpTimer / lerpMax);
                 }
 
             }
@@ -194,8 +192,8 @@ public class GameManagerServer : MonoBehaviour
             //if (lerpTimer >= lerpMax)
             {
                 lerpTimer = 0f;
-                inputA = inputB;
-                inputB = null;
+                entry.Value.inputA = entry.Value.inputB;
+                entry.Value.inputB = null;
             }
         }
     }
