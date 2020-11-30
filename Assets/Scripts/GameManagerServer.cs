@@ -270,9 +270,10 @@ public class GameManagerServer : MonoBehaviour
 
     public void OnClientConnected(int peerID)
     {
+        Debug.Log("new player connected as "+peerID);
         Player newPlayer = Instantiate(playerPrefab).GetComponent<Player>();
         newPlayer.SetNameOrientationTarget(headGO);
-        newPlayer.GetComponent<Player>().id = peerID;
+        newPlayer.id = peerID;
         playersInputManager.Add(peerID, new PlayersInputManager());
         players.Add(newPlayer);
         InitMessage im = new InitMessage()

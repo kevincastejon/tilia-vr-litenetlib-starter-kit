@@ -74,6 +74,7 @@ public class GameManagerClient : MonoBehaviour
             for (int i = 0; i < stateB.Players.Length; i++)
             {
                 Player player = players.Find(x => x.id == stateB.Players[i].Id);
+                Debug.Log(stateB.Players[i].Id + " - "+ avatarId);
                 if (player != null)
                 {
                     //player.AddStateToBuffer(stateB.Players[i].Clone());
@@ -288,6 +289,7 @@ public class GameManagerClient : MonoBehaviour
         newPlayer.SetLeftPointer(ps.LeftPointer);
         newPlayer.SetRightPointer(ps.RightPointer);
         players.Add(newPlayer);
+        Debug.Log("new player connected");
     }
 
     private void DespawnOldPlayers(PlayerState[] ps)
