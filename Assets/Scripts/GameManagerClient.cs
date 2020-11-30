@@ -38,7 +38,8 @@ public class GameManagerClient : MonoBehaviour
     private float lerpTimer = 0f;
     private float sendRate = 50 / 1000f;
     private float sendTimer = 0f;
-    private int stateBufferLength;
+    [ReadOnly]
+    public int stateBufferLength;
 
     private void Start()
     {
