@@ -65,17 +65,16 @@ public class GameManagerClient : MonoBehaviour
             {
                 stateA = stateBuffer[0];
                 stateBuffer.RemoveAt(0);
+
             }
             stateB = stateBuffer[0];
             stateBuffer.RemoveAt(0);
             //Debug.Log("removed state");
             stateBufferLength = stateBuffer.Count;
             isLerping = true;
-            Debug.Log("start looping");
             for (int i = 0; i < stateB.Players.Length; i++)
             {
                 Player player = players.Find(x => x.id == stateB.Players[i].Id);
-                Debug.Log(stateB.Players[i].Id + " - " + avatarId);
                 if (player != null)
                 {
                     //player.AddStateToBuffer(stateB.Players[i].Clone());
@@ -107,6 +106,10 @@ public class GameManagerClient : MonoBehaviour
         {
             for (int i = 0; i < stateB.Players.Length; i++)
             {
+                if (stateB.Players[i].Id == avatarId || stateA.Players.Length-1 < i)
+                {
+                    continue;
+                }
                 Player player = players.Find(x => x.id == stateB.Players[i].Id);
                 player.headGO.transform.position = Vector3.Lerp(stateA.Players[i].HeadPosition, stateB.Players[i].HeadPosition, lerpTimer / lerpMax);
                 player.headGO.transform.rotation = Quaternion.Lerp(stateA.Players[i].HeadRotation, stateB.Players[i].HeadRotation, lerpTimer / lerpMax);

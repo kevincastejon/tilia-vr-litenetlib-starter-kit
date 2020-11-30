@@ -8934,14 +8934,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   avatarId: 0
-  leftGrab: {fileID: 0}
-  rightGrab: {fileID: 0}
-  leftPointer: 0
-  rightPointer: 0
-  leftShooting: 0
-  rightShooting: 0
-  leftInteractor: {fileID: 1142066677}
-  rightInteractor: {fileID: 155289357}
   gameClient: {fileID: 2035483287}
   playerPrefab: {fileID: 5143088545895085449, guid: c72752aba5d06074586033b2a852aeaf,
     type: 3}
@@ -8950,6 +8942,14 @@ MonoBehaviour:
   headGO: {fileID: 1253932596}
   leftGO: {fileID: 77620282}
   rightGO: {fileID: 1500526633}
+  leftGrab: {fileID: 0}
+  rightGrab: {fileID: 0}
+  leftPointer: 0
+  rightPointer: 0
+  leftShooting: 0
+  rightShooting: 0
+  leftInteractor: {fileID: 1142066677}
+  rightInteractor: {fileID: 155289357}
   networkObjects:
   - {fileID: 1158261941}
   - {fileID: 979283222}
