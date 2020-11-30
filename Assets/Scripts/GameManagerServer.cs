@@ -398,10 +398,10 @@ public class GameManagerServer : MonoBehaviour
             LeftPointer = leftPointer,
             RightPointer = rightPointer,
         };
-        for (int i = 0; i < playerStates.Length; i++)
-        {
-            Debug.Log(playerStates[i].Id);
-        }
+        //for (int i = 0; i < playerStates.Length; i++)
+        //{
+        //    Debug.Log(playerStates[i].Id);
+        //}
         EntityState[] entityStates = new EntityState[networkObjects.Count];
         for (int i = 0; i < networkObjects.Count; i++)
         {
