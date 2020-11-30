@@ -71,7 +71,6 @@ public class GameManagerServer : MonoBehaviour
                 {
                     entry.Value.inputA = inputBuffer[0];
                     inputBuffer.RemoveAt(0);
-                    Debug.Log(entry.Value.inputA);
                 }
                 entry.Value.inputB = inputBuffer[0];
                 inputBuffer.RemoveAt(0);
@@ -269,7 +268,6 @@ public class GameManagerServer : MonoBehaviour
 
     public void OnClientConnected(int peerID)
     {
-        Debug.Log("new player connected as " + peerID);
         Player newPlayer = Instantiate(playerPrefab).GetComponent<Player>();
         newPlayer.SetNameOrientationTarget(headGO);
         newPlayer.id = peerID;

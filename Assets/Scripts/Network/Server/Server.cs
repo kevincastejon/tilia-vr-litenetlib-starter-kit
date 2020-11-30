@@ -120,7 +120,6 @@ public class Server : MonoBehaviour, INetEventListener, INetLogger
     public void SendImportantMessage<T>(T data, NetPeer peer, bool exclusion) where T : class, new()
     {
         byte[] ba = _netPacketProcessor.Write(data);
-        Debug.Log(ba.Length + "b");
         if (peer != null)
         {
             if (exclusion)
