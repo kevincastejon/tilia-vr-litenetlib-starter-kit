@@ -154,6 +154,6 @@ public class Client : MonoBehaviour, INetEventListener
     {
         byte[] ba = _netPacketProcessor.Write(data);
         packetSize = ba.Length;
-        _netPacketProcessor.Send(_netClient, data, DeliveryMethod.Sequenced);
+        _netPacketProcessor.Send(_netClient, data, DeliveryMethod.Unreliable);
     }
 }

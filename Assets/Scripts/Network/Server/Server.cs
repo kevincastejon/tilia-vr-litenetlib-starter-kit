@@ -152,16 +152,16 @@ public class Server : MonoBehaviour, INetEventListener, INetLogger
         {
             if (exclusion)
             {
-                _netServer.SendToAll(ba, DeliveryMethod.Sequenced, GetPeerById(peerId));
+                _netServer.SendToAll(ba, DeliveryMethod.Unreliable, GetPeerById(peerId));
             }
             else
             {
-                _netPacketProcessor.Send(GetPeerById(peerId), data, DeliveryMethod.Sequenced);
+                _netPacketProcessor.Send(GetPeerById(peerId), data, DeliveryMethod.Unreliable);
             }
         }
         else
         {
-            _netPacketProcessor.Send(_netServer, data, DeliveryMethod.Sequenced);
+            _netPacketProcessor.Send(_netServer, data, DeliveryMethod.Unreliable);
         }
     }
 }
