@@ -4000,7 +4000,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74bc7fb32c2b34341973cba88a531b2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isServer: 1
+  _isServer: 0
   server: {fileID: 691973308}
   client: {fileID: 2035483286}
 --- !u!4 &978153843
@@ -8903,7 +8903,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4320cd22601fc4b4389b487ed6faecf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverIP: 192.168.0.32
+  serverIP: 192.168.0.20
   serverPort: 5000
   token: appsecret
   autoConnect: 1

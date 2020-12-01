@@ -63,7 +63,7 @@ public class GameManagerClient : MonoBehaviour
             }
         }
         bool isLerping = stateA != null && stateB != null;
-        if (stateBuffer.Count >= 2 && !isLerping)
+        if (stateBuffer.Count >= 4 && !isLerping)
         {
             if (stateA == null)
             {
