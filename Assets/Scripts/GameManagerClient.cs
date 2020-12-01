@@ -34,7 +34,7 @@ public class GameManagerClient : MonoBehaviour
     private readonly List<StateMessage> stateBuffer = new List<StateMessage>();
     private StateMessage stateA;
     private StateMessage stateB;
-    private float lerpMax = 1 / 60f;
+    private float lerpMax = 50/1000f;
     private float lerpTimer = 0f;
     private float sendRate = 50 / 1000f;
     private float sendTimer = 0f;
@@ -51,10 +51,9 @@ public class GameManagerClient : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Debug.Log("NEW FRAME");
         sendTimer += Time.fixedDeltaTime;
-        if (true)
-        //if (sendTimer >= sendRate)
+        //if (true)
+        if (sendTimer >= sendRate)
         {
             sendTimer = 0f;
             if (gameClient.Connected && ready)
@@ -64,10 +63,8 @@ public class GameManagerClient : MonoBehaviour
             }
         }
         bool isLerping = stateA != null && stateB != null;
-        //Debug.Log(stateBuffer.Count+" - "+isLerping);
         if (stateBuffer.Count >= 2 && !isLerping)
         {
-            //Debug.Log("SWITCH STATE A TO B");
             if (stateA == null)
             {
                 stateA = stateBuffer[0];
@@ -76,7 +73,6 @@ public class GameManagerClient : MonoBehaviour
             }
             stateB = stateBuffer[0];
             stateBuffer.RemoveAt(0);
-            ////Debug.Log("removed state");
             stateBufferLength = stateBuffer.Count;
             isLerping = true;
             for (int i = 0; i < stateB.Players.Length; i++)
@@ -111,7 +107,6 @@ public class GameManagerClient : MonoBehaviour
         }
         if (isLerping)
         {
-            //Debug.Log("LERPING");
             for (int i = 0; i < stateB.Players.Length; i++)
             {
                 if (stateB.Players[i].Id == avatarId || stateA.Players.Length-1 < i)
@@ -137,8 +132,8 @@ public class GameManagerClient : MonoBehaviour
             }
         }
         lerpTimer += Time.fixedDeltaTime;
-        if (true)
-        //if (lerpTimer >= lerpMax)
+        //if (true)
+        if (lerpTimer >= lerpMax)
         {
             lerpTimer = 0f;
             stateA = stateB;

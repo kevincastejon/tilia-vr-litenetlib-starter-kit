@@ -41,7 +41,8 @@ public class GameManagerServer : MonoBehaviour
     public List<NetworkObject> networkObjects = new List<NetworkObject>();
     private readonly List<Player> players = new List<Player>();
     Dictionary<int, PlayersInputManager> playersInputManager = new Dictionary<int, PlayersInputManager>();
-    private float lerpMax = 1 / 60f;
+    private float lerpMax = 50 / 1000f;
+    //private float lerpMax = 1 / 60f;
     private float lerpTimer = 0f;
     private float sendRate = 50 / 1000f;
     private float sendTimer = 0f;
@@ -54,8 +55,8 @@ public class GameManagerServer : MonoBehaviour
     private void FixedUpdate()
     {
         sendTimer += Time.fixedDeltaTime;
-        if (true)
-        //if (sendTimer >= sendRate)
+        //if (true)
+        if (sendTimer >= sendRate)
         {
             sendTimer = 0f;
             sequence++;
@@ -197,8 +198,8 @@ public class GameManagerServer : MonoBehaviour
 
             }
             lerpTimer += Time.fixedDeltaTime;
-            if (true)
-            //if (lerpTimer >= lerpMax)
+            //if (true)
+            if (lerpTimer >= lerpMax)
             {
                 lerpTimer = 0f;
                 entry.Value.inputA = entry.Value.inputB;
@@ -400,7 +401,7 @@ public class GameManagerServer : MonoBehaviour
             };
         }
 
-        playerStates[players.Count-1] = new PlayerState()
+        playerStates[players.Count - 1] = new PlayerState()
         {
             Id = serverId,
             HeadPosition = headGO.transform.position,
