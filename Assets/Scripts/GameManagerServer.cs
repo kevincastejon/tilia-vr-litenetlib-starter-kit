@@ -62,7 +62,7 @@ public class GameManagerServer : MonoBehaviour
                 {
                     continue;
                 }
-                StateMessage sm = GetWorldState(players[i]);
+                StateMessage sm = GetWorldState(players[i].id);
                 server.SendWorldState(sm, players[i].id);
             }
         }
