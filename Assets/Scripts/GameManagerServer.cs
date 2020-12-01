@@ -76,7 +76,7 @@ public class GameManagerServer : MonoBehaviour
             Player player = players.Find(x => x.id == entry.Key);
             List<PlayerInput> inputBuffer = entry.Value.playerInputsBuffer;
             bool isLerping = entry.Value.inputA != null && entry.Value.inputB != null;
-            if (inputBuffer.Count >= 4 && !isLerping)
+            if (inputBuffer.Count >= 6 && !isLerping)
             {
                 if (entry.Value.inputA == null)
                 {
