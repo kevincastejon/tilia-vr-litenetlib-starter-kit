@@ -38,12 +38,14 @@ public class GameManagerServer : MonoBehaviour
     private NetworkManager networkObjectManager;
     public List<NetworkObject> networkObjects = new List<NetworkObject>();
     private readonly List<Player> players = new List<Player>();
-    public int playersInputBufferLength;
     Dictionary<int, PlayersInputManager> playersInputManager = new Dictionary<int, PlayersInputManager>();
     private float lerpMax = 1 / 60f;
     private float lerpTimer = 0f;
     private float sendRate = 50 / 1000f;
     private float sendTimer = 0f;
+    private float debugPlayerSendingMax = 2f;
+    private float debugPlayerSendingTimer = 0f;
+    private bool debugAllowedToSend = false;
 
     private void Start()
     {
@@ -52,8 +54,16 @@ public class GameManagerServer : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (players.Count > 0)
+        {
+            debugPlayerSendingTimer += Time.fixedDeltaTime;
+            if (debugPlayerSendingTimer >= debugPlayerSendingMax)
+            {
+                debugAllowedToSend = true;
+            }
+        }
         sendTimer += Time.fixedDeltaTime;
-        if (true)
+        if (debugAllowedToSend)
         //if (sendTimer >= sendRate)
         {
             sendTimer = 0f;
