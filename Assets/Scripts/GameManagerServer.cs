@@ -35,6 +35,8 @@ public class GameManagerServer : MonoBehaviour
     [ReadOnly]
     public bool rightShooting;
     public int maxBullets = 12;
+    [ReadOnly]
+    public int sequence = 0;
     private NetworkManager networkObjectManager;
     public List<NetworkObject> networkObjects = new List<NetworkObject>();
     private readonly List<Player> players = new List<Player>();
@@ -56,6 +58,7 @@ public class GameManagerServer : MonoBehaviour
         //if (sendTimer >= sendRate)
         {
             sendTimer = 0f;
+            sequence++;
             for (int i = 0; i < players.Count; i++)
             {
                 if (!players[i].ready)
@@ -427,6 +430,7 @@ public class GameManagerServer : MonoBehaviour
         }
         StateMessage sm = new StateMessage()
         {
+            Sequence = sequence,
             Players = playerStates,
             Entities = entityStates,
         };

@@ -2,6 +2,7 @@
 
 public class StateMessage
 {
+    public int Sequence { get; set; }
     public PlayerState[] Players { get; set; }
     public EntityState[] Entities { get; set; }
 

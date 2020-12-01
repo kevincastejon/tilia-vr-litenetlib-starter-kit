@@ -41,6 +41,8 @@ public class GameManagerClient : MonoBehaviour
     private bool ready;
     [ReadOnly]
     public int stateBufferLength;
+    [ReadOnly]
+    public int sequence = 0;
 
     private void Start()
     {
@@ -269,6 +271,11 @@ public class GameManagerClient : MonoBehaviour
     /// </summary>
     public void OnState(StateMessage sm)
     {
+        if (sm.Sequence < sequence)
+        {
+            return;
+        }
+        sequence = sm.Sequence;
         stateBuffer.Add(sm.Clone());
         //Debug.Log("added state");
         stateBufferLength = stateBuffer.Count;
