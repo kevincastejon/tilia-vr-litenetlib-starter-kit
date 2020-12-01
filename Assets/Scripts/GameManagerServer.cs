@@ -397,7 +397,7 @@ public class GameManagerServer : MonoBehaviour
             };
         }
 
-        playerStates[players.Count] = new PlayerState()
+        playerStates[players.Count-1] = new PlayerState()
         {
             Id = serverId,
             HeadPosition = headGO.transform.position,
