@@ -61,8 +61,8 @@ public class GameServer : MonoBehaviour
         Debug.Log("SENT INIT MESSAGE");
         server.SendImportantMessage(im, server.GetPeerById(peerId));
     }
-    public void SendWorldState(StateMessage sm)
+    public void SendWorldState(StateMessage sm, int peerId)
     {
-        server.SendFastMessage(sm);
+        server.SendFastMessage(sm, peerId);
     }
 }

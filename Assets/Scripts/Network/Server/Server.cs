@@ -138,25 +138,25 @@ public class Server : MonoBehaviour, INetEventListener, INetLogger
     }
     public void SendFastMessage<T>(T data) where T : class, new()
     {
-        SendFastMessage(data, null, false);
+        SendFastMessage(data, -1, false);
     }
-    public void SendFastMessage<T>(T data, NetPeer peer) where T : class, new()
+    public void SendFastMessage<T>(T data, int peerId) where T : class, new()
     {
-        SendFastMessage(data, peer, false);
+        SendFastMessage(data, peerId, false);
     }
-    public void SendFastMessage<T>(T data, NetPeer peer, bool exclusion) where T : class, new()
+    public void SendFastMessage<T>(T data, int peerId, bool exclusion) where T : class, new()
     {
         byte[] ba = _netPacketProcessor.Write(data);
         packetSize=ba.Length;
-        if (peer != null)
+        if (peerId != -1)
         {
             if (exclusion)
             {
-                _netServer.SendToAll(ba, DeliveryMethod.Sequenced, peer);
+                _netServer.SendToAll(ba, DeliveryMethod.Sequenced, GetPeerById(peerId));
             }
             else
             {
-                _netPacketProcessor.Send(peer, data, DeliveryMethod.Sequenced);
+                _netPacketProcessor.Send(GetPeerById(peerId), data, DeliveryMethod.Sequenced);
             }
         }
         else

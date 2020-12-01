@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     public bool rightShooting;
     public PointerFacade leftPointer;
     public PointerFacade rightPointer;
+    public bool ready;
     private GameObject nameOrientationTarget;
     //private readonly List<PlayerState> stateBuffer = new List<PlayerState>();
     //private PlayerState stateA;

@@ -38,6 +38,7 @@ public class GameManagerClient : MonoBehaviour
     private float lerpTimer = 0f;
     private float sendRate = 50 / 1000f;
     private float sendTimer = 0f;
+    private bool ready;
     [ReadOnly]
     public int stateBufferLength;
 
@@ -54,7 +55,7 @@ public class GameManagerClient : MonoBehaviour
         //if (sendTimer >= sendRate)
         {
             sendTimer = 0f;
-            if (gameClient.Connected)
+            if (gameClient.Connected && ready)
             {
                 PlayerInput pi = GetPlayerInput();
                 gameClient.SendInput(pi);
@@ -261,6 +262,7 @@ public class GameManagerClient : MonoBehaviour
     public void OnInit(InitMessage im)
     {
         avatarId = im.OwnId;
+        ready = true;
     }
     /// <summary>
     /// Called when received fresh state data from the server

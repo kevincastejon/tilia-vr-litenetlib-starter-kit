@@ -43,9 +43,6 @@ public class GameManagerServer : MonoBehaviour
     private float lerpTimer = 0f;
     private float sendRate = 50 / 1000f;
     private float sendTimer = 0f;
-    private float debugPlayerSendingMax = 2f;
-    private float debugPlayerSendingTimer = 0f;
-    private bool debugAllowedToSend = false;
 
     private void Start()
     {
@@ -54,21 +51,20 @@ public class GameManagerServer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (players.Count > 0)
-        {
-            debugPlayerSendingTimer += Time.fixedDeltaTime;
-            if (debugPlayerSendingTimer >= debugPlayerSendingMax)
-            {
-                debugAllowedToSend = true;
-            }
-        }
         sendTimer += Time.fixedDeltaTime;
-        if (debugAllowedToSend)
+        if (true)
         //if (sendTimer >= sendRate)
         {
             sendTimer = 0f;
-            StateMessage sm = GetWorldState();
-            server.SendWorldState(sm);
+            for (int i = 0; i < players.Count; i++)
+            {
+                if (!players[i].ready)
+                {
+                    continue;
+                }
+                StateMessage sm = GetWorldState(players[i]);
+                server.SendWorldState(sm, players[i].id);
+            }
         }
 
         foreach (KeyValuePair<int, PlayersInputManager> entry in playersInputManager)
@@ -331,6 +327,8 @@ public class GameManagerServer : MonoBehaviour
 
     public void OnClientInput(int peerID, PlayerInput pi)
     {
+        Player p = players.Find(x => x.id == peerID);
+        p.ready = true;
         playersInputManager[peerID].playerInputsBuffer.Add(pi.Clone());
         //playersInputBufferLength = playersInputManager[peerID].playerInputsBuffer.Count;
         //Player player = players.Find(x => x.GetComponent<Player>().id == peerID).GetComponent<Player>();
@@ -375,12 +373,16 @@ public class GameManagerServer : MonoBehaviour
         //player.rightShooting = pi.RightShooting;
     }
 
-    private StateMessage GetWorldState()
+    private StateMessage GetWorldState(int playerId)
     {
-        PlayerState[] playerStates = new PlayerState[players.Count + 1];
+        PlayerState[] playerStates = new PlayerState[players.Count];
         for (int i = 0; i < players.Count; i++)
         {
             Player p = players[i];
+            if (p.id == playerId)
+            {
+                continue;
+            }
             playerStates[i] = new PlayerState()
             {
                 Id = p.id,
