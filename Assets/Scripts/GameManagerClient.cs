@@ -48,7 +48,7 @@ public class GameManagerClient : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log("NEW FRAME");
+        //Debug.Log("NEW FRAME");
         sendTimer += Time.fixedDeltaTime;
         if (true)
         //if (sendTimer >= sendRate)
@@ -61,10 +61,10 @@ public class GameManagerClient : MonoBehaviour
             }
         }
         bool isLerping = stateA != null && stateB != null;
-        Debug.Log(stateBuffer.Count+" - "+isLerping);
+        //Debug.Log(stateBuffer.Count+" - "+isLerping);
         if (stateBuffer.Count >= 2 && !isLerping)
         {
-            Debug.Log("SWITCH STATE A TO B");
+            //Debug.Log("SWITCH STATE A TO B");
             if (stateA == null)
             {
                 stateA = stateBuffer[0];
@@ -73,7 +73,7 @@ public class GameManagerClient : MonoBehaviour
             }
             stateB = stateBuffer[0];
             stateBuffer.RemoveAt(0);
-            //Debug.Log("removed state");
+            ////Debug.Log("removed state");
             stateBufferLength = stateBuffer.Count;
             isLerping = true;
             for (int i = 0; i < stateB.Players.Length; i++)
@@ -108,7 +108,7 @@ public class GameManagerClient : MonoBehaviour
         }
         if (isLerping)
         {
-            Debug.Log("LERPING");
+            //Debug.Log("LERPING");
             for (int i = 0; i < stateB.Players.Length; i++)
             {
                 if (stateB.Players[i].Id == avatarId || stateA.Players.Length-1 < i)
@@ -268,7 +268,7 @@ public class GameManagerClient : MonoBehaviour
     public void OnState(StateMessage sm)
     {
         stateBuffer.Add(sm.Clone());
-        Debug.Log("added state");
+        //Debug.Log("added state");
         stateBufferLength = stateBuffer.Count;
         //for (int i = 0; i < sm.Players.Length; i++)
         //{
@@ -300,7 +300,7 @@ public class GameManagerClient : MonoBehaviour
         newPlayer.SetLeftPointer(ps.LeftPointer);
         newPlayer.SetRightPointer(ps.RightPointer);
         players.Add(newPlayer);
-        Debug.Log("new player connected");
+        //Debug.Log("new player connected");
     }
 
     private void DespawnOldPlayers(PlayerState[] ps)

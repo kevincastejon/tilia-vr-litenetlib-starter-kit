@@ -38,6 +38,7 @@ public class GameManagerServer : MonoBehaviour
     private NetworkManager networkObjectManager;
     public List<NetworkObject> networkObjects = new List<NetworkObject>();
     private readonly List<Player> players = new List<Player>();
+    public int playersInputBufferLength;
     Dictionary<int, PlayersInputManager> playersInputManager = new Dictionary<int, PlayersInputManager>();
     private float lerpMax = 1 / 60f;
     private float lerpTimer = 0f;
@@ -74,6 +75,7 @@ public class GameManagerServer : MonoBehaviour
                 }
                 entry.Value.inputB = inputBuffer[0];
                 inputBuffer.RemoveAt(0);
+                playersInputBufferLength = playersInputManager[entry.Key].playerInputsBuffer.Count;
                 isLerping = true;
                 player.SetLeftPointer(entry.Value.inputA.LeftPointer);
                 player.SetRightPointer(entry.Value.inputA.RightPointer);
@@ -321,6 +323,7 @@ public class GameManagerServer : MonoBehaviour
     public void OnClientInput(int peerID, PlayerInput pi)
     {
         playersInputManager[peerID].playerInputsBuffer.Add(pi.Clone());
+        playersInputBufferLength = playersInputManager[peerID].playerInputsBuffer.Count;
         //Player player = players.Find(x => x.GetComponent<Player>().id == peerID).GetComponent<Player>();
         //Vector3 hp = pi.HeadPosition;
         //Quaternion hr = pi.HeadRotation;
