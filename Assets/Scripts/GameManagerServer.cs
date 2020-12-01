@@ -417,8 +417,7 @@ public class GameManagerServer : MonoBehaviour
         StateMessage sm = new StateMessage()
         {
             Players = playerStates,
-            //Entities = entityStates,
-            Entities = new EntityState[0],
+            Entities = entityStates,
         };
         return sm;
     }
