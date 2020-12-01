@@ -52,9 +52,9 @@ public class GameManagerServer : MonoBehaviour
         networkObjectManager = NetworkManager.GetInstance();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        sendTimer += Time.fixedDeltaTime;
+        sendTimer += Time.deltaTime;
         //if (true)
         if (sendTimer >= sendRate)
         {
@@ -197,7 +197,7 @@ public class GameManagerServer : MonoBehaviour
                 }
 
             }
-            lerpTimer += Time.fixedDeltaTime;
+            lerpTimer += Time.deltaTime;
             //if (true)
             if (lerpTimer >= lerpMax)
             {
