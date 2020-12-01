@@ -69,7 +69,38 @@ public class GameManagerClient : MonoBehaviour
             {
                 stateA = stateBuffer[0];
                 stateBuffer.RemoveAt(0);
+                for (int i = 0; i < stateA.Players.Length; i++)
+                {
+                    Player player = players.Find(x => x.id == stateA.Players[i].Id);
+                    if (player != null)
+                    {
+                        //player.AddStateToBuffer(stateA.Players[i].Clone());
+                    }
+                    else if (stateA.Players[i].Id != avatarId)
+                    {
+                        SpawnPlayer(stateA.Players[i]);
+                    }
+                }
+                DespawnOldPlayers(stateA.Players);
+                for (int i = 0; i < stateA.Entities.Length; i++)
+                {
+                    //Debug.Log("LOOKING FOR LINKED OBJECT WITH ID "+ stateA.Entities[i].Id);
+                    NetworkObject obj = networkObjects.Find(x => x.id == stateA.Entities[i].Id);
+                    //Debug.Log("OBJECT FOUND IS "+obj);
 
+                    if (obj != null)
+                    {
+                        if (!obj.grabbed)
+                        {
+                            //obj.AddStateToBuffer(stateA.Entities[i].Clone());
+                        }
+                    }
+                    else
+                    {
+                        LinkOrSpawnLocalObject(stateA.Entities[i]);
+                    }
+                }
+                DespawnOldObjects(stateA.Entities);
             }
             stateB = stateBuffer[0];
             stateBuffer.RemoveAt(0);
@@ -143,6 +174,7 @@ public class GameManagerClient : MonoBehaviour
 
     public void LinkOrSpawnLocalObject(EntityState es)
     {
+        Debug.Log("LINKORSPAWN");
         NetworkObject localObject = networkObjects.Find((NetworkObject g) => (byte)g.type == es.Type && g.id == 0);
         if (localObject != null)
         {

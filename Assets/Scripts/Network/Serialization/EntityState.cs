@@ -35,6 +35,8 @@ public class EntityState : INetSerializable
     {
         EntityState clone = new EntityState()
         {
+            Id = Id,
+            Type = Type,
             Position = new Vector3(Position.x, Position.y, Position.z),
             Rotation = new Quaternion(Rotation.x, Rotation.y, Rotation.z, Rotation.w)
         };

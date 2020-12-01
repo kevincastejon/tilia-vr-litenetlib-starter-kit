@@ -20,6 +20,7 @@ public class StateMessage
         }
         return new StateMessage()
         {
+            Sequence = Sequence,
             Players = plrs,
             Entities = ent,
         };
