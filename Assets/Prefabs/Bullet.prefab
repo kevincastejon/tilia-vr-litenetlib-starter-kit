@@ -9,8 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5909328378647937758}
-  - component: {fileID: 8146386973961257186}
-  - component: {fileID: 3115150653465604408}
+  - component: {fileID: 3175002095881621787}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -33,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &8146386973961257186
+--- !u!54 &3175002095881621787
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,36 +40,14 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2024301931097442895}
   serializedVersion: 2
-  m_Mass: 0.1
-  m_Drag: 0.05
+  m_Mass: 1
+  m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3115150653465604408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2024301931097442895}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 112e050a2773a7e49a9e2b12bf9d16cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
-  body: {fileID: 8146386973961257186}
-  id: 0
-  grabbed: 0
-  leftHand: 0
-  lastOwnerId: 0
-  snapContainer: {fileID: 0}
-  bufferVelocity: {x: 0, y: 0, z: 0}
-  bufferAngularVelocity: {x: 0, y: 0, z: 0}
-  kinematicInitValue: 0
 --- !u!1 &2559008747566827673
 GameObject:
   m_ObjectHideFlags: 0
@@ -83,7 +60,7 @@ GameObject:
   - component: {fileID: 8995150326577982559}
   - component: {fileID: 7370150815978091456}
   - component: {fileID: 1449750550007543263}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}

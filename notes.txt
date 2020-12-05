@@ -1,3 +1,0 @@
-empty state : 14
-1 player state : 78
-1 entity state : 28
