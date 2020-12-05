@@ -48,11 +48,13 @@ public class Guest: Common
 
     ulong roomId;                                                   // the id of the room that we have joined.
 
+    [ReadOnly]
     public double timeMatchmakingStarted;                           // time matchmaking started
-    public double timeConnectionStarted;                            // time the client connection started (used to timeout due to NAT)
-    public double timeConnected;                                    // time the client connected to the server
-    public double timeLastPacketSent;                               // time the last packet was sent to the server
-    public double timeLastPacketReceived;                           // time the last packet was received from the server (used for post-connect timeouts)
+    //public double timeConnectionStarted;                            // time the client connection started (used to timeout due to NAT)
+    //public double timeConnected;                                    // time the client connected to the server
+    //public double timeLastPacketSent;                               // time the last packet was sent to the server
+    //public double timeLastPacketReceived;                           // time the last packet was received from the server (used for post-connect timeouts)
+    [ReadOnly]
     public double timeRetryStarted;                                 // time the retry state started. used to delay in waiting for retry state before retrying matchmaking from scratch.
 
     private byte[] readBuffer = new byte[Constants.MaxPacketSize];
@@ -110,7 +112,7 @@ public class Guest: Common
     {
         Matchmaking.Cancel();
 
-        DisconnectFromServer();
+        //DisconnectFromServer();
 
         if ( successfullyConnected )
             return;
@@ -203,7 +205,7 @@ public class Guest: Common
             
             PrintRoomDetails( msg.Data );
 
-            StartConnectionToServer();
+            //StartConnectionToServer();
         }
         else
         {
@@ -269,86 +271,86 @@ public class Guest: Common
 
             if ( msg.Data.State != PeerConnectionState.Connected )
             { 
-                DisconnectFromServer();
+                //DisconnectFromServer();
             }
         }
     }
 
-    void StartConnectionToServer()
-    {
-        state = GuestState.Connecting;
+    //void StartConnectionToServer()
+    //{
+    //    state = GuestState.Connecting;
 
-        timeConnectionStarted = renderTime;
-    }
+    //    timeConnectionStarted = renderTime;
+    //}
 
-    void ConnectToServer( int clientIndex )
-    {
-        Debug.Log("CONNECTING TO SERVER "+clientIndex);
-        Assert.IsTrue( clientIndex >= 1 );
-        Assert.IsTrue( clientIndex < Constants.MaxClients );
+    //void ConnectToServer( int clientIndex )
+    //{
+    //    Debug.Log("CONNECTING TO SERVER "+clientIndex);
+    //    Assert.IsTrue( clientIndex >= 1 );
+    //    Assert.IsTrue( clientIndex < Constants.MaxClients );
 
-        //localAvatar.transform.position = context.GetRemoteAvatar( clientIndex ).gameObject.transform.position;
-        //localAvatar.transform.rotation = context.GetRemoteAvatar( clientIndex ).gameObject.transform.rotation;
+    //    //localAvatar.transform.position = context.GetRemoteAvatar( clientIndex ).gameObject.transform.position;
+    //    //localAvatar.transform.rotation = context.GetRemoteAvatar( clientIndex ).gameObject.transform.rotation;
 
-        state = GuestState.Connected;
+    //    state = GuestState.Connected;
 
-        this.clientIndex = clientIndex;
+    //    this.clientIndex = clientIndex;
 
-        //context.Initialize( clientIndex );
+    //    //context.Initialize( clientIndex );
 
-        OnConnectToServer( clientIndex );
-    }
+    //    OnConnectToServer( clientIndex );
+    //}
 
-    void DisconnectFromServer()
-    {
-        if ( IsConnectedToServer() )
-            OnDisconnectFromServer();
+    //void DisconnectFromServer()
+    //{
+    //    if ( IsConnectedToServer() )
+    //        OnDisconnectFromServer();
 
-        Net.Close( hostUserId );
+    //    Net.Close( hostUserId );
 
-        LeaveRoom( roomId, LeaveRoomCallback );
+    //    LeaveRoom( roomId, LeaveRoomCallback );
 
-        roomId = 0;
+    //    roomId = 0;
 
-        hostUserId = 0;
+    //    hostUserId = 0;
 
-        state = GuestState.Disconnected;
+    //    state = GuestState.Disconnected;
 
-        //serverInfo.Clear();
+    //    //serverInfo.Clear();
 
-        connectionRequests.Clear();
+    //    connectionRequests.Clear();
 
-        acceptedConnectionRequest = false;
-    }
+    //    acceptedConnectionRequest = false;
+    //}
 
-    void OnConnectToServer( int clientIndex )
-    {
-        Debug.Log( "Connected to server as client " + clientIndex );
+    //void OnConnectToServer( int clientIndex )
+    //{
+    //    Debug.Log( "Connected to server as client " + clientIndex );
 
-        timeConnected = renderTime;
+    //    timeConnected = renderTime;
 
-        //context.Activate();
+    //    //context.Activate();
 
-        //for ( int i = 0; i < Constants.MaxClients; ++i )
-        //{
-        //    context.HideRemoteAvatar( i );
-        //}
+    //    //for ( int i = 0; i < Constants.MaxClients; ++i )
+    //    //{
+    //    //    context.HideRemoteAvatar( i );
+    //    //}
 
-        successfullyConnected = true;
-    }
+    //    successfullyConnected = true;
+    //}
 
-    void OnDisconnectFromServer()
-    {
-        Debug.Log( "Disconnected from server" );
+    //void OnDisconnectFromServer()
+    //{
+    //    Debug.Log( "Disconnected from server" );
 
-        //context.GetClientConnectionData().Reset();
+    //    //context.GetClientConnectionData().Reset();
 
-        //context.SetResetSequence( 0 );
+    //    //context.SetResetSequence( 0 );
 
-        //context.Reset();
+    //    //context.Reset();
 
-        //context.Deactivate();
-    }
+    //    //context.Deactivate();
+    //}
 
     bool readyToShutdown = false;
 
@@ -356,10 +358,10 @@ public class Guest: Common
     {
         Matchmaking.Cancel();
 
-        if ( IsConnectedToServer() )
-        {
-            DisconnectFromServer();
-        }
+        //if ( IsConnectedToServer() )
+        //{
+        //    DisconnectFromServer();
+        //}
 
         if ( roomId != 0 )
         {
@@ -448,30 +450,30 @@ public class Guest: Common
             return;
         }
 
-        CheckForTimeouts();
+        //CheckForTimeouts();
     }
 
-    void CheckForTimeouts()
-    {
-        if ( state == GuestState.Connecting )
-        {
-            if ( timeConnectionStarted + ConnectTimeout < renderTime )
-            {
-                Debug.Log( "Timed out while trying to connect to server" );
+    //void CheckForTimeouts()
+    //{
+    //    if ( state == GuestState.Connecting )
+    //    {
+    //        if ( timeConnectionStarted + ConnectTimeout < renderTime )
+    //        {
+    //            Debug.Log( "Timed out while trying to connect to server" );
 
-                RetryUntilConnectedToServer();
-            }
-        }
-        else if ( state == GuestState.Connected )
-        {
-            if ( timeLastPacketReceived + ConnectionTimeout < renderTime )
-            {
-                Debug.Log( "Connection to server timed out" );
+    //            RetryUntilConnectedToServer();
+    //        }
+    //    }
+    //    else if ( state == GuestState.Connected )
+    //    {
+    //        if ( timeLastPacketReceived + ConnectionTimeout < renderTime )
+    //        {
+    //            Debug.Log( "Connection to server timed out" );
 
-                DisconnectFromServer();
-            }
-        }
-    }
+    //            DisconnectFromServer();
+    //        }
+    //    }
+    //}
 
     //new void FixedUpdate()
     //{
