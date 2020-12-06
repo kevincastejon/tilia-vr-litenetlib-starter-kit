@@ -46,6 +46,10 @@ public class GameManagerClient : MonoBehaviour
         });
         localSequence++;
     }
+    public void OnServerInit(InitMessage im)
+    {
+        localAvatar.id = im.OwnId;
+    }
     public void OnServerState(StateMessage sm)
     {
         //if (sm.Sequence <= lastReceivedSequence)

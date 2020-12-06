@@ -598,13 +598,46 @@ MonoBehaviour:
   autoStart: 1
   onPlayerConnected:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 121076096}
+        m_MethodName: OnPlayerConnected
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onPlayerDisconnected:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 121076096}
+        m_MethodName: OnPlayerDisconnected
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onPlayerInput:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 121076096}
+        m_MethodName: OnPlayerInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &121076094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -645,7 +678,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c9881b7533a2ef4f85051c5a50cd97d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 0}
+  playerPrefab: {fileID: 5143088545895085449, guid: 882ad77aea76e9f4480b8ede08df835c,
+    type: 3}
   bulletPrefab: {fileID: 2024301931097442895, guid: 2910db0b28aba7b408e99e773670a592,
     type: 3}
   localAvatar: {fileID: 2110964069}
@@ -6978,10 +7012,32 @@ MonoBehaviour:
       m_Calls: []
   onInit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1928920090}
+        m_MethodName: OnServerInit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onState:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1928920090}
+        m_MethodName: OnServerState
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1928920088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7025,7 +7081,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2efed3356636c9d45845edd12fe4a014, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 0}
+  playerPrefab: {fileID: 5143088545895085449, guid: 882ad77aea76e9f4480b8ede08df835c,
+    type: 3}
   bulletPrefab: {fileID: 2024301931097442895, guid: 2910db0b28aba7b408e99e773670a592,
     type: 3}
   localAvatar: {fileID: 2110964069}
@@ -7337,6 +7394,7 @@ MonoBehaviour:
   rightTriggerAction: {fileID: 891166389}
   leftPointerAction: {fileID: 1960257411}
   rightPointerAction: {fileID: 155483284}
+  id: 0
   leftGrabbed: {fileID: 0}
   rightGrabbed: {fileID: 0}
   leftPointer: 0

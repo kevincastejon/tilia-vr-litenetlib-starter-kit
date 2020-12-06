@@ -23,6 +23,8 @@ public class LocalAvatar : MonoBehaviour
     public OVRInputTouchAction rightPointerAction;
     [Header("Monitoring")]
     [ReadOnly]
+    public int id;
+    [ReadOnly]
     public InteractableFacade leftGrabbed;
     [ReadOnly]
     public InteractableFacade rightGrabbed;

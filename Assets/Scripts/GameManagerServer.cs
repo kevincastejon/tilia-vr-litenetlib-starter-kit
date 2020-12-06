@@ -22,6 +22,7 @@ public class GameManagerServer : MonoBehaviour
     {
         logicTimer = new LogicTimer(OnLogicFrame);
         logicTimer.Start();
+        localAvatar.id = -1;
         localAvatar.OnShoot.AddListener(ShootBullet);
     }
 
