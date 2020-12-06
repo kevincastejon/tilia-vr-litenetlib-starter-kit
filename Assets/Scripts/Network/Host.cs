@@ -221,8 +221,12 @@ public class Host : Common
                 {
                     int clientIndex = FindFreeClientIndex();
                     if (clientIndex != -1)
+                    {
+
                         Debug.Log("NEW USER IN ROOM "+clientIndex+" "+user.ID + " " + user.OculusID);
                         //StartClientConnection( clientIndex, user.ID, user.OculusID );
+                        Net.Connect(user.ID);
+                    }
                 }
             }
         }

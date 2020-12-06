@@ -200,8 +200,7 @@ public class Guest: Common
         if ( !msg.IsError )
         {
             Debug.Log( "Joined room" );
-
-            hostUserId = msg.Data.Owner.ID;
+            hostUserId = msg.Data.OwnerOptional.ID;
             
             PrintRoomDetails( msg.Data );
 

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerInput : INetSerializable
 {
+    public int Sequence { get; set; }
     public Vector3 HeadPosition { get; set; }
     public Quaternion HeadRotation { get; set; }
     public Vector3 LeftHandPosition { get; set; }
@@ -19,13 +20,14 @@ public class PlayerInput : INetSerializable
     public Quaternion RightGrabRotation { get; set; }
     public Vector3 RightGrabAngularVelocity { get; set; }
     public int RightGrabId { get; set; }
-    public bool LeftShooting { get; set; }
-    public bool RightShooting { get; set; }
+    public bool LeftTrigger { get; set; }
+    public bool RightTrigger { get; set; }
     public bool LeftPointer { get; set; }
     public bool RightPointer { get; set; }
 
     public void Serialize(NetDataWriter writer)
     {
+        writer.Put(Sequence);
         Vector3Utils.Serialize(writer, HeadPosition);
         QuatUtils.Serialize(writer, HeadRotation);
         Vector3Utils.Serialize(writer, LeftHandPosition);
@@ -42,14 +44,15 @@ public class PlayerInput : INetSerializable
         QuatUtils.Serialize(writer, RightGrabRotation);
         Vector3Utils.Serialize(writer, RightGrabAngularVelocity);
         writer.Put(RightGrabId);
-        writer.Put(LeftShooting);
-        writer.Put(RightShooting);
+        writer.Put(LeftTrigger);
+        writer.Put(RightTrigger);
         writer.Put(LeftPointer);
         writer.Put(RightPointer);
     }
 
     public void Deserialize(NetDataReader reader)
     {
+        Sequence = reader.GetInt();
         HeadPosition = Vector3Utils.Deserialize(reader);
         HeadRotation = QuatUtils.Deserialize(reader);
         LeftHandPosition = Vector3Utils.Deserialize(reader);
@@ -66,8 +69,8 @@ public class PlayerInput : INetSerializable
         RightGrabRotation = QuatUtils.Deserialize(reader);
         RightGrabAngularVelocity = Vector3Utils.Deserialize(reader);
         RightGrabId = reader.GetInt();
-        LeftShooting = reader.GetBool();
-        RightShooting = reader.GetBool();
+        LeftTrigger = reader.GetBool();
+        RightTrigger = reader.GetBool();
         LeftPointer = reader.GetBool();
         RightPointer = reader.GetBool();
     }
@@ -76,6 +79,7 @@ public class PlayerInput : INetSerializable
     {
         return new PlayerInput()
         {
+            Sequence = Sequence,
             HeadPosition = new Vector3(HeadPosition.x, HeadPosition.y, HeadPosition.z),
             HeadRotation = new Quaternion(HeadRotation.x, HeadRotation.y, HeadRotation.z, HeadRotation.w),
             LeftHandPosition = new Vector3(LeftHandPosition.x, LeftHandPosition.y, LeftHandPosition.z),
@@ -94,8 +98,8 @@ public class PlayerInput : INetSerializable
             RightGrabAngularVelocity = RightGrabAngularVelocity,
             LeftPointer = LeftPointer,
             RightPointer = RightPointer,
-            LeftShooting = LeftShooting,
-            RightShooting = RightShooting,
+            LeftTrigger = LeftTrigger,
+            RightTrigger = RightTrigger,
         };
     }
 }
