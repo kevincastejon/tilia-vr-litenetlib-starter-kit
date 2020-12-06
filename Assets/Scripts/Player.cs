@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     public InteractableFacade leftGrabbed;
     [ReadOnly]
     public InteractableFacade rightGrabbed;
-    public List<PlayerInput> inputBuffer = new List<PlayerInput>();
+    public LiteRingBuffer<PlayerInput> inputBuffer = new LiteRingBuffer<PlayerInput>(30);
     [HideInInspector]
     private GameObject nameOrientationTarget;
     private float _receivedTime;
@@ -68,18 +68,25 @@ public class Player : MonoBehaviour
         if (_timer > lerpTime)
         {
             _receivedTime -= lerpTime;
-            inputBuffer.RemoveAt(0);
+            inputBuffer.RemoveFromStart(1);
             _timer -= lerpTime;
         }
     }
 
     public void AddStateToBuffer(PlayerInput pi)
     {
-        int diff = NetworkGeneral.SeqDiff(pi.Sequence, inputBuffer[inputBuffer.Count-1].Sequence);
+        int diff = NetworkGeneral.SeqDiff(pi.Sequence, inputBuffer.Last.Sequence);
         if (diff <= 0)
             return;
 
         _receivedTime += diff * LogicTimer.FixedDelta;
+        if (inputBuffer.IsFull)
+        {
+            Debug.LogWarning("[C] Remote: Something happened");
+            //Lag?
+            _receivedTime = 0f;
+            inputBuffer.FastClear();
+        }
         inputBuffer.Add(pi);
     }
 }
