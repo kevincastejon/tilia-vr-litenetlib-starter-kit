@@ -33,7 +33,12 @@ public class GameManagerClient : MonoBehaviour
 
     private void OnLogicFrame()
     {
-        client.SendInput(new PlayerInput() { 
+        //SendInput();
+    }
+    private void SendInput()
+    {
+        client.SendInput(new PlayerInput()
+        {
             Sequence = localSequence,
             HeadPosition = localAvatar.headAlias.transform.position,
             HeadRotation = localAvatar.headAlias.transform.rotation,
