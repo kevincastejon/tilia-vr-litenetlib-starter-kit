@@ -17,7 +17,7 @@ public class GameServer : MonoBehaviour
     public PlayerInputEvent onPlayerInput = new PlayerInputEvent();
     private Server server;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         server = GetComponentInChildren<Server>();
         server.onPlayerConnected.AddListener((NetPeer peer) => OnPeerConnected(peer));

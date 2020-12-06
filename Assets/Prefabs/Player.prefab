@@ -184,11 +184,14 @@ MonoBehaviour:
   headAlias: {fileID: 5143088546153528603}
   leftHandAlias: {fileID: 5143088547053985206}
   rightHandAlias: {fileID: 5143088546728339851}
+  playerName: {fileID: 5475225523451354045}
   id: 0
-  leftGrabbed: {fileID: 0}
-  rightGrabbed: {fileID: 0}
   leftShooting: 0
   rightShooting: 0
+  leftPointer: 0
+  rightPointer: 0
+  leftGrabbed: {fileID: 0}
+  rightGrabbed: {fileID: 0}
 --- !u!1 &5143088546153528603
 GameObject:
   m_ObjectHideFlags: 0
