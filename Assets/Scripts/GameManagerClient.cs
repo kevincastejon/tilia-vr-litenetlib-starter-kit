@@ -44,6 +44,7 @@ public class GameManagerClient : MonoBehaviour
         {
             SendInput();
         }
+        timer += Time.fixedDeltaTime;
     }
 
     private void SendInput()

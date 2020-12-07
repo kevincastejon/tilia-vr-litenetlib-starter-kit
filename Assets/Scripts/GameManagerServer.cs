@@ -41,6 +41,7 @@ public class GameManagerServer : MonoBehaviour
             SendState();
             LerpPlayers(Time.fixedDeltaTime);
         }
+        timer += Time.fixedDeltaTime;
         //logicTimer.Update();
     }
 
