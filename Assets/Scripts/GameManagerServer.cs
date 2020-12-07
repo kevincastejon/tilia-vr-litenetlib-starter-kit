@@ -15,27 +15,39 @@ public class GameManagerServer : MonoBehaviour
     [Header("Monitoring")]
     [ReadOnly]
     public List<Player> players = new List<Player>();
-    private LogicTimer logicTimer;
+    //private LogicTimer logicTimer;
     private int Sequence;
+    private float maxTimer = 32 / 1000f;
+    private float timer = 0f;
 
     private void Start()
     {
-        logicTimer = new LogicTimer(OnLogicFrame);
-        logicTimer.Start();
+        //logicTimer = new LogicTimer(OnLogicFrame);
+        //logicTimer.Start();
         localAvatar.id = -1;
         localAvatar.OnShoot.AddListener(ShootBullet);
     }
 
-    private void Update()
+    //private void Update()
+    //{
+    //    //logicTimer.Update();
+    //    LerpPlayers(Time.deltaTime);
+    //}
+
+    private void FixedUpdate()
     {
-        logicTimer.Update();
-        LerpPlayers(Time.deltaTime);
+        if (timer >= maxTimer)
+        {
+            SendState();
+            LerpPlayers(Time.fixedDeltaTime);
+        }
+        //logicTimer.Update();
     }
 
-    private void OnLogicFrame()
-    {
-        SendState();
-    }
+    //private void OnLogicFrame()
+    //{
+    //    SendState();
+    //}
     public void OnPlayerConnected(int peerID)
     {
         Player newPlayer = Instantiate(playerPrefab).GetComponent<Player>();

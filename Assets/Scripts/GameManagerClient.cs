@@ -15,25 +15,35 @@ public class GameManagerClient : MonoBehaviour
     [ReadOnly]
     public List<Player> players = new List<Player>();
     [ReadOnly]
-    public List<StateMessage> serverStateBuffer = new List<StateMessage>();
-    private LogicTimer logicTimer;
+    public LiteRingBuffer<StateMessage> stateBuffer = new LiteRingBuffer<StateMessage>(5);
+    //private LogicTimer logicTimer;
     private int lastReceivedSequence;
     private int localSequence;
+    private float maxTimer = 32 / 1000f;
+    private float timer = 0f;
 
-    private void Start()
-    {
-        logicTimer = new LogicTimer(OnLogicFrame);
-        logicTimer.Start();
-    }
+    //private void Start()
+    //{
+    //    //logicTimer = new LogicTimer(OnLogicFrame);
+    //    //logicTimer.Start();
+    //}
 
-    private void Update()
-    {
-        logicTimer.Update();
-    }
+    //private void Update()
+    //{
+    //    //logicTimer.Update();
+    //}
 
-    private void OnLogicFrame()
+    //private void OnLogicFrame()
+    //{
+    //    SendInput();
+    //}
+
+    private void FixedUpdate()
     {
-        SendInput();
+        if (timer >= maxTimer)
+        {
+            SendInput();
+        }
     }
 
     private void SendInput()
