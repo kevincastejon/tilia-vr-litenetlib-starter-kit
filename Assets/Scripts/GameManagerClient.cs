@@ -35,6 +35,7 @@ public class GameManagerClient : MonoBehaviour
     {
         SendInput();
     }
+
     private void SendInput()
     {
         client.SendInput(new PlayerInput()
