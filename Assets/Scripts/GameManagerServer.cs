@@ -28,18 +28,18 @@ public class GameManagerServer : MonoBehaviour
         localAvatar.OnShoot.AddListener(ShootBullet);
     }
 
-    //private void Update()
-    //{
-    //    //logicTimer.Update();
-    //    LerpPlayers(Time.deltaTime);
-    //}
+    private void Update()
+    {
+        //logicTimer.Update();
+        LerpPlayers(Time.deltaTime);
+    }
 
     private void FixedUpdate()
     {
         if (timer >= maxTimer)
         {
             SendState();
-            LerpPlayers(Time.fixedDeltaTime);
+            //LerpPlayers(Time.fixedDeltaTime);
         }
         timer += Time.fixedDeltaTime;
         //logicTimer.Update();
