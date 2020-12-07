@@ -33,7 +33,7 @@ public class GameManagerClient : MonoBehaviour
 
     private void OnLogicFrame()
     {
-        //SendInput();
+        SendInput();
     }
     private void SendInput()
     {
