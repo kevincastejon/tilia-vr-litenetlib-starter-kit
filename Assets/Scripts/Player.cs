@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
     [ReadOnly]
     public int inputBufferLength;
     [HideInInspector]
-    public LiteRingBuffer<PlayerInput> inputBuffer = new LiteRingBuffer<PlayerInput>(30);
+    public LiteRingBuffer<PlayerInput> inputBuffer = new LiteRingBuffer<PlayerInput>(10);
     [HideInInspector]
     private GameObject nameOrientationTarget;
     private float _receivedTime;
