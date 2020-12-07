@@ -41,6 +41,17 @@ public class GameManagerServer : MonoBehaviour
         Player newPlayer = Instantiate(playerPrefab).GetComponent<Player>();
         newPlayer.SetNameOrientationTarget(localAvatar.headAlias);
         newPlayer.id = peerID;
+        newPlayer.inputBuffer.Add(new PlayerInput()
+        {
+            Sequence = -1,
+            HeadPosition = Vector3.zero,
+            HeadRotation = Quaternion.identity,
+            LeftHandPosition = Vector3.zero,
+            LeftHandRotation = Quaternion.identity,
+            RightHandPosition = Vector3.zero,
+            RightHandRotation = Quaternion.identity,
+        }
+            );
         players.Add(newPlayer);
         InitMessage im = new InitMessage()
         {

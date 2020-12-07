@@ -30,6 +30,9 @@ public class Player : MonoBehaviour
     public InteractableFacade leftGrabbed;
     [ReadOnly]
     public InteractableFacade rightGrabbed;
+    [ReadOnly]
+    public int inputBufferLength;
+    [HideInInspector]
     public LiteRingBuffer<PlayerInput> inputBuffer = new LiteRingBuffer<PlayerInput>(30);
     [HideInInspector]
     private GameObject nameOrientationTarget;
@@ -69,6 +72,7 @@ public class Player : MonoBehaviour
         {
             _receivedTime -= lerpTime;
             inputBuffer.RemoveFromStart(1);
+            inputBufferLength = inputBuffer.Count;
             _timer -= lerpTime;
         }
     }
@@ -88,5 +92,6 @@ public class Player : MonoBehaviour
             inputBuffer.FastClear();
         }
         inputBuffer.Add(pi);
+        inputBufferLength = inputBuffer.Count;
     }
 }
