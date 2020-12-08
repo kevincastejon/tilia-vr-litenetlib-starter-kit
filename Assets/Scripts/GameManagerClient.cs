@@ -100,32 +100,6 @@ public class GameManagerClient : MonoBehaviour
             stateBufferLength = stateBuffer.Count;
             _timer -= lerpTime;
         }
-
-        //for (int i = 0; i < players.Count; i++)
-        //{
-        //    Player p = players[i];
-        //    if (_receivedTime < BufferTime || stateBuffer.Count < 2)
-        //        return;
-        //    PlayerState dataA = stateA.Players[i];
-        //    PlayerState dataB = stateB.Players[i];
-
-        //    float lerpTime = NetworkGeneral.SeqDiff(stateA.Sequence, stateB.Sequence) * LogicTimer.FixedDelta;
-        //    float t = _timer / lerpTime;
-        //    p.headAlias.transform.position = Vector3.Lerp(dataA.HeadPosition, dataB.HeadPosition, t);
-        //    p.headAlias.transform.rotation = Quaternion.Lerp(dataA.HeadRotation, dataB.HeadRotation, t);
-        //    p.leftHandAlias.transform.position = Vector3.Lerp(dataA.LeftHandPosition, dataB.LeftHandPosition, t);
-        //    p.leftHandAlias.transform.rotation = Quaternion.Lerp(dataA.LeftHandRotation, dataB.LeftHandRotation, t);
-        //    p.rightHandAlias.transform.position = Vector3.Lerp(dataA.RightHandPosition, dataB.RightHandPosition, t);
-        //    p.rightHandAlias.transform.rotation = Quaternion.Lerp(dataA.RightHandRotation, dataB.RightHandRotation, t);
-        //    _timer += delta;
-        //    if (_timer > lerpTime)
-        //    {
-        //        _receivedTime -= lerpTime;
-        //        stateBuffer.RemoveFromStart(1);
-        //        stateBufferLength = stateBuffer.Count;
-        //        _timer -= lerpTime;
-        //    }
-        //}
     }
 
     private void SendInput()
