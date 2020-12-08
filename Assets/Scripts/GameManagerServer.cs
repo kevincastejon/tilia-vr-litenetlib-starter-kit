@@ -29,12 +29,12 @@ public class GameManagerServer : MonoBehaviour
     private void Update()
     {
         logicTimer.Update();
-        LerpPlayers(Time.deltaTime);
     }
 
     private void OnLogicFrame()
     {
         SendState();
+        LerpPlayers(LogicTimer.FixedDelta);
     }
     public void OnPlayerConnected(int peerID)
     {

@@ -40,7 +40,7 @@ public class GameManagerClient : MonoBehaviour
     private void OnLogicFrame()
     {
         SendInput();
-        LerpStates(Time.deltaTime);
+        LerpStates(LogicTimer.FixedDelta);
     }
 
     private void LerpStates(float delta)
