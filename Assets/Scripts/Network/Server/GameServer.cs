@@ -15,19 +15,19 @@ public class GameServer : MonoBehaviour
     public PlayerEvent onPlayerConnected = new PlayerEvent();
     public PlayerEvent onPlayerDisconnected = new PlayerEvent();
     public PlayerInputEvent onPlayerInput = new PlayerInputEvent();
-    private Server server;
+    //private Server server;
     // Start is called before the first frame update
     void Awake()
     {
-        server = GetComponentInChildren<Server>();
-        server.onPlayerConnected.AddListener((NetPeer peer) => OnPeerConnected(peer));
-        server.onPlayerDisconnected.AddListener((NetPeer peer) => OnPeerDisconnected(peer));
-        server.onPlayerInput.AddListener((NetPeer peer, PlayerInput pi) => OnPeerInput(peer, pi));
-        if (autoStart)
-        {
-            Listen();
-            Debug.Log("Server listening on port " + port);
-        }
+        //server = GetComponentInChildren<Server>();
+        //server.onPlayerConnected.AddListener((NetPeer peer) => OnPeerConnected(peer));
+        //server.onPlayerDisconnected.AddListener((NetPeer peer) => OnPeerDisconnected(peer));
+        //server.onPlayerInput.AddListener((NetPeer peer, PlayerInput pi) => OnPeerInput(peer, pi));
+        //if (autoStart)
+        //{
+        //    Listen();
+        //    Debug.Log("Server listening on port " + port);
+        //}
     }
     // Update is called once per frame
     void Update()
@@ -36,13 +36,13 @@ public class GameServer : MonoBehaviour
     }
     private void OnDestroy()
     {
-        server.onPlayerConnected.RemoveAllListeners();
-        server.onPlayerConnected.RemoveAllListeners();
-        server.onPlayerInput.RemoveAllListeners();
+        //server.onPlayerConnected.RemoveAllListeners();
+        //server.onPlayerConnected.RemoveAllListeners();
+        //server.onPlayerInput.RemoveAllListeners();
     }
     private void Listen()
     {
-        server.Listen(port);
+        //server.Listen(port);
     }
     private void OnPeerConnected(NetPeer peer)
     {
@@ -58,11 +58,11 @@ public class GameServer : MonoBehaviour
     }
     public void SendInitMessage(InitMessage im, int peerId)
     {
-        Debug.Log("SENT INIT MESSAGE");
-        server.SendImportantMessage(im, server.GetPeerById(peerId));
+        //Debug.Log("SENT INIT MESSAGE");
+        //server.SendImportantMessage(im, server.GetPeerById(peerId));
     }
     public void SendWorldState(StateMessage sm, int peerId)
     {
-        server.SendFastMessage(sm, peerId);
+        //server.SendFastMessage(sm, peerId);
     }
 }

@@ -19,40 +19,40 @@ public class GameClient : MonoBehaviour
     public ClientEvent onDisconnected = new ClientEvent();
     public ClientInitEvent onInit = new ClientInitEvent();
     public ClientStateEvent onState = new ClientStateEvent();
-    private Client client;
+    //private Client client;
 
-    public bool Connected => (client.Connected);
+    //public bool Connected => (client.Connected);
 
     // Start is called before the first frame update
     void Start()
     {
-        client = GetComponentInChildren<Client>();
-        client.onLANDiscovered.AddListener((string name, IPEndPoint ip) => OnLANDiscovered(name, ip));
-        client.onConnected.AddListener(() => OnConnected());
-        client.onDisconnected.AddListener(() => OnDisconnected());
-        client.onInit.AddListener((InitMessage im) => OnInit(im));
-        client.onState.AddListener((StateMessage sm) => OnState(sm));
+        //client = GetComponentInChildren<Client>();
+        //client.onLANDiscovered.AddListener((string name, IPEndPoint ip) => OnLANDiscovered(name, ip));
+        //client.onConnected.AddListener(() => OnConnected());
+        //client.onDisconnected.AddListener(() => OnDisconnected());
+        //client.onInit.AddListener((InitMessage im) => OnInit(im));
+        //client.onState.AddListener((StateMessage sm) => OnState(sm));
     }
     /// <summary>
     /// Start sending regular discovery broadcast message
     /// </summary>
     public void StartLANDiscovery()
     {
-        client.StartDiscovery();
+        //client.StartDiscovery();
     }
     /// <summary>
     /// Stop sending regular discovery broadcast message
     /// </summary>
     public void StopLANDiscovery()
     {
-        client.StopDiscovery();
+        //client.StopDiscovery();
     }
     /// <summary>
     /// Tries to connect to a server with the specified endPoint and token
     /// </summary>
     public void Connect(IPEndPoint endPoint)
     {
-        client.Connect(endPoint);
+        //client.Connect(endPoint);
     }
 
     /// <summary>
@@ -61,7 +61,7 @@ public class GameClient : MonoBehaviour
     public void SendInput(PlayerInput pi)
     {
         //Debug.Log(pi.RightGrabVelocity);
-        client.SendFastMessage(pi);
+        //client.SendFastMessage(pi);
     }
     private void OnLANDiscovered(string name, IPEndPoint ip)
     {
