@@ -184,14 +184,15 @@ MonoBehaviour:
   headAlias: {fileID: 5143088546153528603}
   leftHandAlias: {fileID: 5143088547053985206}
   rightHandAlias: {fileID: 5143088546728339851}
+  leftPointerFacade: {fileID: 8193708690320696503}
+  rightPointerFacade: {fileID: 3345264954326338446}
   playerName: {fileID: 5475225523451354045}
   id: 0
   leftShooting: 0
   rightShooting: 0
-  leftPointer: 0
-  rightPointer: 0
   leftGrabbed: {fileID: 0}
   rightGrabbed: {fileID: 0}
+  inputBufferLength: 0
 --- !u!1 &5143088546153528603
 GameObject:
   m_ObjectHideFlags: 0
@@ -666,6 +667,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 596818827125784883}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3345264954326338446 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2748488038835702461, guid: 1950b2150beec924d9cff768bb4e815c,
+    type: 3}
+  m_PrefabInstance: {fileID: 596818827125784883}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94b64be7011dbb64db38b1b10ab3057b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5828497732344877907
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -761,3 +774,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5828497732344877907}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8193708690320696503 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2402421270702372836, guid: c69d84a3cadb94e45af0210c52e5728d,
+    type: 3}
+  m_PrefabInstance: {fileID: 5828497732344877907}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94b64be7011dbb64db38b1b10ab3057b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
