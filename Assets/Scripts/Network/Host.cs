@@ -336,7 +336,7 @@ public class Host : Common
             {
                 if ( client[clientIndex].state != ClientState.Disconnected )
                 {
-                    //DisconnectClient( clientIndex );
+                    DisconnectClient(clientIndex);
                 }
             }
         }
@@ -350,8 +350,8 @@ public class Host : Common
         {
             for ( int i = 1; i < Constants.MaxClients; ++i )
             {
-                //if ( IsClientConnected( i ) )
-                    //DisconnectClient( i );
+                if (IsClientConnected(i))
+                    DisconnectClient(i);
             }
 
             LeaveRoom( roomId, LeaveRoomOnQuitCallback );
