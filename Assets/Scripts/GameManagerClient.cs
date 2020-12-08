@@ -45,7 +45,7 @@ public class GameManagerClient : MonoBehaviour
 
     private void LerpStates(float delta)
     {
-        if (_receivedTime < BufferTime || stateBuffer.Count < 2)
+        if (_receivedTime < BufferTime || stateBuffer.Count < 5)
         {
             return;
         }
