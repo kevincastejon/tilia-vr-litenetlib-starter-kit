@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Tilia.Indicators.ObjectPointers;
 using Tilia.Interactions.Interactables.Interactables;
 using Tilia.Interactions.Interactables.Interactors;
 using Tilia.SDK.OculusIntegration.Input;
@@ -13,6 +14,8 @@ public class Player : MonoBehaviour
     public GameObject headAlias;
     public GameObject leftHandAlias;
     public GameObject rightHandAlias;
+    public PointerFacade leftPointerFacade;
+    public PointerFacade rightPointerFacade;
     public TextMeshProUGUI playerName;
     [Header("Monitoring")]
     [ReadOnly]
@@ -22,9 +25,9 @@ public class Player : MonoBehaviour
     [ReadOnly]
     public bool rightShooting;
     [ReadOnly]
-    public bool leftPointer;
+    private bool leftPointer;
     [ReadOnly]
-    public bool rightPointer;
+    private bool rightPointer;
     [Header("!Server-Side Only!")]
     [ReadOnly]
     public InteractableFacade leftGrabbed;
@@ -40,6 +43,17 @@ public class Player : MonoBehaviour
     private float _timer;
     private const float BufferTime = 0.1f; //100 milliseconds
 
+    public bool LeftPointer
+    {
+        get { return leftPointer; }
+        set { leftPointer = value; if (value) { leftPointerFacade.Activate(); } else { leftPointerFacade.Deactivate(); } }
+    }
+
+    public bool RightPointer
+    {
+        get { return rightPointer; }
+        set { rightPointer = value; if (value) { rightPointerFacade.Activate(); } else { rightPointerFacade.Deactivate(); } }
+    }
 
     public void SetNameOrientationTarget(GameObject target)
     {

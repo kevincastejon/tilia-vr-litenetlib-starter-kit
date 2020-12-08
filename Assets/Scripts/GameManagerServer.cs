@@ -99,8 +99,8 @@ public class GameManagerServer : MonoBehaviour
                     LeftHandRotation = p.leftHandAlias.transform.rotation,
                     RightHandPosition = p.rightHandAlias.transform.position,
                     RightHandRotation = p.rightHandAlias.transform.rotation,
-                    LeftPointer = p.leftPointer,
-                    RightPointer = p.rightPointer,
+                    LeftPointer = p.LeftPointer,
+                    RightPointer = p.RightPointer,
                 };
                 playerStateCount++;
             }

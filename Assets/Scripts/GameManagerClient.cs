@@ -67,27 +67,28 @@ public class GameManagerClient : MonoBehaviour
                 p.leftHandAlias.transform.rotation = playersStateB.LeftHandRotation;
                 p.rightHandAlias.transform.position = playersStateB.RightHandPosition;
                 p.rightHandAlias.transform.rotation = playersStateB.RightHandRotation;
-                p.leftPointer = playersStateB.LeftPointer;
-                p.rightPointer = playersStateB.RightPointer;
+                p.LeftPointer = playersStateB.LeftPointer;
+                p.RightPointer = playersStateB.RightPointer;
                 players[p.id] = p;
             }
-            PlayerState dataA = null;
-            PlayerState dataB = stateB.Players[i];
+            PlayerState playersStateA = null;
             for (int j = 0; j < stateA.Players.Length; j++)
             {
-                if (stateA.Players[j].Id == dataB.Id)
+                if (stateA.Players[j].Id == playersStateB.Id)
                 {
-                    dataA = stateA.Players[j];
+                    playersStateA = stateA.Players[j];
                 }
             }
-            if (dataA != null)
+            if (playersStateA != null)
             {
-                p.headAlias.transform.position = Vector3.Lerp(dataA.HeadPosition, dataB.HeadPosition, t);
-                p.headAlias.transform.rotation = Quaternion.Lerp(dataA.HeadRotation, dataB.HeadRotation, t);
-                p.leftHandAlias.transform.position = Vector3.Lerp(dataA.LeftHandPosition, dataB.LeftHandPosition, t);
-                p.leftHandAlias.transform.rotation = Quaternion.Lerp(dataA.LeftHandRotation, dataB.LeftHandRotation, t);
-                p.rightHandAlias.transform.position = Vector3.Lerp(dataA.RightHandPosition, dataB.RightHandPosition, t);
-                p.rightHandAlias.transform.rotation = Quaternion.Lerp(dataA.RightHandRotation, dataB.RightHandRotation, t);
+                p.headAlias.transform.position = Vector3.Lerp(playersStateA.HeadPosition, playersStateB.HeadPosition, t);
+                p.headAlias.transform.rotation = Quaternion.Lerp(playersStateA.HeadRotation, playersStateB.HeadRotation, t);
+                p.leftHandAlias.transform.position = Vector3.Lerp(playersStateA.LeftHandPosition, playersStateB.LeftHandPosition, t);
+                p.leftHandAlias.transform.rotation = Quaternion.Lerp(playersStateA.LeftHandRotation, playersStateB.LeftHandRotation, t);
+                p.rightHandAlias.transform.position = Vector3.Lerp(playersStateA.RightHandPosition, playersStateB.RightHandPosition, t);
+                p.rightHandAlias.transform.rotation = Quaternion.Lerp(playersStateA.RightHandRotation, playersStateB.RightHandRotation, t);
+                p.LeftPointer = playersStateA.LeftPointer;
+                p.RightPointer = playersStateA.RightPointer;
             }
         }
         _timer += delta;
