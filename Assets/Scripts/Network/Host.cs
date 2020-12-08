@@ -224,8 +224,7 @@ public class Host : Common
                     {
 
                         Debug.Log("NEW USER IN ROOM "+clientIndex+" "+user.ID + " " + user.OculusID);
-                        //StartClientConnection( clientIndex, user.ID, user.OculusID );
-                        Net.Connect(user.ID);
+                        StartClientConnection(clientIndex, user.ID, user.OculusID);
                     }
                 }
             }
@@ -236,22 +235,22 @@ public class Host : Common
         }
     }
 
-    //void StartClientConnection( int clientIndex, ulong userId, string oculusId )
-    //{
-    //    Debug.Log( "Starting connection to client " + oculusId + " [" + userId + "]" );
+    void StartClientConnection(int clientIndex, ulong userId, string oculusId)
+    {
+        Debug.Log("Starting connection to client " + oculusId + " [" + userId + "]");
 
-    //    Assert.IsTrue( clientIndex != 0 );
+        Assert.IsTrue(clientIndex != 0);
 
-    //    if ( client[clientIndex].state != ClientState.Disconnected )
-    //        DisconnectClient( clientIndex );
+        if (client[clientIndex].state != ClientState.Disconnected)
+            DisconnectClient(clientIndex);
 
-    //    client[clientIndex].state = ClientState.Connecting;
-    //    client[clientIndex].oculusId = oculusId;
-    //    client[clientIndex].userId = userId;
-    //    client[clientIndex].timeConnectionStarted = renderTime;
+        client[clientIndex].state = ClientState.Connecting;
+        client[clientIndex].oculusId = oculusId;
+        client[clientIndex].userId = userId;
+        client[clientIndex].timeConnectionStarted = renderTime;
 
-    //    Net.Connect( userId );
-    //}
+        Net.Connect(userId);
+    }
 
     void ConnectClient(int clientIndex, ulong userId)
     {
