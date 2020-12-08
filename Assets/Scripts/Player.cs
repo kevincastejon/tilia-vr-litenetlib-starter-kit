@@ -103,7 +103,7 @@ public class Player : MonoBehaviour
         _receivedTime += diff * LogicTimer.FixedDelta;
         if (inputBuffer.IsFull)
         {
-            Debug.LogWarning("TOO MUCH STATE RECEIVED");
+            Debug.Log("TOO MUCH STATE RECEIVED");
             //Lag?
             _receivedTime = 0f;
             inputBuffer.FastClear();
