@@ -23,7 +23,7 @@ public class GameManagerClient : MonoBehaviour
     private int localSequence;
     private float _receivedTime;
     private float _timer;
-    private const float BufferTime = 0.2f; //100 milliseconds
+    private const float BufferTime = 0.1f; //100 milliseconds
 
     private void Start()
     {
