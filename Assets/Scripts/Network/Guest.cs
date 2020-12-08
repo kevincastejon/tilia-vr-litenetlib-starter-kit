@@ -50,7 +50,7 @@ public class Guest: Common
 
     [ReadOnly]
     public double timeMatchmakingStarted;                           // time matchmaking started
-    //public double timeConnectionStarted;                            // time the client connection started (used to timeout due to NAT)
+    public double timeConnectionStarted;                            // time the client connection started (used to timeout due to NAT)
     //public double timeConnected;                                    // time the client connected to the server
     //public double timeLastPacketSent;                               // time the last packet was sent to the server
     //public double timeLastPacketReceived;                           // time the last packet was received from the server (used for post-connect timeouts)
@@ -279,7 +279,7 @@ public class Guest: Common
     {
         state = GuestState.Connecting;
 
-        //timeConnectionStarted = renderTime;
+        timeConnectionStarted = renderTime;
     }
 
     void ConnectToServer(int clientIndex)
@@ -391,7 +391,7 @@ public class Guest: Common
 
     new void Update()
     {
-        //base.Update();
+        base.Update();
 
         //if ( Input.GetKeyDown( "space" ) )
         //{
@@ -449,30 +449,30 @@ public class Guest: Common
             return;
         }
 
-        //CheckForTimeouts();
+        CheckForTimeouts();
     }
 
-    //void CheckForTimeouts()
-    //{
-    //    if ( state == GuestState.Connecting )
-    //    {
-    //        if ( timeConnectionStarted + ConnectTimeout < renderTime )
-    //        {
-    //            Debug.Log( "Timed out while trying to connect to server" );
+    void CheckForTimeouts()
+    {
+        if (state == GuestState.Connecting)
+        {
+            if (timeConnectionStarted + ConnectTimeout < renderTime)
+            {
+                Debug.Log("Timed out while trying to connect to server");
 
-    //            RetryUntilConnectedToServer();
-    //        }
-    //    }
-    //    else if ( state == GuestState.Connected )
-    //    {
-    //        if ( timeLastPacketReceived + ConnectionTimeout < renderTime )
-    //        {
-    //            Debug.Log( "Connection to server timed out" );
+                RetryUntilConnectedToServer();
+            }
+        }
+        else if (state == GuestState.Connected)
+        {
+            if (ConnectionTimeout < renderTime)
+            {
+                Debug.Log("Connection to server timed out");
 
-    //            DisconnectFromServer();
-    //        }
-    //    }
-    //}
+                DisconnectFromServer();
+            }
+        }
+    }
 
     //new void FixedUpdate()
     //{
@@ -720,7 +720,7 @@ public class Guest: Common
     //            context.Reset();
     //            context.SetResetSequence( readPacketHeader.resetSequence );
     //        }
-            
+
     //        // decode the predicted cube states from baselines
 
     //        DecodePrediction( connectionData.receiveDeltaBuffer, readPacketHeader.sequence, context.GetResetSequence(), readNumStateUpdates, ref readCubeIds, ref readPerfectPrediction, ref readHasPredictionDelta, ref readBaselineSequence, ref readCubeState, ref readPredictionDelta );

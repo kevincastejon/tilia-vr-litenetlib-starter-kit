@@ -206,7 +206,7 @@ public class Host : Common
                 {
                     Debug.Log("Client " + i + " is no longer in the room");
 
-                    DisconnectClient(i);
+                    //DisconnectClient(i);
                 }
             }
 
