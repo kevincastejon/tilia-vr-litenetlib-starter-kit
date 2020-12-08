@@ -14,20 +14,22 @@ public class GameManagerClient : MonoBehaviour
     [Header("Monitoring")]
     [ReadOnly]
     public Dictionary<int, Player> players = new Dictionary<int, Player>();
-    [ReadOnly]
+    [HideInInspector]
     public LiteRingBuffer<StateMessage> stateBuffer = new LiteRingBuffer<StateMessage>(5);
+    [ReadOnly]
+    public int stateBufferLength;
     private LogicTimer logicTimer;
     private int lastReceivedSequence;
     private int localSequence;
     private float _receivedTime;
     private float _timer;
     private const float BufferTime = 0.1f; //100 milliseconds
-    private int stateBufferLength;
 
     private void Start()
     {
         logicTimer = new LogicTimer(OnLogicFrame);
         logicTimer.Start();
+        stateBuffer.Add(new StateMessage() { Sequence = -1 });
     }
 
     private void Update()
