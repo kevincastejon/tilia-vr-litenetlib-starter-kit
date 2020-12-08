@@ -69,7 +69,10 @@ public class Player : MonoBehaviour
         }
 
         if (_receivedTime < BufferTime || inputBuffer.Count < 2)
+        {
+            Debug.Log("NOT ENOUGTH DATA RECEIVED FROM PLAYER "+id);
             return;
+        }
         var dataA = inputBuffer[0];
         var dataB = inputBuffer[1];
 
@@ -100,7 +103,7 @@ public class Player : MonoBehaviour
         _receivedTime += diff * LogicTimer.FixedDelta;
         if (inputBuffer.IsFull)
         {
-            Debug.LogWarning("[C] Remote: Something happened");
+            Debug.LogWarning("TOO MUCH STATE RECEIVED");
             //Lag?
             _receivedTime = 0f;
             inputBuffer.FastClear();

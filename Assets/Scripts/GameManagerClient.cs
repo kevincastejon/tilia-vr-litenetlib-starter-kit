@@ -47,6 +47,7 @@ public class GameManagerClient : MonoBehaviour
     {
         if (_receivedTime < BufferTime || stateBuffer.Count < 5)
         {
+            Debug.Log("NOT ENOUGTH DATA RECEIVED");
             return;
         }
         StateMessage stateA = stateBuffer[0];
@@ -156,7 +157,7 @@ public class GameManagerClient : MonoBehaviour
         _receivedTime += diff * LogicTimer.FixedDelta;
         if (stateBuffer.IsFull)
         {
-            //Debug.LogWarning("[C] Remote: Something happened");
+            Debug.LogWarning("TOO MUCH STATE RECEIVED");
             //Lag?
             _receivedTime = 0f;
             stateBuffer.FastClear();
