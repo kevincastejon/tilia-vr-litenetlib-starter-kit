@@ -135,6 +135,7 @@ public class GameManagerServer : MonoBehaviour
                 players[i].id
             );
         }
+        Sequence++;
     }
 
     private void LerpPlayers(float delta)
