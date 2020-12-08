@@ -15,7 +15,7 @@ public class GameManagerClient : MonoBehaviour
     [ReadOnly]
     public Dictionary<int, Player> players = new Dictionary<int, Player>();
     [HideInInspector]
-    public LiteRingBuffer<StateMessage> stateBuffer = new LiteRingBuffer<StateMessage>(100);
+    public LiteRingBuffer<StateMessage> stateBuffer = new LiteRingBuffer<StateMessage>(5);
     [ReadOnly]
     public int stateBufferLength;
     private LogicTimer logicTimer;
@@ -45,7 +45,7 @@ public class GameManagerClient : MonoBehaviour
 
     private void LerpStates(float delta)
     {
-        if (_receivedTime < BufferTime || stateBuffer.Count < 10)
+        if (_receivedTime < BufferTime || stateBuffer.Count < 2)
         {
             Debug.Log("NOT ENOUGTH DATA RECEIVED");
             return;
