@@ -112,7 +112,7 @@ public class Guest: Common
     {
         Matchmaking.Cancel();
 
-        //DisconnectFromServer();
+        DisconnectFromServer();
 
         if ( successfullyConnected )
             return;
@@ -204,7 +204,7 @@ public class Guest: Common
             
             PrintRoomDetails( msg.Data );
 
-            //StartConnectionToServer();
+            StartConnectionToServer();
         }
         else
         {
@@ -269,58 +269,58 @@ public class Guest: Common
             Debug.Log( "Connection state changed to " + msg.Data.State );
 
             if ( msg.Data.State != PeerConnectionState.Connected )
-            { 
-                //DisconnectFromServer();
+            {
+                DisconnectFromServer();
             }
         }
     }
 
-    //void StartConnectionToServer()
-    //{
-    //    state = GuestState.Connecting;
+    void StartConnectionToServer()
+    {
+        state = GuestState.Connecting;
 
-    //    timeConnectionStarted = renderTime;
-    //}
+        //timeConnectionStarted = renderTime;
+    }
 
-    //void ConnectToServer( int clientIndex )
-    //{
-    //    Debug.Log("CONNECTING TO SERVER "+clientIndex);
-    //    Assert.IsTrue( clientIndex >= 1 );
-    //    Assert.IsTrue( clientIndex < Constants.MaxClients );
+    void ConnectToServer(int clientIndex)
+    {
+        Debug.Log("CONNECTING TO SERVER " + clientIndex);
+        Assert.IsTrue(clientIndex >= 1);
+        Assert.IsTrue(clientIndex < Constants.MaxClients);
 
-    //    //localAvatar.transform.position = context.GetRemoteAvatar( clientIndex ).gameObject.transform.position;
-    //    //localAvatar.transform.rotation = context.GetRemoteAvatar( clientIndex ).gameObject.transform.rotation;
+        //localAvatar.transform.position = context.GetRemoteAvatar( clientIndex ).gameObject.transform.position;
+        //localAvatar.transform.rotation = context.GetRemoteAvatar( clientIndex ).gameObject.transform.rotation;
 
-    //    state = GuestState.Connected;
+        state = GuestState.Connected;
 
-    //    this.clientIndex = clientIndex;
+        this.clientIndex = clientIndex;
 
-    //    //context.Initialize( clientIndex );
+        //context.Initialize( clientIndex );
 
-    //    OnConnectToServer( clientIndex );
-    //}
+        //OnConnectToServer(clientIndex);
+    }
 
-    //void DisconnectFromServer()
-    //{
-    //    if ( IsConnectedToServer() )
-    //        OnDisconnectFromServer();
+    void DisconnectFromServer()
+    {
+        //if (IsConnectedToServer())
+        //    OnDisconnectFromServer();
 
-    //    Net.Close( hostUserId );
+        Net.Close(hostUserId);
 
-    //    LeaveRoom( roomId, LeaveRoomCallback );
+        LeaveRoom(roomId, LeaveRoomCallback);
 
-    //    roomId = 0;
+        roomId = 0;
 
-    //    hostUserId = 0;
+        hostUserId = 0;
 
-    //    state = GuestState.Disconnected;
+        state = GuestState.Disconnected;
 
-    //    //serverInfo.Clear();
+        //serverInfo.Clear();
 
-    //    connectionRequests.Clear();
+        connectionRequests.Clear();
 
-    //    acceptedConnectionRequest = false;
-    //}
+        acceptedConnectionRequest = false;
+    }
 
     //void OnConnectToServer( int clientIndex )
     //{
@@ -357,10 +357,10 @@ public class Guest: Common
     {
         Matchmaking.Cancel();
 
-        //if ( IsConnectedToServer() )
-        //{
-        //    DisconnectFromServer();
-        //}
+        if (IsConnectedToServer())
+        {
+            DisconnectFromServer();
+        }
 
         if ( roomId != 0 )
         {
@@ -402,26 +402,26 @@ public class Guest: Common
         //    RetryUntilConnectedToServer();
         //}
 
-        //if ( state == GuestState.Matchmaking && timeMatchmakingStarted + 30.0 < renderTime )
-        //{
-        //    Debug.Log( "No result from matchmaker" );
+        if (state == GuestState.Matchmaking && timeMatchmakingStarted + 30.0 < renderTime)
+        {
+            Debug.Log("No result from matchmaker");
 
-        //    RetryUntilConnectedToServer();
+            RetryUntilConnectedToServer();
 
-        //    return;
-        //}
+            return;
+        }
 
-        //if ( state == GuestState.Connecting && !acceptedConnectionRequest )
-        //{
-        //    if ( hostUserId != 0 && connectionRequests.Contains( hostUserId ) )
-        //    {
-        //        Debug.Log( "Accepting connection request from host" );
+        if (state == GuestState.Connecting && !acceptedConnectionRequest)
+        {
+            if (hostUserId != 0 && connectionRequests.Contains(hostUserId))
+            {
+                Debug.Log("Accepting connection request from host");
 
-        //        Net.Accept( hostUserId );
+                Net.Accept(hostUserId);
 
-        //        acceptedConnectionRequest = true;
-        //    }
-        //}
+                acceptedConnectionRequest = true;
+            }
+        }
 
         //if ( state == GuestState.Connected )
         //{

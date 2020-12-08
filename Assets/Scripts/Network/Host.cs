@@ -200,15 +200,15 @@ public class Host : Common
 
             // disconnect any clients that are connecting/connected in our state machine, but are no longer in the room
 
-            //for ( int i = 1; i < Constants.MaxClients; ++i )
-            //{
-            //    if ( client[i].state != ClientState.Disconnected && !FindUserById( room.Users, client[i].userId ) )
-            //    {
-            //        Debug.Log( "Client " + i + " is no longer in the room" );
+            for (int i = 1; i < Constants.MaxClients; ++i)
+            {
+                if (client[i].state != ClientState.Disconnected && !FindUserById(room.Users, client[i].userId))
+                {
+                    Debug.Log("Client " + i + " is no longer in the room");
 
-            //        DisconnectClient( i );
-            //    }
-            //}
+                    DisconnectClient(i);
+                }
+            }
 
             // connect any clients who are in the room, but aren't connecting/connected in our state machine (excluding the room owner)
 
@@ -253,38 +253,38 @@ public class Host : Common
     //    Net.Connect( userId );
     //}
 
-    //void ConnectClient( int clientIndex, ulong userId )
-    //{
-    //    Assert.IsTrue( clientIndex != 0 );
+    void ConnectClient(int clientIndex, ulong userId)
+    {
+        Assert.IsTrue(clientIndex != 0);
 
-    //    if ( client[clientIndex].state != ClientState.Connecting || client[clientIndex].userId != userId )
-    //        return;
+        if (client[clientIndex].state != ClientState.Connecting || client[clientIndex].userId != userId)
+            return;
 
-    //    client[clientIndex].state = ClientState.Connected;
-    //    client[clientIndex].timeConnected = renderTime;
-    //    client[clientIndex].timeLastPacketSent = renderTime;
-    //    client[clientIndex].timeLastPacketReceived = renderTime;
+        client[clientIndex].state = ClientState.Connected;
+        client[clientIndex].timeConnected = renderTime;
+        client[clientIndex].timeLastPacketSent = renderTime;
+        client[clientIndex].timeLastPacketReceived = renderTime;
 
-    //    OnClientConnect( clientIndex );
+        //OnClientConnect(clientIndex);
 
-    //    BroadcastServerInfo();
-    //}
+        //BroadcastServerInfo();
+    }
 
-    //void DisconnectClient( int clientIndex )
-    //{
-    //    Assert.IsTrue( clientIndex != 0 );
-    //    Assert.IsTrue( IsClientConnected( clientIndex ) );
+    void DisconnectClient(int clientIndex)
+    {
+        Assert.IsTrue(clientIndex != 0);
+        Assert.IsTrue(IsClientConnected(clientIndex));
 
-    //    OnClientDisconnect( clientIndex );
+        //OnClientDisconnect(clientIndex);
 
-    //    Rooms.KickUser( roomId, client[clientIndex].userId, 0 );
+        Rooms.KickUser(roomId, client[clientIndex].userId, 0);
 
-    //    Net.Close( client[clientIndex].userId );
+        Net.Close(client[clientIndex].userId);
 
-    //    client[clientIndex].Reset();
+        client[clientIndex].Reset();
 
-    //    BroadcastServerInfo();
-    //}
+        //BroadcastServerInfo();
+    }
 
     //void OnClientConnect( int clientIndex )
     //{
@@ -311,7 +311,7 @@ public class Host : Common
     //        audioSource.senderID = 0;
 
     //    Voip.Stop( client[clientIndex].userId );
-        
+
     //    //context.HideRemoteAvatar( clientIndex );
 
     //    //context.ResetAuthorityForClientCubes( clientIndex );
@@ -331,7 +331,7 @@ public class Host : Common
 
             if ( msg.Data.State == PeerConnectionState.Connected )
             {
-                //ConnectClient( clientIndex, userId );
+                ConnectClient(clientIndex, userId);
             }
             else
             {
