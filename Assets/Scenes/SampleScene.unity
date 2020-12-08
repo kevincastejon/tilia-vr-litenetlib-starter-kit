@@ -647,11 +647,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 121076092}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c460ea9c55ebfa343af0657943a58faf, type: 3}
+  m_Script: {fileID: 11500000, guid: 3722a2b3ee59dbd4fb7b36197cfc2a4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  token: appsecret
-  packetSize: 0
 --- !u!4 &121076095
 Transform:
   m_ObjectHideFlags: 0
@@ -5733,7 +5731,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc59cd886320cee4e8f23cbbe4ab56ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isServer: 0
+  _isServer: 1
   server: {fileID: 121076092}
   client: {fileID: 1928920086}
 --- !u!4 &1511931687
@@ -7047,14 +7045,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1928920086}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4320cd22601fc4b4389b487ed6faecf5, type: 3}
+  m_Script: {fileID: 11500000, guid: e178b60fbd3a6974ead5ab77b389f375, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverIP: 192.168.0.20
-  serverPort: 5000
-  token: appsecret
-  autoConnect: 1
-  packetSize: 0
+  timeMatchmakingStarted: 0
+  timeRetryStarted: 0
 --- !u!4 &1928920089
 Transform:
   m_ObjectHideFlags: 0
@@ -7087,7 +7082,7 @@ MonoBehaviour:
     type: 3}
   localAvatar: {fileID: 2110964069}
   client: {fileID: 1928920087}
-  players: []
+  stateBufferLength: 0
 --- !u!114 &1960257411 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6820168409908592392, guid: 5381c6b0ade0a784ebf6f5f903c11182,
