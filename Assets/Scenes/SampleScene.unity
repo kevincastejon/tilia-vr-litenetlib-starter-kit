@@ -647,7 +647,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 121076092}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3722a2b3ee59dbd4fb7b36197cfc2a4e, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ac66bc52799c0242960f377df050628, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &121076095
@@ -6455,6 +6455,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeMatchmakingStarted: 0
+  timeConnectionStarted: 0
   timeRetryStarted: 0
 --- !u!4 &1774604746
 Transform:
@@ -7045,11 +7046,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1928920086}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e178b60fbd3a6974ead5ab77b389f375, type: 3}
+  m_Script: {fileID: 11500000, guid: a3db30da0b8d943499e95dae9a932822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeMatchmakingStarted: 0
-  timeRetryStarted: 0
 --- !u!4 &1928920089
 Transform:
   m_ObjectHideFlags: 0
