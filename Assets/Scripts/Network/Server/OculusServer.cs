@@ -13,6 +13,7 @@ public class OculusServer : MonoBehaviour
     public string oculusID;
     [ReadOnly]
     public List<User> roomClients = new List<User>();
+    public List<NetworkingPeer> players = new List<NetworkingPeer>();
     // Start is called before the first frame update
     void Start()
     {
@@ -27,10 +28,12 @@ public class OculusServer : MonoBehaviour
         if (msg.Data.State == PeerConnectionState.Connected)
         {
             Debug.Log("USER CONNECTED WITH ID "+msg.Data.ID);
+            players.Add(msg.Data);
         }
         else if(msg.Data.State == PeerConnectionState.Closed || msg.Data.State == PeerConnectionState.Timeout)
         {
             Debug.Log("USER "+ msg.Data.State + " WITH ID " + msg.Data.ID);
+            players.Remove(msg.Data);
         }
     }
 
@@ -124,6 +127,9 @@ public class OculusServer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        for (int i = 0; i < players.Count; i++)
+        {
+            Net.SendPacket(players[i].ID, new byte[1] { 1 }, SendPolicy.Unreliable);
+        }
     }
 }
