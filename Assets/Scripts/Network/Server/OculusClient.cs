@@ -14,6 +14,25 @@ public class OculusClient : MonoBehaviour
         Entitlements.IsUserEntitledToApplication().OnComplete(UserEntitled);
         Matchmaking.SetMatchFoundNotificationCallback(RoomFound);
         Rooms.SetUpdateNotificationCallback(RoomUpdated);
+        Net.SetPeerConnectRequestCallback(OnServerInvite);
+        Net.SetConnectionStateChangedCallback(OnConnectedToServer);
+    }
+
+    private void OnConnectedToServer(Message<NetworkingPeer> msg)
+    {
+        if (msg.Data.State == PeerConnectionState.Connected)
+        {
+            Debug.Log("CONNECTED TO SERVER WITH ID " + msg.Data.ID);
+        }
+        else if (msg.Data.State == PeerConnectionState.Closed || msg.Data.State == PeerConnectionState.Timeout)
+        {
+            Debug.Log("DISCONNECTED FROM SERVER WITH ID " + msg.Data.ID);
+        }
+    }
+
+    private void OnServerInvite(Message<NetworkingPeer> msg)
+    {
+        Net.Accept(msg.Data.ID);
     }
 
     private void UserEntitled(Message msg)
