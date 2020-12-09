@@ -91,17 +91,43 @@ public class OVRGradleGeneration
 
 	public void OnPreprocessBuild(BuildReport report)
 	{
-//#if UNITY_ANDROID && !(USING_XR_SDK && UNITY_2019_3_OR_NEWER)
-//		// Generate error when Vulkan is selected as the perferred graphics API, which is not currently supported in Unity XR
-//		if (!PlayerSettings.GetUseDefaultGraphicsAPIs(BuildTarget.Android))
-//		{
-//			GraphicsDeviceType[] apis = PlayerSettings.GetGraphicsAPIs(BuildTarget.Android);
-//			if (apis.Length >= 1 && apis[0] == GraphicsDeviceType.Vulkan)
-//			{
-//				throw new BuildFailedException("The Vulkan Graphics API does not support XR in your configuration. To use Vulkan, you must use Unity 2019.3 or newer, and the XR Plugin Management.");
-//			}
-//		}
-//#endif
+#if UNITY_ANDROID && !(USING_XR_SDK && UNITY_2019_3_OR_NEWER)
+		// Generate error when Vulkan is selected as the perferred graphics API, which is not currently supported in Unity XR
+		if (!PlayerSettings.GetUseDefaultGraphicsAPIs(BuildTarget.Android))
+		{
+			GraphicsDeviceType[] apis = PlayerSettings.GetGraphicsAPIs(BuildTarget.Android);
+			if (apis.Length >= 1 && apis[0] == GraphicsDeviceType.Vulkan)
+			{
+				throw new BuildFailedException("The Vulkan Graphics API does not support XR in your configuration. To use Vulkan, you must use Unity 2019.3 or newer, and the XR Plugin Management.");
+			}
+		}
+#endif
+
+#if UNITY_ANDROID
+		bool useOpenXR = OVRPluginUpdater.IsOVRPluginOpenXRActivated();
+#if USING_XR_SDK
+		if (useOpenXR)
+		{
+			UnityEngine.Debug.LogWarning("Oculus Utilities Plugin with OpenXR is being used, which is under experimental status");
+
+			if (PlayerSettings.colorSpace != ColorSpace.Linear)
+			{
+				throw new BuildFailedException("Oculus Utilities Plugin with OpenXR only supports linear lighting. Please set 'Rendering/Color Space' to 'Linear' in Player Settings");
+			}
+		}
+#else
+		if (useOpenXR)
+		{
+			throw new BuildFailedException("Oculus Utilities Plugin with OpenXR only supports XR Plug-in Managmenent with Oculus XR Plugin.");
+		}
+#endif
+#endif
+
+#if UNITY_ANDROID && USING_XR_SDK && !USING_COMPATIBLE_OCULUS_XR_PLUGIN_VERSION
+		if (PlayerSettings.Android.targetArchitectures != AndroidArchitecture.ARM64)
+			throw new BuildFailedException("Your project is using an Oculus XR Plugin version with known issues. Please navigate to the Package Manager and upgrade the Oculus XR Plugin to the latest verified version. When performing the upgrade" +
+				", you must first \"Remove\" the Oculus XR Plugin package, and then \"Install\" the package at the verified version. Be sure to remove, then install, not just upgrade.");
+#endif
 
 		buildStartTime = System.DateTime.Now;
 		buildGuid = System.Guid.NewGuid();

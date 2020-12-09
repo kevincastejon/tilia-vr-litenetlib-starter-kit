@@ -1,12 +1,8 @@
 /************************************************************************************
 Copyright : Copyright (c) Facebook Technologies, LLC and its affiliates. All rights reserved.
 
-Licensed under the Oculus Master SDK License Version 1.0 (the "License"); you may not use
-the Utilities SDK except in compliance with the License, which is provided at the time of installation
-or download, or which otherwise accompanies this software in either electronic or hard copy form.
-
-You may obtain a copy of the License at
-https://developer.oculus.com/licenses/oculusmastersdk-1.0/
+Your use of this SDK or tool is subject to the Oculus SDK License Agreement, available at
+https://developer.oculus.com/licenses/oculussdk/
 
 Unless required by applicable law or agreed to in writing, the Utilities SDK distributed
 under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
@@ -32,6 +28,7 @@ permissions and limitations under the License.
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -52,9 +49,17 @@ using Node = UnityEngine.XR.XRNode;
 /// </summary>
 public class OVRManager : MonoBehaviour
 {
+	public enum XrApi
+	{
+		Unknown = OVRPlugin.XrApi.Unknown,
+		CAPI = OVRPlugin.XrApi.CAPI,
+		VRAPI = OVRPlugin.XrApi.VRAPI,
+		OpenXR = OVRPlugin.XrApi.OpenXR,
+	}
+
 	public enum TrackingOrigin
 	{
-		EyeLevel   = OVRPlugin.TrackingOrigin.EyeLevel,
+		EyeLevel = OVRPlugin.TrackingOrigin.EyeLevel,
 		FloorLevel = OVRPlugin.TrackingOrigin.FloorLevel,
 		Stage = OVRPlugin.TrackingOrigin.Stage,
 	}
@@ -105,7 +110,7 @@ public class OVRManager : MonoBehaviour
 		Rift_CB = OVRPlugin.SystemHeadset.Rift_CB,
 		Rift_S = OVRPlugin.SystemHeadset.Rift_S,
 		Oculus_Link_Quest = OVRPlugin.SystemHeadset.Oculus_Link_Quest,
-		PC_Placeholder_4102 = OVRPlugin.SystemHeadset.PC_Placeholder_4102,
+		Oculus_Link_Quest_2 = OVRPlugin.SystemHeadset.Oculus_Link_Quest_2,
 		PC_Placeholder_4103 = OVRPlugin.SystemHeadset.PC_Placeholder_4103,
 		PC_Placeholder_4104 = OVRPlugin.SystemHeadset.PC_Placeholder_4104,
 		PC_Placeholder_4105 = OVRPlugin.SystemHeadset.PC_Placeholder_4105,
@@ -115,9 +120,9 @@ public class OVRManager : MonoBehaviour
 
 	public enum XRDevice
 	{
-		Unknown			= 0,
-		Oculus			= 1,
-		OpenVR			= 2,
+		Unknown = 0,
+		Oculus = 1,
+		OpenVR = 2,
 	}
 
 	/// <summary>
@@ -218,13 +223,19 @@ public class OVRManager : MonoBehaviour
 	public static event Action TrackingLost;
 
 	/// <summary>
+	/// Occurs when the display refresh rate changes
+	/// @params (float fromRefreshRate, float toRefreshRate)
+	/// </summary>
+	public static event Action<float, float> DisplayRefreshRateChanged;
+
+	/// <summary>
 	/// Occurs when Health & Safety Warning is dismissed.
 	/// </summary>
 	//Disable the warning about it being unused. It's deprecated.
-	#pragma warning disable 0067
+#pragma warning disable 0067
 	[Obsolete]
 	public static event Action HSWDismissed;
-	#pragma warning restore
+#pragma warning restore
 
 	private static bool _isHmdPresentCached = false;
 	private static bool _isHmdPresent = false;
@@ -651,7 +662,42 @@ public class OVRManager : MonoBehaviour
 	/// </summary>
 	[HideInInspector, Tooltip("(Quest-only) control if the mixed reality capture mode can be activated automatically through remote network connection.")]
 	public MrcActivationMode mrcActivationMode;
+
+
 #endif
+
+	/// <summary>
+	/// The native XR API being used
+	/// </summary>
+	public XrApi xrApi
+	{
+		get
+		{
+			return (XrApi)OVRPlugin.nativeXrApi;
+		}
+	}
+
+	/// <summary>
+	/// The value of current XrInstance when using OpenXR
+	/// </summary>
+	public UInt64 xrInstance
+	{
+		get
+		{
+			return OVRPlugin.GetNativeOpenXRInstance();
+		}
+	}
+
+	/// <summary>
+	/// The value of current XrSession when using OpenXR
+	/// </summary>
+	public UInt64 xrSession
+	{
+		get
+		{
+			return OVRPlugin.GetNativeOpenXRSession();
+		}
+	}
 
 	/// <summary>
 	/// The number of expected display frames per rendered frame.
@@ -1202,7 +1248,12 @@ public class OVRManager : MonoBehaviour
 				"OVRPlugin v" + OVRPlugin.version + ", " +
 				"SDK v" + OVRPlugin.nativeSDKVersion + ".");
 
-		Debug.Log("SystemHeadset " + systemHeadsetType.ToString());
+		Debug.LogFormat("SystemHeadset {0}, API {1}", systemHeadsetType.ToString(), xrApi.ToString());
+
+		if (xrApi == XrApi.OpenXR)
+		{
+			Debug.LogFormat("OpenXR instance 0x{0:X} session 0x{1:X}", xrInstance, xrSession);
+		}
 
 #if !UNITY_EDITOR
 		if (IsUnityAlphaOrBetaVersion())
@@ -1307,6 +1358,9 @@ public class OVRManager : MonoBehaviour
 
 		Initialize();
 
+		Debug.LogFormat("Current display frequency {0}, available frequencies [{1}]", 
+			display.displayFrequency, string.Join(", ", display.displayFrequenciesAvailable.Select(f => f.ToString()).ToArray()));
+
 		if (resetTrackerOnLoad)
 			display.RecenterPose();
 
@@ -1337,6 +1391,7 @@ public class OVRManager : MonoBehaviour
 		// be aware there are performance drops if you don't use occlusionMesh.
 		OVRPlugin.occlusionMesh = true;
 #endif
+
 		OVRManagerinitialized = true;
 
 	}
@@ -1475,7 +1530,7 @@ public class OVRManager : MonoBehaviour
 
 		if (OVRPlugin.shouldQuit)
 		{
-			//Debug.Log("[OVRManager] OVRPlugin.shouldQuit detected");
+			Debug.Log("[OVRManager] OVRPlugin.shouldQuit detected");
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || OVR_ANDROID_MRC
 			StaticShutdownMixedRealityCapture(instance);
 #endif
@@ -1528,7 +1583,7 @@ public class OVRManager : MonoBehaviour
 		{
 			try
 			{
-				//Debug.Log("[OVRManager] HMDLost event");
+				Debug.Log("[OVRManager] HMDLost event");
 				if (HMDLost != null)
 					HMDLost();
 			}
@@ -1542,7 +1597,7 @@ public class OVRManager : MonoBehaviour
 		{
 			try
 			{
-				//Debug.Log("[OVRManager] HMDAcquired event");
+				Debug.Log("[OVRManager] HMDAcquired event");
 				if (HMDAcquired != null)
 					HMDAcquired();
 			}
@@ -1562,7 +1617,7 @@ public class OVRManager : MonoBehaviour
 		{
 			try
 			{
-				//Debug.Log("[OVRManager] HMDUnmounted event");
+				Debug.Log("[OVRManager] HMDUnmounted event");
 				if (HMDUnmounted != null)
 					HMDUnmounted();
 			}
@@ -1576,7 +1631,7 @@ public class OVRManager : MonoBehaviour
 		{
 			try
 			{
-				//Debug.Log("[OVRManager] HMDMounted event");
+				Debug.Log("[OVRManager] HMDMounted event");
 				if (HMDMounted != null)
 					HMDMounted();
 			}
@@ -1596,7 +1651,7 @@ public class OVRManager : MonoBehaviour
 		{
 			try
 			{
-				//Debug.Log("[OVRManager] VrFocusLost event");
+				Debug.Log("[OVRManager] VrFocusLost event");
 				if (VrFocusLost != null)
 					VrFocusLost();
 			}
@@ -1610,7 +1665,7 @@ public class OVRManager : MonoBehaviour
 		{
 			try
 			{
-				//Debug.Log("[OVRManager] VrFocusAcquired event");
+				Debug.Log("[OVRManager] VrFocusAcquired event");
 				if (VrFocusAcquired != null)
 					VrFocusAcquired();
 			}
@@ -1630,7 +1685,7 @@ public class OVRManager : MonoBehaviour
 		{
 			try
 			{
-				//Debug.Log("[OVRManager] InputFocusLost event");
+				Debug.Log("[OVRManager] InputFocusLost event");
 				if (InputFocusLost != null)
 					InputFocusLost();
 			}
@@ -1644,7 +1699,7 @@ public class OVRManager : MonoBehaviour
 		{
 			try
 			{
-				//Debug.Log("[OVRManager] InputFocusAcquired event");
+				Debug.Log("[OVRManager] InputFocusAcquired event");
 				if (InputFocusAcquired != null)
 					InputFocusAcquired();
 			}
@@ -1692,7 +1747,7 @@ public class OVRManager : MonoBehaviour
 		{
 			try
 			{
-				//Debug.Log("[OVRManager] AudioOutChanged event");
+				Debug.Log("[OVRManager] AudioOutChanged event");
 				if (AudioOutChanged != null)
 					AudioOutChanged();
 			}
@@ -1714,7 +1769,7 @@ public class OVRManager : MonoBehaviour
 		{
 			try
 			{
-				//Debug.Log("[OVRManager] AudioInChanged event");
+				Debug.Log("[OVRManager] AudioInChanged event");
 				if (AudioInChanged != null)
 					AudioInChanged();
 			}
@@ -1732,7 +1787,7 @@ public class OVRManager : MonoBehaviour
 		{
 			try
 			{
-				//Debug.Log("[OVRManager] TrackingLost event");
+				Debug.Log("[OVRManager] TrackingLost event");
 				if (TrackingLost != null)
 					TrackingLost();
 			}
@@ -1746,7 +1801,7 @@ public class OVRManager : MonoBehaviour
 		{
 			try
 			{
-				//Debug.Log("[OVRManager] TrackingAcquired event");
+				Debug.Log("[OVRManager] TrackingAcquired event");
 				if (TrackingAcquired != null)
 					TrackingAcquired();
 			}
@@ -1761,9 +1816,33 @@ public class OVRManager : MonoBehaviour
 		display.Update();
 		OVRInput.Update();
 
+		UpdateHMDEvents();
+
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || OVR_ANDROID_MRC
 		StaticUpdateMixedRealityCapture(this);
 #endif
+	}
+
+	private void UpdateHMDEvents()
+	{
+		OVRPlugin.EventDataBuffer eventDataBuffer;
+
+		while(OVRPlugin.PollEvent(out eventDataBuffer))
+		{
+			switch(eventDataBuffer.EventType)
+			{
+				case OVRPlugin.EventType.DisplayRefreshRateChanged:
+					if(DisplayRefreshRateChanged != null)
+					{
+						float FromRefreshRate = BitConverter.ToSingle(eventDataBuffer.EventData, 0);
+						float ToRefreshRate = BitConverter.ToSingle(eventDataBuffer.EventData, 4);
+						DisplayRefreshRateChanged(FromRefreshRate, ToRefreshRate);
+					}
+					break;
+				default:
+					break;
+			}
+		}
 	}
 
 	private bool multipleMainCameraWarningPresented = false;
@@ -1817,7 +1896,7 @@ public class OVRManager : MonoBehaviour
 		}
 		else
 		{
-			//Debug.Log("[OVRManager] unable to find a vaild camera");
+			Debug.Log("[OVRManager] unable to find a vaild camera");
 		}
 		lastFoundMainCamera = result;
 		return result;
@@ -1844,7 +1923,7 @@ public class OVRManager : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		//Debug.Log("[OVRManager] OnDestroy");
+		Debug.Log("[OVRManager] OnDestroy");
 		OVRManagerinitialized = false;
 	}
 
@@ -1852,11 +1931,11 @@ public class OVRManager : MonoBehaviour
 	{
 		if (pause)
 		{
-			//Debug.Log("[OVRManager] OnApplicationPause(true)");
+			Debug.Log("[OVRManager] OnApplicationPause(true)");
 		}
 		else
 		{
-			//Debug.Log("[OVRManager] OnApplicationPause(false)");
+			Debug.Log("[OVRManager] OnApplicationPause(false)");
 		}
 	}
 
@@ -1864,17 +1943,17 @@ public class OVRManager : MonoBehaviour
 	{
 		if (focus)
 		{
-			//Debug.Log("[OVRManager] OnApplicationFocus(true)");
+			Debug.Log("[OVRManager] OnApplicationFocus(true)");
 		}
 		else
 		{
-			//Debug.Log("[OVRManager] OnApplicationFocus(false)");
+			Debug.Log("[OVRManager] OnApplicationFocus(false)");
 		}
 	}
 
 	private void OnApplicationQuit()
 	{
-		//Debug.Log("[OVRManager] OnApplicationQuit");
+		Debug.Log("[OVRManager] OnApplicationQuit");
 	}
 
 #endregion // Unity Messages
@@ -2030,4 +2109,5 @@ public class OVRManager : MonoBehaviour
 	}
 
 #endif
+
 }

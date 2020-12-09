@@ -14,6 +14,8 @@ public class OculusServer : MonoBehaviour
     [ReadOnly]
     public List<User> roomClients = new List<User>();
     public List<NetworkingPeer> players = new List<NetworkingPeer>();
+    private float timerMax = 1f;
+    private float timer = 0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,18 +23,24 @@ public class OculusServer : MonoBehaviour
         Entitlements.IsUserEntitledToApplication().OnComplete(UserEntitled);
         Rooms.SetUpdateNotificationCallback(RoomUpdated);
         Net.SetConnectionStateChangedCallback(OnClientConnectionStatusChanged);
+        Net.SetPingResultNotificationCallback(OnClientPing);
+    }
+
+    private void OnClientPing(Message<PingResult> msg)
+    {
+        Debug.Log("CLIENT "+msg.Data.ID+" PING WITH "+(msg.Data.PingTimeUsec/1000)+" ms");
     }
 
     private void OnClientConnectionStatusChanged(Message<NetworkingPeer> msg)
     {
         if (msg.Data.State == PeerConnectionState.Connected)
         {
-            Debug.Log("USER CONNECTED WITH ID "+msg.Data.ID);
+            Debug.Log("USER CONNECTED WITH ID " + msg.Data.ID);
             players.Add(msg.Data);
         }
-        else if(msg.Data.State == PeerConnectionState.Closed || msg.Data.State == PeerConnectionState.Timeout)
+        else if (msg.Data.State == PeerConnectionState.Closed || msg.Data.State == PeerConnectionState.Timeout)
         {
-            Debug.Log("USER "+ msg.Data.State + " WITH ID " + msg.Data.ID);
+            Debug.Log("USER " + msg.Data.State + " WITH ID " + msg.Data.ID);
             players.Remove(msg.Data);
         }
     }
@@ -115,7 +123,7 @@ public class OculusServer : MonoBehaviour
     {
         Debug.Log("USER JOINED ROOM WITH ID " + user.ID);
         roomClients.Add(user);
-        Net.Connect(user.ID);
+        //Net.Connect(user.ID);
     }
 
     private void OnClientLeaved(User user)
@@ -127,9 +135,20 @@ public class OculusServer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        for (int i = 0; i < players.Count; i++)
+        if (timer >= timerMax)
         {
-            Net.SendPacket(players[i].ID, new byte[1] { 1 }, SendPolicy.Unreliable);
+            timer = 0f;
+            for (int i = 0; i < players.Count; i++)
+            {
+                Net.SendPacket(players[i].ID, new byte[1] { 1 }, SendPolicy.Unreliable);
+            }
+            for (int i = 0; i < roomClients.Count; i++)
+            {
+                Net.Ping(roomClients[i].ID);
+            }
+        } else
+        {
+            timer += Time.deltaTime;
         }
     }
 }
