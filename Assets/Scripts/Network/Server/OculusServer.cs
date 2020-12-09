@@ -8,6 +8,10 @@ using UnityEngine;
 public class OculusServer : MonoBehaviour
 {
     [ReadOnly]
+    public ulong ID;
+    [ReadOnly]
+    public string oculusID;
+    [ReadOnly]
     public List<User> clients = new List<User>();
     // Start is called before the first frame update
     void Start()
@@ -33,6 +37,8 @@ public class OculusServer : MonoBehaviour
     private void OnUserInfo(Message<User> msg)
     {
         Debug.Log("LOGGED IN AS " + msg.Data.ID + " " + msg.Data.OculusID);
+        ID = msg.Data.ID;
+        oculusID = msg.Data.OculusID;
         Matchmaking.CreateAndEnqueueRoom2("piootabouret").OnComplete(RoomCreated);
     }
 
@@ -55,6 +61,10 @@ public class OculusServer : MonoBehaviour
         {
             User user = msg.Data.UsersOptional[i];
             Debug.Log("- " + user.ID + " " + user.OculusID);
+            if (user.ID == ID)
+            {
+                continue;
+            }
             User existingUser = clients.Find(u => u.ID == user.ID);
             if (existingUser == null)
             {
@@ -64,23 +74,37 @@ public class OculusServer : MonoBehaviour
         for (int i = 0; i < clients.Count; i++)
         {
             User user = clients[i];
-            bool alreadyConnected = false;
+            bool stillConnected = false;
             for (int j = 0; j < msg.Data.UsersOptional.Count; j++)
             {
                 User u = msg.Data.UsersOptional[j];
+                if (u.ID == ID)
+                {
+                    continue;
+                }
                 if (u.ID == user.ID)
                 {
-                    alreadyConnected = true;
+                    stillConnected = true;
                     break;
                 }
             }
-            clients.Remove(user);
+            if (!stillConnected)
+            {
+                OnClientLeaved(user);
+            }
         }
     }
 
     private void OnClientJoined(User user)
     {
+        Debug.Log("USER JOINED ROOM WITH ID " + user.ID);
         clients.Add(user);
+    }
+
+    private void OnClientLeaved(User user)
+    {
+        Debug.Log("USER LEAVED ROOM WITH ID " + user.ID);
+        clients.Remove(user);
     }
 
     // Update is called once per frame
