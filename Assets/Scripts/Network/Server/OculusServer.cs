@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class OculusServer : MonoBehaviour
 {
+    [ReadOnly]
+    public List<User> clients = new List<User>();
     // Start is called before the first frame update
     void Start()
     {
@@ -38,7 +40,7 @@ public class OculusServer : MonoBehaviour
     {
         if (!msg.IsError)
         {
-            Debug.Log("ROOM CREATED WITH ID "+ msg.Data.Room.ID);
+            Debug.Log("ROOM CREATED WITH ID " + msg.Data.Room.ID);
         }
         else
         {
@@ -52,13 +54,38 @@ public class OculusServer : MonoBehaviour
         for (int i = 0; i < msg.Data.UsersOptional.Count; i++)
         {
             User user = msg.Data.UsersOptional[i];
-            Debug.Log("- "+user.ID+" "+user.OculusID);
+            Debug.Log("- " + user.ID + " " + user.OculusID);
+            User existingUser = clients.Find(u => u.ID == user.ID);
+            if (existingUser == null)
+            {
+                OnClientJoined(user);
+            }
         }
+        for (int i = 0; i < clients.Count; i++)
+        {
+            User user = clients[i];
+            bool alreadyConnected = false;
+            for (int j = 0; j < msg.Data.UsersOptional.Count; j++)
+            {
+                User u = msg.Data.UsersOptional[j];
+                if (u.ID == user.ID)
+                {
+                    alreadyConnected = true;
+                    break;
+                }
+            }
+            clients.Remove(user);
+        }
+    }
+
+    private void OnClientJoined(User user)
+    {
+        clients.Add(user);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
