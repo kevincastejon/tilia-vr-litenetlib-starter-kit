@@ -19,10 +19,10 @@ public class OculusServer : MonoBehaviour
         Core.Initialize();
         Entitlements.IsUserEntitledToApplication().OnComplete(UserEntitled);
         Rooms.SetUpdateNotificationCallback(RoomUpdated);
-        Net.SetConnectionStateChangedCallback(OnClientConnected);
+        Net.SetConnectionStateChangedCallback(OnClientConnectionStatusChanged);
     }
 
-    private void OnClientConnected(Message<NetworkingPeer> msg)
+    private void OnClientConnectionStatusChanged(Message<NetworkingPeer> msg)
     {
         if (msg.Data.State == PeerConnectionState.Connected)
         {
@@ -30,7 +30,7 @@ public class OculusServer : MonoBehaviour
         }
         else if(msg.Data.State == PeerConnectionState.Closed || msg.Data.State == PeerConnectionState.Timeout)
         {
-            Debug.Log("USER DISCONNECTED WITH ID " + msg.Data.ID);
+            Debug.Log("USER "+ msg.Data.State + " WITH ID " + msg.Data.ID);
         }
     }
 

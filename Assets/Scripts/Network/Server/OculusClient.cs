@@ -13,7 +13,7 @@ public class OculusClient : MonoBehaviour
         Core.Initialize();
         Entitlements.IsUserEntitledToApplication().OnComplete(UserEntitled);
         Matchmaking.SetMatchFoundNotificationCallback(RoomFound);
-        Rooms.SetUpdateNotificationCallback(RoomUpdated);
+        //Rooms.SetUpdateNotificationCallback(RoomUpdated);
         Net.SetPeerConnectRequestCallback(OnServerInvite);
         Net.SetConnectionStateChangedCallback(OnConnectedToServer);
     }
