@@ -26,7 +26,7 @@ public class OculusClient : MonoBehaviour
         }
         else if (msg.Data.State == PeerConnectionState.Closed || msg.Data.State == PeerConnectionState.Timeout)
         {
-            Debug.Log("DISCONNECTED FROM SERVER WITH ID " + msg.Data.ID);
+            Debug.Log("DISCONNECTED FROM SERVER WITH ID " + msg.Data.ID +" FOR REASON : "+ msg.Data.State);
         }
     }
 
