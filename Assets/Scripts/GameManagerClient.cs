@@ -89,7 +89,7 @@ public class GameManagerClient : MonoBehaviour
         StateMessage stateA = stateBuffer[0];
         StateMessage stateB = stateBuffer[1];
 
-        LerpPlayers(stateA.Players, stateB.Players);
+        LerpPlayers(stateA.Players, stateB.Players, t);
         
         if (isLastFrame)
         {
@@ -98,7 +98,7 @@ public class GameManagerClient : MonoBehaviour
         }
     }
 
-    private void LerpPlayers(PlayerState[] playersA, PlayerState[] playersB)
+    private void LerpPlayers(PlayerState[] playersA, PlayerState[] playersB, float t)
     {
         for (int i = 0; i < playersB.Length; i++)
         {
