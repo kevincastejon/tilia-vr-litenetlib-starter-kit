@@ -15,7 +15,7 @@ public class PlayerState : INetSerializable
 
     public void Serialize(NetDataWriter writer)
     {
-        writer.Put(Id);
+        writer.Put((byte)Id);
         Vector3Utils.Serialize(writer, HeadPosition);
         QuatUtils.Serialize(writer, HeadRotation);
         Vector3Utils.Serialize(writer, LeftHandPosition);
@@ -28,7 +28,7 @@ public class PlayerState : INetSerializable
 
     public void Deserialize(NetDataReader reader)
     {
-        Id = reader.GetInt();
+        Id = reader.GetByte();
         HeadPosition = Vector3Utils.Deserialize(reader);
         HeadRotation = QuatUtils.Deserialize(reader);
         LeftHandPosition = Vector3Utils.Deserialize(reader);
