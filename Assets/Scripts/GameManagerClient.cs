@@ -54,12 +54,12 @@ public class GameManagerClient : MonoBehaviour
 
     private void OnLocalGrab(Entity ent)
     {
-        
+
     }
 
     private void OnLocalUngrab(Entity ent)
     {
-        
+
     }
 
     private void FixedUpdate()
@@ -90,11 +90,50 @@ public class GameManagerClient : MonoBehaviour
         StateMessage stateB = stateBuffer[1];
 
         LerpPlayers(stateA.Players, stateB.Players, t);
-        
+        LerpEntities(stateA.Entities, stateB.Entities, t);
+
         if (isLastFrame)
         {
             stateBuffer.RemoveFromStart(1);
             stateBufferLength = stateBuffer.Count;
+        }
+    }
+
+    private void LerpEntities(EntityState[] entitiesA, EntityState[] entitiesB, float t)
+    {
+        for (int i = 0; i < entitiesB.Length; i++)
+        {
+            EntityState entityStateB = entitiesB[i];
+            Entity ent = entities.Find(x => x.id == entityStateB.Id);
+            if (ent == null)
+            {
+                Entity linkableEntity = entities.Find(x => x.id == 0 && (int)x.type == entityStateB.Type);
+                if (linkableEntity != null)
+                {
+                    ent = linkableEntity;
+                }
+                else
+                {
+                    ent = Instantiate(entityPrefabs[entityStateB.Type]).GetComponent<Entity>();
+                    entities.Add(ent);
+                }
+                ent.id = entityStateB.Id;
+                ent.transform.position = entityStateB.Position;
+                ent.transform.rotation = entityStateB.Rotation;
+            }
+            EntityState entitiesStateA = null;
+            for (int j = 0; j < entitiesA.Length; j++)
+            {
+                if (entitiesA[j].Id == entityStateB.Id)
+                {
+                    entitiesStateA = entitiesA[j];
+                }
+            }
+            if (entitiesStateA != null)
+            {
+                ent.transform.position = Vector3.Lerp(entitiesStateA.Position, entityStateB.Position, t);
+                ent.transform.rotation = Quaternion.Lerp(entitiesStateA.Rotation, entityStateB.Rotation, t);
+            }
         }
     }
 
