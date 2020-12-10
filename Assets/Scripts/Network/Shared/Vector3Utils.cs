@@ -22,8 +22,9 @@ public class Vector3Utils
         writer.Put(dif.z / 2 * short.MaxValue);
     }
 
-    public static Vector3 DeserializeHand(NetDataReader reader, Vector3 hand, Vector3 head)
+    public static Vector3 DeserializeHand(NetDataReader reader, Vector3 head)
     {
-        return new Vector3(reader.GetShort() / short.MaxValue * 2, reader.GetShort() / short.MaxValue * 2, reader.GetShort() / short.MaxValue * 2);
+        Vector3 dif = new Vector3(reader.GetShort() / short.MaxValue * 2, reader.GetShort() / short.MaxValue * 2, reader.GetShort() / short.MaxValue * 2);
+        return head + dif;
     }
 }

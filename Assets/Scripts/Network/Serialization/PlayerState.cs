@@ -18,9 +18,9 @@ public class PlayerState : INetSerializable
         writer.Put((sbyte)Id);
         Vector3Utils.Serialize(writer, HeadPosition);
         QuatUtils.Serialize(writer, HeadRotation);
-        Vector3Utils.Serialize(writer, LeftHandPosition);
+        Vector3Utils.SerializeHand(writer, LeftHandPosition, HeadPosition);
         QuatUtils.Serialize(writer, LeftHandRotation);
-        Vector3Utils.Serialize(writer, RightHandPosition);
+        Vector3Utils.SerializeHand(writer, RightHandPosition, HeadPosition);
         QuatUtils.Serialize(writer, RightHandRotation);
         writer.Put(LeftPointer);
         writer.Put(RightPointer);
@@ -31,9 +31,9 @@ public class PlayerState : INetSerializable
         Id = reader.GetSByte();
         HeadPosition = Vector3Utils.Deserialize(reader);
         HeadRotation = QuatUtils.Deserialize(reader);
-        LeftHandPosition = Vector3Utils.Deserialize(reader);
+        LeftHandPosition = Vector3Utils.DeserializeHand(reader, HeadPosition);
         LeftHandRotation = QuatUtils.Deserialize(reader);
-        RightHandPosition = Vector3Utils.Deserialize(reader);
+        RightHandPosition = Vector3Utils.DeserializeHand(reader, HeadPosition);
         RightHandRotation = QuatUtils.Deserialize(reader);
         LeftPointer = reader.GetBool();
         RightPointer = reader.GetBool();
