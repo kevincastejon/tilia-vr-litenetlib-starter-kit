@@ -13,9 +13,16 @@ public enum EntityType
 
 public class Entity : MonoBehaviour
 {
+    [Header("Monitoring")]
     [ReadOnly]
     public int id;
+    [ReadOnly]
+    public bool grabbed;
+    [ReadOnly]
+    public int ownerId;
+    [Header("Entity type")]
     public EntityType type;
+    [Header("Reference settings (transformTarget is MANDATORY)")]
     public Transform transformTarget;
     public InteractableFacade interactable;
     public Rigidbody body;
