@@ -58,16 +58,23 @@ public class GameManagerServer : MonoBehaviour
             if (destroyFirst)
             {
                 destroyingEnt = entities.Find(x => x.type == ent.type);
+                entities.Remove(destroyingEnt);
+                if (destroyingEnt.interactable != null)
+                {
+                    destroyingEnt.interactable.Grabbed.RemoveAllListeners();
+                    destroyingEnt.interactable.Ungrabbed.RemoveAllListeners();
+                }
+                ent.id = ent.GetInstanceID();
+                entities.Add(ent);
+                if (ent.interactable != null)
+                {
+                    ent.interactable.Grabbed.AddListener((InteractorFacade ifc) => OnLocalGrab(ent));
+                    ent.interactable.Ungrabbed.AddListener((InteractorFacade ifc) => OnLocalUngrab(ent));
+                }
             }
             else
             {
                 destroyingEnt = ent;
-            }
-            entities.Remove(destroyingEnt);
-            if (destroyingEnt.interactable != null)
-            {
-                destroyingEnt.interactable.Grabbed.RemoveAllListeners();
-                destroyingEnt.interactable.Ungrabbed.RemoveAllListeners();
             }
             Destroy(destroyingEnt.gameObject);
         }
