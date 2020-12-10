@@ -5,6 +5,11 @@ using Tilia.Interactions.Interactables.Interactables;
 using Tilia.Interactions.Interactables.Interactors;
 using UnityEngine;
 
+public class InstanceCountLimit
+{
+    public int max = -1;
+    public bool destroyFirst = false;
+}
 public class GameManagerServer : MonoBehaviour
 {
     [Header("Prefab Settings")]
@@ -13,12 +18,12 @@ public class GameManagerServer : MonoBehaviour
     [Header("Reference Settings")]
     public LocalAvatar localAvatar;
     public GameServer server;
-    public List<int> entityTypeInstanceLimits = new List<int>();
+    public List<InstanceCountLimit> entityTypeInstanceLimits = new List<InstanceCountLimit>();
     [Header("Monitoring")]
     [ReadOnly]
     public int Sequence;
     private Dictionary<int, Player> players = new Dictionary<int, Player>();
-    public Dictionary<int, Entity> entities = new Dictionary<int, Entity>();
+    public List<Entity> entities = new List<Entity>();
     private float timerMax = 2 / 60f;
     private float timer = 0f;
     [HideInInspector]
@@ -33,10 +38,13 @@ public class GameManagerServer : MonoBehaviour
 
     public void AddEntity(Entity ent)
     {
-        if (entityTypeInstanceLimits[(int)ent.type] == -1 || GetEntityTypeCount(ent.type) < entityTypeInstanceLimits[(int)ent.type])
+        int max = entityTypeInstanceLimits[(int)ent.type].max;
+        int currentCount = GetEntityTypeCount(ent.type);
+        bool destroyFirst = entityTypeInstanceLimits[(int)ent.type].destroyFirst;
+        if (max == -1 || currentCount < max)
         {
             ent.id = ent.GetInstanceID();
-            entities.Add(ent.id, ent);
+            entities.Add(ent);
             if (ent.interactable != null)
             {
                 ent.interactable.Grabbed.AddListener((InteractorFacade ifc) => OnLocalGrab(ent));
@@ -45,16 +53,34 @@ public class GameManagerServer : MonoBehaviour
         }
         else
         {
-            Destroy(ent.gameObject);
+            Entity destroyingEnt;
+            if (destroyFirst)
+            {
+                destroyingEnt = entities.Find(x => x.type == ent.type);
+            }
+            else
+            {
+                destroyingEnt = ent;
+            }
+            entities.Remove(destroyingEnt);
+            if (destroyingEnt.interactable != null)
+            {
+                destroyingEnt.interactable.Grabbed.RemoveAllListeners();
+                destroyingEnt.interactable.Ungrabbed.RemoveAllListeners();
+            }
+            Destroy(destroyingEnt.gameObject);
         }
     }
     public void RemoveEntity(Entity ent)
     {
-        entities.Remove(ent.id);
-        if (ent.interactable != null)
+        if (entities.Contains(ent))
         {
-            ent.interactable.Grabbed.RemoveAllListeners();
-            ent.interactable.Ungrabbed.RemoveAllListeners();
+            entities.Remove(ent);
+            if (ent.interactable != null)
+            {
+                ent.interactable.Grabbed.RemoveAllListeners();
+                ent.interactable.Ungrabbed.RemoveAllListeners();
+            }
         }
     }
 
@@ -71,9 +97,9 @@ public class GameManagerServer : MonoBehaviour
     private int GetEntityTypeCount(EntityType type)
     {
         int count = 0;
-        foreach (KeyValuePair<int, Entity> entry in entities)
+        foreach (Entity entity in entities)
         {
-            if (entry.Value.type == type)
+            if (entity.type == type)
             {
                 count++;
             }
@@ -170,9 +196,8 @@ public class GameManagerServer : MonoBehaviour
     {
         EntityState[] entityStates = new EntityState[entities.Count];
         int entityStateCount = 0;
-        foreach (KeyValuePair<int, Entity> entry in entities)
+        foreach (Entity ent in entities)
         {
-            Entity ent = entry.Value;
             entityStates[entityStateCount] = new EntityState()
             {
                 Id = ent.id,
