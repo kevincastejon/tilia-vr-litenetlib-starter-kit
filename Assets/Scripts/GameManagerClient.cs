@@ -24,6 +24,7 @@ public class GameManagerClient : MonoBehaviour
     private float _receivedTime;
     private float _timer;
     private const float BufferTime = 0.1f; //100 milliseconds
+    private bool ready;
 
     private void Start()
     {
@@ -39,6 +40,10 @@ public class GameManagerClient : MonoBehaviour
 
     private void OnLogicFrame()
     {
+        if (!ready)
+        {
+            return;
+        }
         SendInput();
         LerpStates(LogicTimer.FixedDelta);
     }
@@ -121,6 +126,7 @@ public class GameManagerClient : MonoBehaviour
     public void OnServerInit(InitMessage im)
     {
         localAvatar.id = im.OwnId;
+        ready = true;
     }
     public void OnServerState(StateMessage sm)
     {
