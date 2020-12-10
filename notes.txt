@@ -1,0 +1,16 @@
+playerstate : 48 bytes
+	-id (sbyte[1])
+	-headPosition[12] (float[4],float[4],float[4])
+	-headRotation[7] (byte[1]short[2],short[2],short[2])
+	-leftHandPosition[6] (short[2],short[2],short[2])
+	-leftHandRotation[7] (byte[1]short[2],short[2],short[2])
+	-rightHandPosition[6] (short[2],short[2],short[2])
+	-rightHandRotation[7] (byte[1]short[2],short[2],short[2])
+	-leftPointer[1] (byte[1])
+	-rightPointer[1] (byte[1])
+
+entitystate : 24 bytes
+	-id (int[4])
+	-type (byte[1])
+	-position[12] (float[4],float[4],float[4])
+	-rotation[7] (byte[1]short[2],short[2],short[2])
