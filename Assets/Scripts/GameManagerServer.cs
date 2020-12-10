@@ -15,43 +15,45 @@ public class GameManagerServer : MonoBehaviour
     [Header("Monitoring")]
     [ReadOnly]
     public List<Player> players = new List<Player>();
-    private LogicTimer logicTimer;
+    //private LogicTimer logicTimer;
     private int Sequence;
+    private float timerMax = 2 / 60f;
+    private float timer = 0f;
 
     private void Start()
     {
-        logicTimer = new LogicTimer(OnLogicFrame);
-        logicTimer.Start();
         localAvatar.id = -1;
         localAvatar.OnShoot.AddListener(ShootBullet);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        logicTimer.Update();
-    }
-
-    private void OnLogicFrame()
-    {
-        SendState();
-        LerpPlayers(LogicTimer.FixedDelta);
+        float newTimer = timer + Time.fixedDeltaTime;
+        bool isLastFrame = newTimer > timerMax;
+        LerpPlayers(timer/timerMax, isLastFrame);
+        timer = newTimer;
+        if (isLastFrame)
+        {
+            timer -= timerMax;
+            SendState();
+        }
     }
     public void OnPlayerConnected(int peerID)
     {
         Player newPlayer = Instantiate(playerPrefab).GetComponent<Player>();
         newPlayer.SetNameOrientationTarget(localAvatar.headAlias);
         newPlayer.id = peerID;
-        newPlayer.inputBuffer.Add(new PlayerInput()
-        {
-            Sequence = -1,
-            HeadPosition = Vector3.zero,
-            HeadRotation = Quaternion.identity,
-            LeftHandPosition = Vector3.zero,
-            LeftHandRotation = Quaternion.identity,
-            RightHandPosition = Vector3.zero,
-            RightHandRotation = Quaternion.identity,
-        }
-            );
+        //newPlayer.inputBuffer.Add(new PlayerInput()
+        //{
+        //    Sequence = -1,
+        //    HeadPosition = Vector3.zero,
+        //    HeadRotation = Quaternion.identity,
+        //    LeftHandPosition = Vector3.zero,
+        //    LeftHandRotation = Quaternion.identity,
+        //    RightHandPosition = Vector3.zero,
+        //    RightHandRotation = Quaternion.identity,
+        //}
+        //    );
         players.Add(newPlayer);
         InitMessage im = new InitMessage()
         {
@@ -138,12 +140,12 @@ public class GameManagerServer : MonoBehaviour
         Sequence++;
     }
 
-    private void LerpPlayers(float delta)
+    private void LerpPlayers(float t, bool isLastFrame)
     {
         for (int i = 0; i < players.Count; i++)
         {
             Player p = players[i];
-            p.UpdatePosition(delta);
+            p.UpdatePosition(t, isLastFrame);
         }
     }
 

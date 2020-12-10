@@ -18,47 +18,43 @@ public class GameManagerClient : MonoBehaviour
     public LiteRingBuffer<StateMessage> stateBuffer = new LiteRingBuffer<StateMessage>(5);
     [ReadOnly]
     public int stateBufferLength;
-    private LogicTimer logicTimer;
-    private int lastReceivedSequence;
-    private int localSequence;
-    private float _receivedTime;
-    private float _timer;
-    private const float BufferTime = 0.1f; //100 milliseconds
+    private int lastSequence;
+    private int sequence;
     private bool ready;
+    private float timerMax = 2 / 60f;
+    private float timer = 0f;
 
     private void Start()
     {
-        logicTimer = new LogicTimer(OnLogicFrame);
-        logicTimer.Start();
-        stateBuffer.Add(new StateMessage() { Sequence = -1, Players = new PlayerState[0], Entities = new EntityState[0] });
+        //stateBuffer.Add(new StateMessage() { Sequence = -1, Players = new PlayerState[0], Entities = new EntityState[0] });
     }
 
-    private void Update()
-    {
-        logicTimer.Update();
-    }
-
-    private void OnLogicFrame()
+    private void FixedUpdate()
     {
         if (!ready)
         {
             return;
         }
-        SendInput();
-        LerpStates(LogicTimer.FixedDelta);
+        float newTimer = timer + Time.fixedDeltaTime;
+        bool isLastFrame = newTimer > timerMax;
+        LerpStates(timer / timerMax, isLastFrame);
+        timer = newTimer;
+        if (isLastFrame)
+        {
+            timer -= timerMax;
+            SendInput();
+        }
     }
 
-    private void LerpStates(float delta)
+    private void LerpStates(float t, bool isLastFrame)
     {
-        if (_receivedTime < BufferTime || stateBuffer.Count < 2)
+        if (stateBuffer.Count < 2)
         {
             Debug.Log("NOT ENOUGTH DATA RECEIVED");
             return;
         }
         StateMessage stateA = stateBuffer[0];
         StateMessage stateB = stateBuffer[1];
-        float lerpTime = NetworkGeneral.SeqDiff(stateA.Sequence, stateB.Sequence) * LogicTimer.FixedDelta;
-        float t = _timer / lerpTime;
         for (int i = 0; i < stateB.Players.Length; i++)
         {
             PlayerState playersStateB = stateB.Players[i];
@@ -97,13 +93,11 @@ public class GameManagerClient : MonoBehaviour
                 p.RightPointer = playersStateA.RightPointer;
             }
         }
-        _timer += delta;
-        if (_timer > lerpTime)
+        
+        if (isLastFrame)
         {
-            _receivedTime -= lerpTime;
             stateBuffer.RemoveFromStart(1);
             stateBufferLength = stateBuffer.Count;
-            _timer -= lerpTime;
         }
     }
 
@@ -111,7 +105,7 @@ public class GameManagerClient : MonoBehaviour
     {
         client.SendInput(new PlayerInput()
         {
-            Sequence = localSequence,
+            Sequence = sequence,
             HeadPosition = localAvatar.headAlias.transform.position,
             HeadRotation = localAvatar.headAlias.transform.rotation,
             LeftHandPosition = localAvatar.leftHandAlias.transform.position,
@@ -121,7 +115,7 @@ public class GameManagerClient : MonoBehaviour
             LeftPointer = localAvatar.leftPointer,
             RightPointer = localAvatar.rightPointer,
         });
-        localSequence++;
+        sequence++;
     }
     public void OnServerInit(InitMessage im)
     {
@@ -130,16 +124,15 @@ public class GameManagerClient : MonoBehaviour
     }
     public void OnServerState(StateMessage sm)
     {
-        int diff = NetworkGeneral.SeqDiff(sm.Sequence, stateBuffer.Last.Sequence);
-        if (diff <= 0)
+        if (sm.Sequence <= lastSequence)
+        {
             return;
-
-        _receivedTime += diff * LogicTimer.FixedDelta;
+        }
+        lastSequence = sm.Sequence;
         if (stateBuffer.IsFull)
         {
             Debug.Log("TOO MUCH STATE RECEIVED");
             //Lag?
-            _receivedTime = 0f;
             stateBuffer.FastClear();
         }
         stateBuffer.Add(sm.Clone());

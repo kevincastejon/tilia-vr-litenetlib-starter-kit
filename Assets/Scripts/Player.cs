@@ -39,9 +39,7 @@ public class Player : MonoBehaviour
     public LiteRingBuffer<PlayerInput> inputBuffer = new LiteRingBuffer<PlayerInput>(5);
     [HideInInspector]
     private GameObject nameOrientationTarget;
-    private float _receivedTime;
-    private float _timer;
-    private const float BufferTime = 0.1f; //100 milliseconds
+    private int lastSequence = -1;
 
     public bool LeftPointer
     {
@@ -61,14 +59,14 @@ public class Player : MonoBehaviour
     }
 
 
-    public void UpdatePosition(float delta)
+    public void UpdatePosition(float t,bool isLastFrame)
     {
         if (nameOrientationTarget)
         {
             playerName.transform.rotation = Quaternion.LookRotation(playerName.transform.position - nameOrientationTarget.transform.position);
         }
 
-        if (_receivedTime < BufferTime || inputBuffer.Count < 2)
+        if (inputBuffer.Count < 2)
         {
             Debug.Log("NOT ENOUGTH DATA RECEIVED FROM PLAYER "+id);
             return;
@@ -76,36 +74,30 @@ public class Player : MonoBehaviour
         var dataA = inputBuffer[0];
         var dataB = inputBuffer[1];
 
-        float lerpTime = NetworkGeneral.SeqDiff(dataB.Sequence, dataA.Sequence) * LogicTimer.FixedDelta;
-        float t = _timer / lerpTime;
         headAlias.transform.position = Vector3.Lerp(dataA.HeadPosition, dataB.HeadPosition, t);
         headAlias.transform.rotation = Quaternion.Lerp(dataA.HeadRotation, dataB.HeadRotation, t);
         leftHandAlias.transform.position = Vector3.Lerp(dataA.LeftHandPosition, dataB.LeftHandPosition, t);
         leftHandAlias.transform.rotation = Quaternion.Lerp(dataA.LeftHandRotation, dataB.LeftHandRotation, t);
         rightHandAlias.transform.position = Vector3.Lerp(dataA.RightHandPosition, dataB.RightHandPosition, t);
         rightHandAlias.transform.rotation = Quaternion.Lerp(dataA.RightHandRotation, dataB.RightHandRotation, t);
-        _timer += delta;
-        if (_timer > lerpTime)
+        if (isLastFrame)
         {
-            _receivedTime -= lerpTime;
             inputBuffer.RemoveFromStart(1);
             inputBufferLength = inputBuffer.Count;
-            _timer -= lerpTime;
         }
     }
 
     public void AddStateToBuffer(PlayerInput pi)
     {
-        int diff = NetworkGeneral.SeqDiff(pi.Sequence, inputBuffer.Last.Sequence);
-        if (diff <= 0)
+        if (pi.Sequence<=lastSequence)
+        {
             return;
-
-        _receivedTime += diff * LogicTimer.FixedDelta;
+        }
+        lastSequence = pi.Sequence;
         if (inputBuffer.IsFull)
         {
             Debug.Log("TOO MUCH STATE RECEIVED");
             //Lag?
-            _receivedTime = 0f;
             inputBuffer.FastClear();
         }
         inputBuffer.Add(pi);
