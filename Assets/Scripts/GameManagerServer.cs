@@ -5,6 +5,7 @@ using Tilia.Interactions.Interactables.Interactables;
 using Tilia.Interactions.Interactables.Interactors;
 using UnityEngine;
 
+[Serializable]
 public class InstanceCountLimit
 {
     public int max = -1;
