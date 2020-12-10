@@ -33,7 +33,7 @@ public class GameManagerServer : MonoBehaviour
 
     public void AddEntity(Entity ent)
     {
-        if (GetEntityTypeCount(ent.type) < entityTypeInstanceLimits[(int)ent.type])
+        if (entityTypeInstanceLimits[(int)ent.type] == -1 || GetEntityTypeCount(ent.type) < entityTypeInstanceLimits[(int)ent.type])
         {
             ent.id = ent.GetInstanceID();
             entities.Add(ent.id, ent);
@@ -45,13 +45,13 @@ public class GameManagerServer : MonoBehaviour
         }
         else
         {
-            Destroy(ent);
+            Destroy(ent.gameObject);
         }
     }
     public void RemoveEntity(Entity ent)
     {
         entities.Remove(ent.id);
-        if (ent.interactable!=null)
+        if (ent.interactable != null)
         {
             ent.interactable.Grabbed.RemoveAllListeners();
             ent.interactable.Ungrabbed.RemoveAllListeners();
