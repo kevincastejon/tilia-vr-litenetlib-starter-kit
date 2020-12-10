@@ -96,6 +96,8 @@ public class GameManagerClient : MonoBehaviour
         {
             stateBuffer.RemoveFromStart(1);
             stateBufferLength = stateBuffer.Count;
+            DestroyOldPlayers(stateBuffer[1].Players);
+            DestroyOldEntities(stateBuffer[1].Entities);
         }
     }
 
@@ -175,6 +177,50 @@ public class GameManagerClient : MonoBehaviour
                 p.rightHandAlias.transform.rotation = Quaternion.Lerp(playersStateA.RightHandRotation, playersStateB.RightHandRotation, t);
                 p.LeftPointer = playersStateA.LeftPointer;
                 p.RightPointer = playersStateA.RightPointer;
+            }
+        }
+    }
+
+    private void DestroyOldPlayers(PlayerState[] playerStates)
+    {
+        foreach (KeyValuePair<int, Player> entry in players)
+        {
+            int key = entry.Key;
+            Player player = entry.Value;
+            bool presence = false;
+            for (int i = 0; i < playerStates.Length; i++)
+            {
+                if (playerStates[i].Id == player.id)
+                {
+                    presence = true;
+                    break;
+                }
+            }
+            if (!presence)
+            {
+                players.Remove(key);
+                Destroy(player.gameObject);
+            }
+        }
+    }
+    private void DestroyOldEntities(EntityState[] entityStates)
+    {
+        for (int i = 0; i < entities.Count; i++)
+        {
+            Entity entity = entities[i];
+            bool presence = false;
+            for (int j = 0; j < entityStates.Length; j++)
+            {
+                if (entityStates[j].Id == entity.id)
+                {
+                    presence = true;
+                    break;
+                }
+            }
+            if (!presence)
+            {
+                entities.Remove(entity);
+                Destroy(entity.gameObject);
             }
         }
     }
