@@ -706,7 +706,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   type: 1
-  interactable: {fileID: 0}
+  transformTarget: {fileID: 635204362}
+  interactable: {fileID: 148629921}
+  body: {fileID: 148629920}
+--- !u!54 &148629920 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 8862883227734677280, guid: 1bb7642ebf8d0a34aa23fc586ea87e6a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1696991942}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &148629921 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 785982709505707726, guid: 1bb7642ebf8d0a34aa23fc586ea87e6a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1696991942}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148629916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 906c6376972e44f469330df394172abd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &155289357 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5839046843648530548, guid: f8e0d2a59209d854b91b04b5db7df9ca,
@@ -2216,7 +2236,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   type: 3
-  interactable: {fileID: 0}
+  transformTarget: {fileID: 111658705}
+  interactable: {fileID: 446864214}
+  body: {fileID: 446864216}
+--- !u!114 &446864214 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 785982709505707726, guid: 1bb7642ebf8d0a34aa23fc586ea87e6a,
+    type: 3}
+  m_PrefabInstance: {fileID: 401014464}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 446864211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 906c6376972e44f469330df394172abd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &446864216 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 8862883227734677280, guid: 1bb7642ebf8d0a34aa23fc586ea87e6a,
+    type: 3}
+  m_PrefabInstance: {fileID: 401014464}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &451122358 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1458957959020712, guid: 114b3c3ce4645364a97c8f0803bed65b,

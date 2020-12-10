@@ -16,8 +16,9 @@ public class Entity : MonoBehaviour
     [ReadOnly]
     public int id;
     public EntityType type;
-    [HideInInspector]
+    public Transform transformTarget;
     public InteractableFacade interactable;
+    public Rigidbody body;
     private void Awake()
     {
         if (DEVNetworkSwitcher.isServer)
@@ -27,8 +28,11 @@ public class Entity : MonoBehaviour
         else
         {
             GameManagerClient.instance.AddEntity(this);
+            if (body)
+            {
+                body.isKinematic = true;
+            }
         }
-        interactable = GetComponent<InteractableFacade>();
     }
     private void OnDestroy()
     {

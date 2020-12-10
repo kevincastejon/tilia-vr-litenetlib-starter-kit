@@ -140,4 +140,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   type: 2
+  transformTarget: {fileID: 5064182807001779641}
   interactable: {fileID: 0}
+  body: {fileID: -5881190213255125801}

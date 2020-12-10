@@ -118,8 +118,8 @@ public class GameManagerClient : MonoBehaviour
                     entities.Add(ent);
                 }
                 ent.id = entityStateB.Id;
-                ent.transform.position = entityStateB.Position;
-                ent.transform.rotation = entityStateB.Rotation;
+                ent.transformTarget.position = entityStateB.Position;
+                ent.transformTarget.rotation = entityStateB.Rotation;
             }
             EntityState entitiesStateA = null;
             for (int j = 0; j < entitiesA.Length; j++)
@@ -131,8 +131,8 @@ public class GameManagerClient : MonoBehaviour
             }
             if (entitiesStateA != null)
             {
-                ent.transform.position = Vector3.Lerp(entitiesStateA.Position, entityStateB.Position, t);
-                ent.transform.rotation = Quaternion.Lerp(entitiesStateA.Rotation, entityStateB.Rotation, t);
+                ent.transformTarget.position = Vector3.Lerp(entitiesStateA.Position, entityStateB.Position, t);
+                ent.transformTarget.rotation = Quaternion.Lerp(entitiesStateA.Rotation, entityStateB.Rotation, t);
             }
         }
     }
