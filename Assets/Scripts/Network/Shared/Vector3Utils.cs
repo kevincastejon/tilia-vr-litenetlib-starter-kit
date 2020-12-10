@@ -17,9 +17,9 @@ public class Vector3Utils
     public static void SerializeHand(NetDataWriter writer, Vector3 hand, Vector3 head)
     {
         Vector3 dif = hand - head;
-        writer.Put(dif.x / 2 * short.MaxValue);
-        writer.Put(dif.y / 2 * short.MaxValue);
-        writer.Put(dif.z / 2 * short.MaxValue);
+        writer.Put((short)(dif.x / 2 * short.MaxValue));
+        writer.Put((short)(dif.y / 2 * short.MaxValue));
+        writer.Put((short)(dif.z / 2 * short.MaxValue));
     }
 
     public static Vector3 DeserializeHand(NetDataReader reader, Vector3 head)
