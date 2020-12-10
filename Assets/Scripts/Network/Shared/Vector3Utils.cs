@@ -24,7 +24,7 @@ public class Vector3Utils
 
     public static Vector3 DeserializeHand(NetDataReader reader, Vector3 head)
     {
-        Vector3 dif = new Vector3(reader.GetShort() / short.MaxValue * 2, reader.GetShort() / short.MaxValue * 2, reader.GetShort() / short.MaxValue * 2);
+        Vector3 dif = new Vector3(reader.GetShort() / short.MaxValue * 2f, reader.GetShort() / short.MaxValue * 2f, reader.GetShort() / short.MaxValue * 2f);
         return head + dif;
     }
 }
