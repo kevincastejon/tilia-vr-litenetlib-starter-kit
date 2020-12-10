@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Tilia.Interactions.Interactables.Interactors;
 using UnityEngine;
 
 public class GameManagerClient : MonoBehaviour
 {
     [Header("Prefab Settings")]
     public GameObject playerPrefab;
-    public GameObject bulletPrefab;
+    public List<GameObject> entityPrefabs = new List<GameObject>();
     [Header("Reference Settings")]
     public LocalAvatar localAvatar;
     public GameClient client;
     [Header("Monitoring")]
-    [ReadOnly]
-    public Dictionary<int, Player> players = new Dictionary<int, Player>();
+    private Dictionary<int, Player> players = new Dictionary<int, Player>();
+    private List<Entity> entities = new List<Entity>();
     [HideInInspector]
     public LiteRingBuffer<StateMessage> stateBuffer = new LiteRingBuffer<StateMessage>(5);
     [ReadOnly]
@@ -23,10 +24,42 @@ public class GameManagerClient : MonoBehaviour
     private bool ready;
     private float timerMax = 2 / 60f;
     private float timer = 0f;
+    [HideInInspector]
+    public static GameManagerClient instance;
 
-    private void Start()
+    private void Awake()
     {
-        //stateBuffer.Add(new StateMessage() { Sequence = -1, Players = new PlayerState[0], Entities = new EntityState[0] });
+        instance = this;
+    }
+
+    public void AddEntity(Entity ent)
+    {
+        entities.Add(ent);
+        if (ent.interactable != null)
+        {
+            ent.interactable.Grabbed.AddListener((InteractorFacade ifc) => OnLocalGrab(ent));
+            ent.interactable.Ungrabbed.AddListener((InteractorFacade ifc) => OnLocalUngrab(ent));
+        }
+    }
+
+    public void RemoveEntity(Entity ent)
+    {
+        entities.Remove(ent);
+        if (ent.interactable != null)
+        {
+            ent.interactable.Grabbed.RemoveAllListeners();
+            ent.interactable.Ungrabbed.RemoveAllListeners();
+        }
+    }
+
+    private void OnLocalGrab(Entity ent)
+    {
+        
+    }
+
+    private void OnLocalUngrab(Entity ent)
+    {
+        
     }
 
     private void FixedUpdate()
@@ -55,9 +88,21 @@ public class GameManagerClient : MonoBehaviour
         }
         StateMessage stateA = stateBuffer[0];
         StateMessage stateB = stateBuffer[1];
-        for (int i = 0; i < stateB.Players.Length; i++)
+
+        LerpPlayers(stateA.Players, stateB.Players);
+        
+        if (isLastFrame)
         {
-            PlayerState playersStateB = stateB.Players[i];
+            stateBuffer.RemoveFromStart(1);
+            stateBufferLength = stateBuffer.Count;
+        }
+    }
+
+    private void LerpPlayers(PlayerState[] playersA, PlayerState[] playersB)
+    {
+        for (int i = 0; i < playersB.Length; i++)
+        {
+            PlayerState playersStateB = playersB[i];
             Player p = players.ContainsKey(playersStateB.Id) ? players[playersStateB.Id] : null;
             if (p == null)
             {
@@ -74,11 +119,11 @@ public class GameManagerClient : MonoBehaviour
                 players[p.id] = p;
             }
             PlayerState playersStateA = null;
-            for (int j = 0; j < stateA.Players.Length; j++)
+            for (int j = 0; j < playersA.Length; j++)
             {
-                if (stateA.Players[j].Id == playersStateB.Id)
+                if (playersA[j].Id == playersStateB.Id)
                 {
-                    playersStateA = stateA.Players[j];
+                    playersStateA = playersA[j];
                 }
             }
             if (playersStateA != null)
@@ -92,12 +137,6 @@ public class GameManagerClient : MonoBehaviour
                 p.LeftPointer = playersStateA.LeftPointer;
                 p.RightPointer = playersStateA.RightPointer;
             }
-        }
-        
-        if (isLastFrame)
-        {
-            stateBuffer.RemoveFromStart(1);
-            stateBufferLength = stateBuffer.Count;
         }
     }
 
@@ -137,11 +176,5 @@ public class GameManagerClient : MonoBehaviour
         }
         stateBuffer.Add(sm.Clone());
         stateBufferLength = stateBuffer.Count;
-        //if (sm.Sequence <= lastReceivedSequence)
-        //{
-        //    return;
-        //}
-        //lastReceivedSequence = sm.Sequence;
-        //serverStateBuffer.Add(sm.Clone());
     }
 }

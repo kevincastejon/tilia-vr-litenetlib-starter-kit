@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using Tilia.Indicators.ObjectPointers;
 using Tilia.Interactions.Interactables.Interactables;
-using Tilia.Interactions.Interactables.Interactors;
-using Tilia.SDK.OculusIntegration.Input;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {

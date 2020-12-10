@@ -684,13 +684,29 @@ MonoBehaviour:
     type: 3}
   localAvatar: {fileID: 2110964069}
   server: {fileID: 121076093}
-  players: []
+  entityTypeInstanceLimits: 0a000000ffffffffffffffffffffffff
+  Sequence: 0
 --- !u!1 &148629916 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7774344186399642229, guid: 1bb7642ebf8d0a34aa23fc586ea87e6a,
     type: 3}
   m_PrefabInstance: {fileID: 1696991942}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &148629917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148629916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c58e8ffff5df84c92f28224e9aa227, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+  type: 1
+  interactable: {fileID: 0}
 --- !u!114 &155289357 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5839046843648530548, guid: f8e0d2a59209d854b91b04b5db7df9ca,
@@ -2186,6 +2202,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 1706254886}
+--- !u!114 &446864213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 446864211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c58e8ffff5df84c92f28224e9aa227, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+  type: 3
+  interactable: {fileID: 0}
 --- !u!1 &451122358 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1458957959020712, guid: 114b3c3ce4645364a97c8f0803bed65b,
@@ -6995,8 +7026,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 5143088545895085449, guid: 882ad77aea76e9f4480b8ede08df835c,
     type: 3}
-  bulletPrefab: {fileID: 2024301931097442895, guid: 2910db0b28aba7b408e99e773670a592,
-    type: 3}
+  entityPrefabs:
+  - {fileID: 2024301931097442895, guid: 2910db0b28aba7b408e99e773670a592, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   localAvatar: {fileID: 2110964069}
   client: {fileID: 1928920087}
   stateBufferLength: 0

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Tilia.Interactions.Interactables.Interactables;
+using Tilia.Interactions.Interactables.Interactors;
 using UnityEngine;
 
 public class GameManagerServer : MonoBehaviour
@@ -12,25 +13,79 @@ public class GameManagerServer : MonoBehaviour
     [Header("Reference Settings")]
     public LocalAvatar localAvatar;
     public GameServer server;
+    public List<int> entityTypeInstanceLimits = new List<int>();
     [Header("Monitoring")]
     [ReadOnly]
-    public List<Player> players = new List<Player>();
-    //private LogicTimer logicTimer;
-    private int Sequence;
+    public int Sequence;
+    private Dictionary<int, Player> players = new Dictionary<int, Player>();
+    public Dictionary<int, Entity> entities = new Dictionary<int, Entity>();
     private float timerMax = 2 / 60f;
     private float timer = 0f;
+    [HideInInspector]
+    public static GameManagerServer instance;
 
-    private void Start()
+    private void Awake()
     {
+        instance = this;
         localAvatar.id = -1;
         localAvatar.OnShoot.AddListener(ShootBullet);
+    }
+
+    public void AddEntity(Entity ent)
+    {
+        if (GetEntityTypeCount(ent.type) < entityTypeInstanceLimits[(int)ent.type])
+        {
+            ent.id = ent.GetInstanceID();
+            entities.Add(ent.id, ent);
+            if (ent.interactable != null)
+            {
+                ent.interactable.Grabbed.AddListener((InteractorFacade ifc) => OnLocalGrab(ent));
+                ent.interactable.Ungrabbed.AddListener((InteractorFacade ifc) => OnLocalUngrab(ent));
+            }
+        }
+        else
+        {
+            Destroy(ent);
+        }
+    }
+    public void RemoveEntity(Entity ent)
+    {
+        entities.Remove(ent.id);
+        if (ent.interactable!=null)
+        {
+            ent.interactable.Grabbed.RemoveAllListeners();
+            ent.interactable.Ungrabbed.RemoveAllListeners();
+        }
+    }
+
+    private void OnLocalGrab(Entity ent)
+    {
+
+    }
+
+    private void OnLocalUngrab(Entity ent)
+    {
+
+    }
+
+    private int GetEntityTypeCount(EntityType type)
+    {
+        int count = 0;
+        foreach (KeyValuePair<int, Entity> entry in entities)
+        {
+            if (entry.Value.type == type)
+            {
+                count++;
+            }
+        }
+        return count;
     }
 
     private void FixedUpdate()
     {
         float newTimer = timer + Time.fixedDeltaTime;
         bool isLastFrame = newTimer > timerMax;
-        LerpPlayers(timer/timerMax, isLastFrame);
+        LerpPlayers(timer / timerMax, isLastFrame);
         timer = newTimer;
         if (isLastFrame)
         {
@@ -43,18 +98,7 @@ public class GameManagerServer : MonoBehaviour
         Player newPlayer = Instantiate(playerPrefab).GetComponent<Player>();
         newPlayer.SetNameOrientationTarget(localAvatar.headAlias);
         newPlayer.id = peerID;
-        //newPlayer.inputBuffer.Add(new PlayerInput()
-        //{
-        //    Sequence = -1,
-        //    HeadPosition = Vector3.zero,
-        //    HeadRotation = Quaternion.identity,
-        //    LeftHandPosition = Vector3.zero,
-        //    LeftHandRotation = Quaternion.identity,
-        //    RightHandPosition = Vector3.zero,
-        //    RightHandRotation = Quaternion.identity,
-        //}
-        //    );
-        players.Add(newPlayer);
+        players[peerID] = newPlayer;
         InitMessage im = new InitMessage()
         {
             OwnId = peerID
@@ -64,8 +108,8 @@ public class GameManagerServer : MonoBehaviour
 
     public void OnPlayerDisconnected(int peerID)
     {
-        Player disconnectedPlayer = players.Find(x => x.id == peerID);
-        players.Remove(disconnectedPlayer);
+        Player disconnectedPlayer = players[peerID];
+        players.Remove(peerID);
         if (disconnectedPlayer.leftGrabbed)
         {
 
@@ -79,7 +123,7 @@ public class GameManagerServer : MonoBehaviour
 
     public void OnPlayerInput(int playerId, PlayerInput pi)
     {
-        Player p = players.Find(pl => pl.id == playerId);
+        Player p = players[playerId];
         p.AddStateToBuffer(pi.Clone());
     }
 
@@ -87,9 +131,9 @@ public class GameManagerServer : MonoBehaviour
     {
         PlayerState[] playerStates = new PlayerState[players.Count];
         int playerStateCount = 0;
-        for (int j = 0; j < players.Count; j++)
+        foreach (KeyValuePair<int, Player> entry in players)
         {
-            Player p = players[j];
+            Player p = entry.Value;
             if (p.id != excludedPlayerId)
             {
                 playerStates[playerStateCount] = new PlayerState()
@@ -122,19 +166,39 @@ public class GameManagerServer : MonoBehaviour
         return playerStates;
     }
 
+    public EntityState[] GetEntitiesStates()
+    {
+        EntityState[] entityStates = new EntityState[entities.Count];
+        int entityStateCount = 0;
+        foreach (KeyValuePair<int, Entity> entry in entities)
+        {
+            Entity ent = entry.Value;
+            entityStates[entityStateCount] = new EntityState()
+            {
+                Id = ent.id,
+                Type = (byte)ent.type,
+                Position = ent.transform.position,
+                Rotation = ent.transform.rotation,
+            };
+            entityStateCount++;
+        }
+        return entityStates;
+    }
+
     private void SendState()
     {
-        for (int i = 0; i < players.Count; i++)
+        foreach (KeyValuePair<int, Player> entry in players)
         {
-            PlayerState[] playerStates = GetPlayersStates(players[i].id);
+            PlayerState[] playerStates = GetPlayersStates(entry.Key);
+            EntityState[] entityStates = GetEntitiesStates();
             server.SendWorldState(
                 new StateMessage()
                 {
                     Sequence = Sequence,
-                    Entities = new EntityState[0],
+                    Entities = entityStates,
                     Players = playerStates
                 },
-                players[i].id
+                entry.Value.id
             );
         }
         Sequence++;

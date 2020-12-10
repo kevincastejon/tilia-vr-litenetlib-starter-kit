@@ -1,13 +1,5 @@
 ﻿using LiteNetLib.Utils;
 using UnityEngine;
-
-public enum EntityType
-{
-    Bullet = 0,
-    Ball = 1,
-    Pin = 2,
-    Gun = 3,
-}
 public class EntityState : INetSerializable
 {
     public int Id { get; set; }
