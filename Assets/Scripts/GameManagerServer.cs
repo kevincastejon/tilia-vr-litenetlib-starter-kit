@@ -261,7 +261,7 @@ public class GameManagerServer : MonoBehaviour
             p.leftHandAlias.transform.rotation = Quaternion.Lerp(dataA.LeftHandRotation, dataB.LeftHandRotation, t);
             p.rightHandAlias.transform.position = Vector3.Lerp(dataA.RightHandPosition, dataB.RightHandPosition, t);
             p.rightHandAlias.transform.rotation = Quaternion.Lerp(dataA.RightHandRotation, dataB.RightHandRotation, t);
-            if (dataA.LeftGrabId != dataB.LeftGrabId)
+            if (dataA.LeftGrabId != dataB.LeftGrabId && dataA.LeftGrabId != 0)
             {
                 //Ungrab left
                 Entity ent = entities.Find(x => x.id == dataA.LeftGrabId);
@@ -288,7 +288,7 @@ public class GameManagerServer : MonoBehaviour
                 ent.ownerId = p.id;
             }
 
-            if (dataA.RightGrabId != dataB.RightGrabId)
+            if (dataA.RightGrabId != dataB.RightGrabId && dataA.RightGrabId != 0)
             {
                 //Ungrab right
                 Entity ent = entities.Find(x => x.id == dataA.RightGrabId);
