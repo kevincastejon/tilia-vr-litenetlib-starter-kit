@@ -124,6 +124,10 @@ public class GameManagerClient : MonoBehaviour
                 ent.transformTarget.position = entityStateB.Position;
                 ent.transformTarget.rotation = entityStateB.Rotation;
             }
+            if (localAvatar.GetLeftGrabbedEntity().id == ent.id || localAvatar.GetRightGrabbedEntity().id == ent.id)
+            {
+                continue;
+            }
             EntityState entitiesStateA = null;
             for (int j = 0; j < entitiesA.Length; j++)
             {

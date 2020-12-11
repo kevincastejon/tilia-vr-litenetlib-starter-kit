@@ -242,7 +242,6 @@ public class GameManagerServer : MonoBehaviour
         for (int i = 0; i < players.Count; i++)
         {
             Player p = players[i];
-            //p.UpdatePosition(t, isLastFrame);
             if (p.nameOrientationTarget)
             {
                 p.playerName.transform.rotation = Quaternion.LookRotation(p.playerName.transform.position - p.nameOrientationTarget.transform.position);
@@ -262,6 +261,59 @@ public class GameManagerServer : MonoBehaviour
             p.leftHandAlias.transform.rotation = Quaternion.Lerp(dataA.LeftHandRotation, dataB.LeftHandRotation, t);
             p.rightHandAlias.transform.position = Vector3.Lerp(dataA.RightHandPosition, dataB.RightHandPosition, t);
             p.rightHandAlias.transform.rotation = Quaternion.Lerp(dataA.RightHandRotation, dataB.RightHandRotation, t);
+            if (dataA.LeftGrabId != dataB.LeftGrabId)
+            {
+                //Ungrab left
+                Entity ent = entities.Find(x => x.id == dataA.LeftGrabId);
+                p.leftGrabbed = null;
+                ent.grabbed = false;
+                if (ent.body)
+                {
+                    ent.body.isKinematic = false;
+                    ent.body.velocity = dataA.LeftGrabVelocity;
+                    ent.body.angularVelocity = dataA.LeftGrabAngularVelocity;
+                }
+
+            }
+            else if (dataA.LeftGrabId != 0)
+            {
+                //Grab left
+                Entity ent = entities.Find(x => x.id == dataA.LeftGrabId);
+                if (ent.body)
+                {
+                    ent.body.isKinematic = true;
+                }
+                p.leftGrabbed = ent;
+                ent.grabbed = true;
+                ent.ownerId = p.id;
+            }
+
+            if (dataA.RightGrabId != dataB.RightGrabId)
+            {
+                //Ungrab right
+                Entity ent = entities.Find(x => x.id == dataA.RightGrabId);
+                p.rightGrabbed = null;
+                ent.grabbed = false;
+                if (ent.body)
+                {
+                    ent.body.isKinematic = false;
+                    ent.body.velocity = dataA.RightGrabVelocity;
+                    ent.body.angularVelocity = dataA.RightGrabAngularVelocity;
+                }
+
+            }
+            else if (dataA.RightGrabId != 0)
+            {
+                //Grab right
+                Entity ent = entities.Find(x => x.id == dataA.RightGrabId);
+                if (ent.body)
+                {
+                    ent.body.isKinematic = true;
+                }
+                p.rightGrabbed = ent;
+                ent.grabbed = true;
+                ent.ownerId = p.id;
+            }
             if (isLastFrame)
             {
                 p.inputBuffer.RemoveFromStart(1);

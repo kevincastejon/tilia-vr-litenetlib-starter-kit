@@ -27,9 +27,9 @@ public class Player : MonoBehaviour
     private bool rightPointer;
     [Header("!Server-Side Only!")]
     [ReadOnly]
-    public InteractableFacade leftGrabbed;
+    public Entity leftGrabbed;
     [ReadOnly]
-    public InteractableFacade rightGrabbed;
+    public Entity rightGrabbed;
     [ReadOnly]
     public int inputBufferLength;
     [HideInInspector]
@@ -49,34 +49,6 @@ public class Player : MonoBehaviour
         get { return rightPointer; }
         set { rightPointer = value; if (value) { rightPointerFacade.Activate(); } else { rightPointerFacade.Deactivate(); } }
     }
-
-    //public void UpdatePosition(float t,bool isLastFrame)
-    //{
-    //    if (nameOrientationTarget)
-    //    {
-    //        playerName.transform.rotation = Quaternion.LookRotation(playerName.transform.position - nameOrientationTarget.transform.position);
-    //    }
-
-    //    if (inputBuffer.Count < 2)
-    //    {
-    //        Debug.Log("NOT ENOUGTH DATA RECEIVED FROM PLAYER "+id);
-    //        return;
-    //    }
-    //    var dataA = inputBuffer[0];
-    //    var dataB = inputBuffer[1];
-
-    //    headAlias.transform.position = Vector3.Lerp(dataA.HeadPosition, dataB.HeadPosition, t);
-    //    headAlias.transform.rotation = Quaternion.Lerp(dataA.HeadRotation, dataB.HeadRotation, t);
-    //    leftHandAlias.transform.position = Vector3.Lerp(dataA.LeftHandPosition, dataB.LeftHandPosition, t);
-    //    leftHandAlias.transform.rotation = Quaternion.Lerp(dataA.LeftHandRotation, dataB.LeftHandRotation, t);
-    //    rightHandAlias.transform.position = Vector3.Lerp(dataA.RightHandPosition, dataB.RightHandPosition, t);
-    //    rightHandAlias.transform.rotation = Quaternion.Lerp(dataA.RightHandRotation, dataB.RightHandRotation, t);
-    //    if (isLastFrame)
-    //    {
-    //        inputBuffer.RemoveFromStart(1);
-    //        inputBufferLength = inputBuffer.Count;
-    //    }
-    //}
 
     public void AddStateToBuffer(PlayerInput pi)
     {

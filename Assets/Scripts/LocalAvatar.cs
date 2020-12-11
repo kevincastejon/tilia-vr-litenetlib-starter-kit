@@ -75,6 +75,31 @@ public class LocalAvatar : MonoBehaviour
         }
     }
 
+    public Entity GetLeftGrabbedEntity()
+    {
+        if (leftGrabbed)
+        {
+            Entity ent = leftGrabbed.GetComponent<Entity>();
+            if (ent)
+            {
+                return ent;
+            }
+        }
+        return null;
+    }
+    public Entity GetRightGrabbedEntity()
+    {
+        if (rightGrabbed)
+        {
+            Entity ent = rightGrabbed.GetComponent<Entity>();
+            if (ent)
+            {
+                return ent;
+            }
+        }
+        return null;
+    }
+
     private void OnLeftPointer(bool value)
     {
         leftPointer = value;
@@ -88,19 +113,35 @@ public class LocalAvatar : MonoBehaviour
     private void OnLeftGrab(InteractableFacade interactable)
     {
         leftGrabbed = interactable;
+        Entity ent = interactable.GetComponent<Entity>();
+        if (ent)
+        {
+            ent.grabbed = true;
+            ent.ownerId = id;
+        }
     }
 
     private void OnRightGrab(InteractableFacade interactable)
     {
         rightGrabbed = interactable;
+        Entity ent = interactable.GetComponent<Entity>();
+        if (ent)
+        {
+            ent.grabbed = true;
+            ent.ownerId = id;
+        }
     }
     private void OnLeftUngrab(InteractableFacade interactable)
     {
         leftGrabbed = null;
         Entity ent = interactable.GetComponent<Entity>();
-        if (!DEVNetworkSwitcher.isServer && ent && ent.body)
+        if (ent)
         {
-            ent.body.isKinematic = true;
+            if (!DEVNetworkSwitcher.isServer && ent.body)
+            {
+                ent.body.isKinematic = true;
+            }
+            ent.grabbed = false;
         }
     }
 
@@ -108,9 +149,13 @@ public class LocalAvatar : MonoBehaviour
     {
         rightGrabbed = null;
         Entity ent = interactable.GetComponent<Entity>();
-        if (!DEVNetworkSwitcher.isServer && ent && ent.body)
+        if (ent)
         {
-            ent.body.isKinematic = true;
+            if (!DEVNetworkSwitcher.isServer && ent.body)
+            {
+                ent.body.isKinematic = true;
+            }
+            ent.grabbed = false;
         }
     }
 
