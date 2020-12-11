@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(SnapZoneFacade))]
 public class FreeFallSnap : MonoBehaviour
 {
-    SnapZoneFacade snapZone;
+    private SnapZoneFacade snapZone;
     private void Awake()
     {
         snapZone = GetComponent<SnapZoneFacade>();

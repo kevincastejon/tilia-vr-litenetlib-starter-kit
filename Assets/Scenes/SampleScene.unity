@@ -716,10 +716,26 @@ MonoBehaviour:
   id: 0
   grabbed: 0
   ownerId: 0
+  snapZone: {fileID: 0}
   type: 1
   transformTarget: {fileID: 635204362}
   interactable: {fileID: 148629921}
   body: {fileID: 148629920}
+--- !u!114 &148629918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148629916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dad45d1b37f9ce0438919d60f9bd456e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliders:
+  - {fileID: 1737012310}
+  collidesOnGrab: 0
 --- !u!54 &148629920 stripped
 Rigidbody:
   m_CorrespondingSourceObject: {fileID: 8862883227734677280, guid: 1bb7642ebf8d0a34aa23fc586ea87e6a,
@@ -2236,6 +2252,7 @@ MonoBehaviour:
   id: 0
   grabbed: 0
   ownerId: 0
+  snapZone: {fileID: 0}
   type: 3
   transformTarget: {fileID: 111658705}
   interactable: {fileID: 446864214}
@@ -5774,7 +5791,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc59cd886320cee4e8f23cbbe4ab56ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isServer: 1
+  _isServer: 0
   server: {fileID: 121076092}
   client: {fileID: 1928920086}
 --- !u!4 &1511931687
