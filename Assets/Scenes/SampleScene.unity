@@ -714,13 +714,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
-  grabbed: 0
   ownerId: 0
   snapZone: {fileID: 0}
   type: 1
   transformTarget: {fileID: 635204362}
   interactable: {fileID: 148629921}
   body: {fileID: 148629920}
+  initialIsKinematic: 0
 --- !u!114 &148629918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2331,13 +2331,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
-  grabbed: 0
   ownerId: 0
   snapZone: {fileID: 0}
   type: 3
   transformTarget: {fileID: 111658705}
   interactable: {fileID: 446864214}
   body: {fileID: 446864216}
+  initialIsKinematic: 0
 --- !u!114 &446864214 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 785982709505707726, guid: 1bb7642ebf8d0a34aa23fc586ea87e6a,
@@ -5803,7 +5803,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc59cd886320cee4e8f23cbbe4ab56ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isServer: 0
+  _isServer: 1
   server: {fileID: 121076092}
   client: {fileID: 1928920086}
 --- !u!4 &1511931687
@@ -6155,7 +6155,7 @@ PrefabInstance:
     - target: {fileID: 8090891674275893548, guid: 1bb7642ebf8d0a34aa23fc586ea87e6a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.15
+      value: 1.01
       objectReference: {fileID: 0}
     - target: {fileID: 8090891674275893548, guid: 1bb7642ebf8d0a34aa23fc586ea87e6a,
         type: 3}
@@ -6221,6 +6221,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_CollisionDetection
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8862883227734677280, guid: 1bb7642ebf8d0a34aa23fc586ea87e6a,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1bb7642ebf8d0a34aa23fc586ea87e6a, type: 3}

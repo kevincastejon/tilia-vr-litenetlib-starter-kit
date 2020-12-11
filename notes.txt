@@ -1,5 +1,5 @@
 playerstate : 48 bytes
-	-id (sbyte[1])
+	-id[1] (sbyte[1])
 	-headPosition[12] (float[4],float[4],float[4])
 	-headRotation[7] (byte[1]short[2],short[2],short[2])
 	-leftHandPosition[6] (short[2],short[2],short[2])
@@ -9,8 +9,12 @@ playerstate : 48 bytes
 	-leftPointer[1] (byte[1])
 	-rightPointer[1] (byte[1])
 
-entitystate : 24 bytes
-	-id (int[4])
-	-type (byte[1])
+entitystate : 25 bytes
+	-id[4] (int[4])
+	-type[1] (byte[1])
 	-position[12] (float[4],float[4],float[4])
 	-rotation[7] (byte[1]short[2],short[2],short[2])
+	-ownerId[1] (sbyte[1])
+TODO:
+add bool grabbableFromHand to Entity
+preserve initial IsKinematic on 

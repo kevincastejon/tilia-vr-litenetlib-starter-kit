@@ -27,11 +27,17 @@ public class Entity : MonoBehaviour
     public Transform transformTarget;
     public InteractableFacade interactable;
     public Rigidbody body;
+    [HideInInspector]
+    public bool initialIsKinematic;
     private void Awake()
     {
         if (DEVNetworkSwitcher.isServer)
         {
             GameManagerServer.instance.AddEntity(this);
+            if (body)
+            {
+                initialIsKinematic = body.isKinematic;
+            }
         }
         else
         {

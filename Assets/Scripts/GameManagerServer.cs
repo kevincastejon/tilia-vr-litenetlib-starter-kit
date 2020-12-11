@@ -275,7 +275,7 @@ public class GameManagerServer : MonoBehaviour
                 }
                 if (ent.body)
                 {
-                    ent.body.isKinematic = false;
+                    ent.body.isKinematic = ent.initialIsKinematic;
                     ent.body.velocity = dataA.LeftGrabVelocity;
                     ent.body.angularVelocity = dataA.LeftGrabAngularVelocity;
                 }
@@ -317,7 +317,7 @@ public class GameManagerServer : MonoBehaviour
                 }
                 if (ent.body)
                 {
-                    ent.body.isKinematic = false;
+                    ent.body.isKinematic = ent.initialIsKinematic;
                     ent.body.velocity = dataA.RightGrabVelocity;
                     ent.body.angularVelocity = dataA.RightGrabAngularVelocity;
                 }
