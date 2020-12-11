@@ -97,8 +97,11 @@ public class GameManagerClient : MonoBehaviour
         {
             stateBuffer.RemoveFromStart(1);
             stateBufferLength = stateBuffer.Count;
-            DestroyOldPlayers(stateBuffer[1].Players);
-            DestroyOldEntities(stateBuffer[1].Entities);
+            if (stateBuffer.Count > 1)
+            {
+                DestroyOldPlayers(stateBuffer[1].Players);
+                DestroyOldEntities(stateBuffer[1].Entities);
+            }
         }
     }
 
