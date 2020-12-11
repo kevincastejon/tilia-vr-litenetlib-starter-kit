@@ -133,25 +133,25 @@ public class GameManagerClient : MonoBehaviour
             {
                 continue;
             }
-            EntityState entitiesStateA = null;
+            EntityState entityStateA = null;
             for (int j = 0; j < entitiesA.Length; j++)
             {
                 if (entitiesA[j].Id == entityStateB.Id)
                 {
-                    entitiesStateA = entitiesA[j];
+                    entityStateA = entitiesA[j];
                 }
             }
-            if (entitiesStateA != null)
+            if (entityStateA != null)
             {
-                ent.transformTarget.position = Vector3.Lerp(entitiesStateA.Position, entityStateB.Position, t);
-                ent.transformTarget.rotation = Quaternion.Lerp(entitiesStateA.Rotation, entityStateB.Rotation, t);
-                ent.ownerId = entitiesStateA.Owner;
+                ent.transformTarget.position = Vector3.Lerp(entityStateA.Position, entityStateB.Position, t);
+                ent.transformTarget.rotation = Quaternion.Lerp(entityStateA.Rotation, entityStateB.Rotation, t);
+                ent.ownerId = entityStateA.Owner;
                 if (ent.interactable)
                 {
                     if (ent.ownerId != -1 && ent.ownerId != localAvatar.id)
                     {
-                        Debug.Log("owner id : "+ent.ownerId+" - local id : "+localAvatar.id);
-                        Debug.Log("DISABLING GRAB ACTION");
+                        //Debug.Log("owner id : "+ent.ownerId+" - local id : "+localAvatar.id);
+                        //Debug.Log("DISABLING GRAB ACTION");
                         ent.interactable.DisablePrimaryGrabAction();
                     }
                     else
@@ -322,5 +322,10 @@ public class GameManagerClient : MonoBehaviour
         }
         stateBuffer.Add(sm.Clone());
         stateBufferLength = stateBuffer.Count;
+        Debug.Log("RECEIVING STATE");
+        for (int i = 0; i < sm.Entities.Length; i++)
+        {
+            Debug.Log("-"+ (EntityType)(sm.Entities[i].Type)+" "+ sm.Entities[i].Owner);
+        }
     }
 }

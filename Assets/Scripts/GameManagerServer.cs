@@ -202,10 +202,12 @@ public class GameManagerServer : MonoBehaviour
 
     public EntityState[] GetEntitiesStates()
     {
+        Debug.Log("SENDING STATE");
         EntityState[] entityStates = new EntityState[entities.Count];
         int entityStateCount = 0;
         foreach (Entity ent in entities)
         {
+            Debug.Log("-"+ent.type+" "+ ent.ownerId);
             entityStates[entityStateCount] = new EntityState()
             {
                 Id = ent.id,
