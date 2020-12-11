@@ -6,6 +6,7 @@ public class EntityState : INetSerializable
     public byte Type { get; set; }
     public Vector3 Position { get; set; }
     public Quaternion Rotation { get; set; }
+    public int Owner { get; set; }
 
     public void Serialize(NetDataWriter writer)
     {
@@ -13,6 +14,7 @@ public class EntityState : INetSerializable
         writer.Put(Type);
         Vector3Utils.Serialize(writer, Position);
         QuatUtils.Serialize(writer, Rotation);
+        writer.Put((sbyte)Id);
     }
 
     public void Deserialize(NetDataReader reader)
@@ -21,6 +23,7 @@ public class EntityState : INetSerializable
         Type = reader.GetByte();
         Position = Vector3Utils.Deserialize(reader);
         Rotation = QuatUtils.Deserialize(reader);
+        Owner = reader.GetSByte();
     }
 
     public EntityState Clone()
@@ -30,7 +33,8 @@ public class EntityState : INetSerializable
             Id = Id,
             Type = Type,
             Position = new Vector3(Position.x, Position.y, Position.z),
-            Rotation = new Quaternion(Rotation.x, Rotation.y, Rotation.z, Rotation.w)
+            Rotation = new Quaternion(Rotation.x, Rotation.y, Rotation.z, Rotation.w),
+            Owner = Owner,
         };
         return clone;
     }

@@ -33,7 +33,7 @@ public class GameManagerServer : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        localAvatar.id = -1;
+        localAvatar.id = -128;
         localAvatar.OnShoot.AddListener(ShootBullet);
     }
 
@@ -187,7 +187,7 @@ public class GameManagerServer : MonoBehaviour
         }
         playerStates[playerStateCount] = new PlayerState()
         {
-            Id = -1,     //Server id is always -1
+            Id = -128,     //Server id is always -128
             HeadPosition = localAvatar.headAlias.transform.position,
             HeadRotation = localAvatar.headAlias.transform.rotation,
             LeftHandPosition = localAvatar.leftHandAlias.transform.position,
@@ -212,6 +212,7 @@ public class GameManagerServer : MonoBehaviour
                 Type = (byte)ent.type,
                 Position = ent.transform.position,
                 Rotation = ent.transform.rotation,
+                Owner = ent.ownerId,
             };
             entityStateCount++;
         }
@@ -266,7 +267,7 @@ public class GameManagerServer : MonoBehaviour
                 //Ungrab left
                 Entity ent = entities.Find(x => x.id == dataA.LeftGrabId);
                 p.leftGrabbed = null;
-                ent.grabbed = false;
+                ent.ownerId = -1;
                 DisableCollisionsOnGrab comp = ent.GetComponent<DisableCollisionsOnGrab>();
                 if (comp)
                 {
@@ -293,7 +294,6 @@ public class GameManagerServer : MonoBehaviour
                     ent.body.isKinematic = true;
                 }
                 p.leftGrabbed = ent;
-                ent.grabbed = true;
                 ent.ownerId = p.id;
                 DisableCollisionsOnGrab comp = ent.GetComponent<DisableCollisionsOnGrab>();
                 if (comp && !comp.collidesOnGrab)
@@ -309,7 +309,7 @@ public class GameManagerServer : MonoBehaviour
                 //Ungrab right
                 Entity ent = entities.Find(x => x.id == dataA.RightGrabId);
                 p.rightGrabbed = null;
-                ent.grabbed = false;
+                ent.ownerId = -1;
                 DisableCollisionsOnGrab comp = ent.GetComponent<DisableCollisionsOnGrab>();
                 if (comp)
                 {
@@ -336,7 +336,6 @@ public class GameManagerServer : MonoBehaviour
                     ent.body.isKinematic = true;
                 }
                 p.rightGrabbed = ent;
-                ent.grabbed = true;
                 ent.ownerId = p.id;
                 DisableCollisionsOnGrab comp = ent.GetComponent<DisableCollisionsOnGrab>();
                 if (comp && !comp.collidesOnGrab)

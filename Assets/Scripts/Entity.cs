@@ -18,8 +18,6 @@ public class Entity : MonoBehaviour
     [ReadOnly]
     public int id;
     [ReadOnly]
-    public bool grabbed;
-    [ReadOnly]
     public int ownerId;
     [ReadOnly]
     public SnapZoneFacade snapZone;
