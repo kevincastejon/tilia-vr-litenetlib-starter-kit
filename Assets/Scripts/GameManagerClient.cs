@@ -150,6 +150,7 @@ public class GameManagerClient : MonoBehaviour
                 {
                     if (ent.ownerId != -1 && ent.ownerId != localAvatar.id)
                     {
+                        Debug.Log("owner id : "+ent.ownerId+" - local id : "+localAvatar.id);
                         Debug.Log("DISABLING GRAB ACTION");
                         ent.interactable.DisablePrimaryGrabAction();
                     }

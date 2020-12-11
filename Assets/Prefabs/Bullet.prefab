@@ -62,10 +62,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  ownerId: -1
+  snapZone: {fileID: 0}
   type: 0
   transformTarget: {fileID: 5909328378647937758}
   interactable: {fileID: 0}
   body: {fileID: 3175002095881621787}
+  initialIsKinematic: 0
 --- !u!1 &2559008747566827673
 GameObject:
   m_ObjectHideFlags: 0
