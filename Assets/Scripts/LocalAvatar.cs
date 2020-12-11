@@ -38,13 +38,22 @@ public class LocalAvatar : MonoBehaviour
     public bool rightTrigger;
     [HideInInspector]
     public ShootEvent OnShoot = new ShootEvent();
+    [Header("TEMP DEV")]
+    [ReadOnly]
+    public Vector3 leftGrabVelocity;
+    [ReadOnly]
+    public Vector3 leftGrabAngularVelocity;
+    [ReadOnly]
+    public Vector3 rightGrabVelocity;
+    [ReadOnly]
+    public Vector3 rightGrabAngularVelocity;
 
     // Start is called before the first frame update
     private void Start()
     {
         leftInteractor.Grabbed.AddListener(OnLeftGrab);
         rightInteractor.Grabbed.AddListener(OnRightGrab);
-        leftInteractor.Ungrabbed.AddListener(OnLeftUngrab);  
+        leftInteractor.Ungrabbed.AddListener(OnLeftUngrab);
         rightInteractor.Ungrabbed.AddListener(OnRightUngrab);
         leftTriggerAction.ValueChanged.AddListener(OnLeftTrigger);
         rightTriggerAction.ValueChanged.AddListener(OnRightTrigger);
@@ -52,11 +61,25 @@ public class LocalAvatar : MonoBehaviour
         rightPointerAction.ValueChanged.AddListener(OnRightPointer);
     }
 
+    private void FixedUpdate()
+    {
+        if (leftGrabbed)
+        {
+            leftGrabVelocity = leftInteractor.VelocityTracker.GetVelocity();
+            leftGrabAngularVelocity = leftInteractor.VelocityTracker.GetAngularVelocity();
+        }
+        if (rightGrabbed)
+        {
+            rightGrabVelocity = rightInteractor.VelocityTracker.GetVelocity();
+            rightGrabAngularVelocity = rightInteractor.VelocityTracker.GetAngularVelocity();
+        }
+    }
+
     private void OnLeftPointer(bool value)
     {
         leftPointer = value;
     }
-    
+
     private void OnRightPointer(bool value)
     {
         rightPointer = value;
@@ -74,11 +97,21 @@ public class LocalAvatar : MonoBehaviour
     private void OnLeftUngrab(InteractableFacade interactable)
     {
         leftGrabbed = null;
+        Entity ent = interactable.GetComponent<Entity>();
+        if (!DEVNetworkSwitcher.isServer && ent && ent.body)
+        {
+            ent.body.isKinematic = true;
+        }
     }
 
     private void OnRightUngrab(InteractableFacade interactable)
     {
         rightGrabbed = null;
+        Entity ent = interactable.GetComponent<Entity>();
+        if (!DEVNetworkSwitcher.isServer && ent && ent.body)
+        {
+            ent.body.isKinematic = true;
+        }
     }
 
     private void OnLeftTrigger(bool value)

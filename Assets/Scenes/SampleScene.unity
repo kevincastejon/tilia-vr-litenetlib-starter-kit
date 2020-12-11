@@ -714,6 +714,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  grabbed: 0
+  ownerId: 0
   type: 1
   transformTarget: {fileID: 635204362}
   interactable: {fileID: 148629921}
@@ -2232,6 +2234,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  grabbed: 0
+  ownerId: 0
   type: 3
   transformTarget: {fileID: 111658705}
   interactable: {fileID: 446864214}
@@ -5781,7 +5785,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1511931685}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.8578901, y: 1.9498196, z: -2.852188}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -7042,7 +7046,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4320cd22601fc4b4389b487ed6faecf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverIP: 192.168.0.32
+  serverIP: 192.168.0.19
   serverPort: 5000
   token: appsecret
   autoConnect: 1
@@ -7396,6 +7400,10 @@ MonoBehaviour:
   rightPointer: 0
   leftTrigger: 0
   rightTrigger: 0
+  leftGrabVelocity: {x: 0, y: 0, z: 0}
+  leftGrabAngularVelocity: {x: 0, y: 0, z: 0}
+  rightGrabVelocity: {x: 0, y: 0, z: 0}
+  rightGrabAngularVelocity: {x: 0, y: 0, z: 0}
 --- !u!4 &2110964070
 Transform:
   m_ObjectHideFlags: 0

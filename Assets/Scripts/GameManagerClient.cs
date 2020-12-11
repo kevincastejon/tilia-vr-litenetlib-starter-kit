@@ -35,32 +35,33 @@ public class GameManagerClient : MonoBehaviour
     public void AddEntity(Entity ent)
     {
         entities.Add(ent);
-        if (ent.interactable != null)
-        {
-            ent.interactable.Grabbed.AddListener((InteractorFacade ifc) => OnLocalGrab(ent));
-            ent.interactable.Ungrabbed.AddListener((InteractorFacade ifc) => OnLocalUngrab(ent));
-        }
+        //if (ent.interactable != null)
+        //{
+        //    ent.interactable.Grabbed.AddListener((InteractorFacade ifc) => OnLocalGrab(ent));
+        //    ent.interactable.Ungrabbed.AddListener((InteractorFacade ifc) => OnLocalUngrab(ent));
+        //}
     }
 
     public void RemoveEntity(Entity ent)
     {
         entities.Remove(ent);
-        if (ent.interactable != null)
-        {
-            ent.interactable.Grabbed.RemoveAllListeners();
-            ent.interactable.Ungrabbed.RemoveAllListeners();
-        }
+        //if (ent.interactable != null)
+        //{
+        //    ent.interactable.Grabbed.RemoveAllListeners();
+        //    ent.interactable.Ungrabbed.RemoveAllListeners();
+        //}
     }
 
-    private void OnLocalGrab(Entity ent)
-    {
+    //private void OnLocalGrab(Entity ent)
+    //{
+    //    ent.grabbed = true;
+    //    ent.ownerId = localAvatar.id;
+    //}
 
-    }
-
-    private void OnLocalUngrab(Entity ent)
-    {
-
-    }
+    //private void OnLocalUngrab(Entity ent)
+    //{
+    //    ent.grabbed = false;
+    //}
 
     private void FixedUpdate()
     {
@@ -227,6 +228,26 @@ public class GameManagerClient : MonoBehaviour
 
     private void SendInput()
     {
+        int leftId = 0;
+        Entity leftEnt = null;
+        if (localAvatar.leftGrabbed != null)
+        {
+            leftEnt = localAvatar.leftGrabbed.GetComponent<Entity>();
+            if (leftEnt != null)
+            {
+                leftId = leftEnt.id;
+            }
+        }
+        int rightId = 0;
+        Entity rightEnt = null;
+        if (localAvatar.rightGrabbed != null)
+        {
+            rightEnt = localAvatar.rightGrabbed.GetComponent<Entity>();
+            if (rightEnt != null)
+            {
+                rightId = rightEnt.id;
+            }
+        }
         client.SendInput(new PlayerInput()
         {
             Sequence = sequence,
@@ -236,6 +257,16 @@ public class GameManagerClient : MonoBehaviour
             LeftHandRotation = localAvatar.leftHandAlias.transform.rotation,
             RightHandPosition = localAvatar.rightHandAlias.transform.position,
             RightHandRotation = localAvatar.rightHandAlias.transform.rotation,
+            LeftGrabId = leftId,
+            LeftGrabPosition = leftId == 0 ? Vector3.zero : leftEnt.transformTarget.position,
+            LeftGrabRotation = leftId == 0 ? Quaternion.identity : leftEnt.transformTarget.rotation,
+            LeftGrabVelocity = leftId == 0 ? Vector3.zero : localAvatar.leftGrabVelocity,
+            LeftGrabAngularVelocity = leftId == 0 ? Vector3.zero : localAvatar.leftGrabAngularVelocity,
+            RightGrabId = rightId,
+            RightGrabPosition = rightId == 0 ? Vector3.zero : rightEnt.transformTarget.position,
+            RightGrabRotation = rightId == 0 ? Quaternion.identity : rightEnt.transformTarget.rotation,
+            RightGrabVelocity = leftId == 0 ? Vector3.zero : localAvatar.rightGrabVelocity,
+            RightGrabAngularVelocity = rightId == 0 ? Vector3.zero : localAvatar.rightGrabAngularVelocity,
             LeftPointer = localAvatar.leftPointer,
             RightPointer = localAvatar.rightPointer,
         });

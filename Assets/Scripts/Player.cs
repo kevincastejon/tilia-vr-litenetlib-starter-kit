@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
     [HideInInspector]
     public LiteRingBuffer<PlayerInput> inputBuffer = new LiteRingBuffer<PlayerInput>(5);
     [HideInInspector]
-    private GameObject nameOrientationTarget;
+    public GameObject nameOrientationTarget;
     private int lastSequence = -1;
 
     public bool LeftPointer
@@ -50,39 +50,33 @@ public class Player : MonoBehaviour
         set { rightPointer = value; if (value) { rightPointerFacade.Activate(); } else { rightPointerFacade.Deactivate(); } }
     }
 
-    public void SetNameOrientationTarget(GameObject target)
-    {
-        nameOrientationTarget = target;
-    }
+    //public void UpdatePosition(float t,bool isLastFrame)
+    //{
+    //    if (nameOrientationTarget)
+    //    {
+    //        playerName.transform.rotation = Quaternion.LookRotation(playerName.transform.position - nameOrientationTarget.transform.position);
+    //    }
 
+    //    if (inputBuffer.Count < 2)
+    //    {
+    //        Debug.Log("NOT ENOUGTH DATA RECEIVED FROM PLAYER "+id);
+    //        return;
+    //    }
+    //    var dataA = inputBuffer[0];
+    //    var dataB = inputBuffer[1];
 
-    public void UpdatePosition(float t,bool isLastFrame)
-    {
-        if (nameOrientationTarget)
-        {
-            playerName.transform.rotation = Quaternion.LookRotation(playerName.transform.position - nameOrientationTarget.transform.position);
-        }
-
-        if (inputBuffer.Count < 2)
-        {
-            Debug.Log("NOT ENOUGTH DATA RECEIVED FROM PLAYER "+id);
-            return;
-        }
-        var dataA = inputBuffer[0];
-        var dataB = inputBuffer[1];
-
-        headAlias.transform.position = Vector3.Lerp(dataA.HeadPosition, dataB.HeadPosition, t);
-        headAlias.transform.rotation = Quaternion.Lerp(dataA.HeadRotation, dataB.HeadRotation, t);
-        leftHandAlias.transform.position = Vector3.Lerp(dataA.LeftHandPosition, dataB.LeftHandPosition, t);
-        leftHandAlias.transform.rotation = Quaternion.Lerp(dataA.LeftHandRotation, dataB.LeftHandRotation, t);
-        rightHandAlias.transform.position = Vector3.Lerp(dataA.RightHandPosition, dataB.RightHandPosition, t);
-        rightHandAlias.transform.rotation = Quaternion.Lerp(dataA.RightHandRotation, dataB.RightHandRotation, t);
-        if (isLastFrame)
-        {
-            inputBuffer.RemoveFromStart(1);
-            inputBufferLength = inputBuffer.Count;
-        }
-    }
+    //    headAlias.transform.position = Vector3.Lerp(dataA.HeadPosition, dataB.HeadPosition, t);
+    //    headAlias.transform.rotation = Quaternion.Lerp(dataA.HeadRotation, dataB.HeadRotation, t);
+    //    leftHandAlias.transform.position = Vector3.Lerp(dataA.LeftHandPosition, dataB.LeftHandPosition, t);
+    //    leftHandAlias.transform.rotation = Quaternion.Lerp(dataA.LeftHandRotation, dataB.LeftHandRotation, t);
+    //    rightHandAlias.transform.position = Vector3.Lerp(dataA.RightHandPosition, dataB.RightHandPosition, t);
+    //    rightHandAlias.transform.rotation = Quaternion.Lerp(dataA.RightHandRotation, dataB.RightHandRotation, t);
+    //    if (isLastFrame)
+    //    {
+    //        inputBuffer.RemoveFromStart(1);
+    //        inputBufferLength = inputBuffer.Count;
+    //    }
+    //}
 
     public void AddStateToBuffer(PlayerInput pi)
     {

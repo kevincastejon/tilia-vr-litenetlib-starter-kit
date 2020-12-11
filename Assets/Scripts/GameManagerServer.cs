@@ -130,7 +130,7 @@ public class GameManagerServer : MonoBehaviour
     public void OnPlayerConnected(int peerID)
     {
         Player newPlayer = Instantiate(playerPrefab).GetComponent<Player>();
-        newPlayer.SetNameOrientationTarget(localAvatar.headAlias);
+        newPlayer.nameOrientationTarget = localAvatar.headAlias;
         newPlayer.id = peerID;
         players[peerID] = newPlayer;
         InitMessage im = new InitMessage()
@@ -242,7 +242,31 @@ public class GameManagerServer : MonoBehaviour
         for (int i = 0; i < players.Count; i++)
         {
             Player p = players[i];
-            p.UpdatePosition(t, isLastFrame);
+            //p.UpdatePosition(t, isLastFrame);
+            if (p.nameOrientationTarget)
+            {
+                p.playerName.transform.rotation = Quaternion.LookRotation(p.playerName.transform.position - p.nameOrientationTarget.transform.position);
+            }
+
+            if (p.inputBuffer.Count < 2)
+            {
+                Debug.Log("NOT ENOUGTH DATA RECEIVED FROM PLAYER " + p.id);
+                return;
+            }
+            var dataA = p.inputBuffer[0];
+            var dataB = p.inputBuffer[1];
+
+            p.headAlias.transform.position = Vector3.Lerp(dataA.HeadPosition, dataB.HeadPosition, t);
+            p.headAlias.transform.rotation = Quaternion.Lerp(dataA.HeadRotation, dataB.HeadRotation, t);
+            p.leftHandAlias.transform.position = Vector3.Lerp(dataA.LeftHandPosition, dataB.LeftHandPosition, t);
+            p.leftHandAlias.transform.rotation = Quaternion.Lerp(dataA.LeftHandRotation, dataB.LeftHandRotation, t);
+            p.rightHandAlias.transform.position = Vector3.Lerp(dataA.RightHandPosition, dataB.RightHandPosition, t);
+            p.rightHandAlias.transform.rotation = Quaternion.Lerp(dataA.RightHandRotation, dataB.RightHandRotation, t);
+            if (isLastFrame)
+            {
+                p.inputBuffer.RemoveFromStart(1);
+                p.inputBufferLength = p.inputBuffer.Count;
+            }
         }
     }
 
