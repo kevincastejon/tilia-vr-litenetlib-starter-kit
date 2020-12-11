@@ -18,7 +18,7 @@ public class Entity : MonoBehaviour
     [ReadOnly]
     public int id;
     [ReadOnly]
-    public int ownerId;
+    public int ownerId=-1;
     [ReadOnly]
     public SnapZoneFacade snapZone;
     [Header("Entity type")]
