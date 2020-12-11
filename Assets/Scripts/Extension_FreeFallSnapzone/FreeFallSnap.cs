@@ -6,7 +6,7 @@ using UnityEngine;
 public class FreeFallSnap : MonoBehaviour
 {
     SnapZoneFacade snapZone;
-    private void Start()
+    private void Awake()
     {
         snapZone = GetComponent<SnapZoneFacade>();
     }

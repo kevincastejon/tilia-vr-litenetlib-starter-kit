@@ -279,6 +279,10 @@ public class GameManagerServer : MonoBehaviour
             {
                 //Grab left
                 Entity ent = entities.Find(x => x.id == dataA.LeftGrabId);
+                if (ent.snapZone)
+                {
+                    ent.snapZone.Unsnap();
+                }
                 if (ent.body)
                 {
                     ent.body.isKinematic = true;
@@ -308,6 +312,10 @@ public class GameManagerServer : MonoBehaviour
             {
                 //Grab right
                 Entity ent = entities.Find(x => x.id == dataA.RightGrabId);
+                if (ent.snapZone)
+                {
+                    ent.snapZone.Unsnap();
+                }
                 if (ent.body)
                 {
                     ent.body.isKinematic = true;

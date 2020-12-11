@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Tilia.Interactions.Interactables.Interactables;
+using Tilia.Interactions.SnapZone;
 using UnityEngine;
 
 public enum EntityType
@@ -20,6 +21,8 @@ public class Entity : MonoBehaviour
     public bool grabbed;
     [ReadOnly]
     public int ownerId;
+    [ReadOnly]
+    public SnapZoneFacade snapZone;
     [Header("Entity type")]
     public EntityType type;
     [Header("Reference settings (transformTarget is MANDATORY)")]
