@@ -146,13 +146,13 @@ public class GameManagerClient : MonoBehaviour
                 ent.transformTarget.position = Vector3.Lerp(entitiesStateA.Position, entityStateB.Position, t);
                 ent.transformTarget.rotation = Quaternion.Lerp(entitiesStateA.Rotation, entityStateB.Rotation, t);
                 ent.ownerId = entitiesStateA.Owner;
-                if (ent.ownerId != -1 && ent.ownerId != localAvatar.id)
+                if (ent.ownerId != -1 && ent.ownerId != localAvatar.id && ent.interactable)
                 {
-                    ent.GetComponent<DisableCollisionsOnGrab>().DisableColliders();
+                    ent.interactable.DisablePrimaryGrabAction();
                 }
                 else
                 {
-                    ent.GetComponent<DisableCollisionsOnGrab>().EnableColliders();
+                    ent.interactable.EnablePrimaryGrabAction();
                 }
             }
         }
