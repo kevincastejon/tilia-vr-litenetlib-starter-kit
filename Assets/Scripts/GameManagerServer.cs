@@ -286,6 +286,8 @@ public class GameManagerServer : MonoBehaviour
                 p.leftGrabbed = ent;
                 ent.grabbed = true;
                 ent.ownerId = p.id;
+                ent.transformTarget.position = Vector3.Lerp(dataA.LeftGrabPosition, dataB.LeftGrabPosition, t);
+                ent.transformTarget.rotation = Quaternion.Lerp(dataA.LeftGrabRotation, dataB.LeftGrabRotation, t);
             }
 
             if (dataA.RightGrabId != dataB.RightGrabId && dataA.RightGrabId != 0)
@@ -313,6 +315,8 @@ public class GameManagerServer : MonoBehaviour
                 p.rightGrabbed = ent;
                 ent.grabbed = true;
                 ent.ownerId = p.id;
+                ent.transformTarget.position = Vector3.Lerp(dataA.RightGrabPosition, dataB.RightGrabPosition, t);
+                ent.transformTarget.rotation = Quaternion.Lerp(dataA.RightGrabRotation, dataB.RightGrabRotation, t);
             }
             if (isLastFrame)
             {
