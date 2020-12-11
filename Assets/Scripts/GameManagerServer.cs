@@ -267,6 +267,11 @@ public class GameManagerServer : MonoBehaviour
                 Entity ent = entities.Find(x => x.id == dataA.LeftGrabId);
                 p.leftGrabbed = null;
                 ent.grabbed = false;
+                DisableCollisionsOnGrab comp = ent.GetComponent<DisableCollisionsOnGrab>();
+                if (comp)
+                {
+                    comp.EnableColliders();
+                }
                 if (ent.body)
                 {
                     ent.body.isKinematic = false;
@@ -290,6 +295,11 @@ public class GameManagerServer : MonoBehaviour
                 p.leftGrabbed = ent;
                 ent.grabbed = true;
                 ent.ownerId = p.id;
+                DisableCollisionsOnGrab comp = ent.GetComponent<DisableCollisionsOnGrab>();
+                if (comp && !comp.collidesOnGrab)
+                {
+                    comp.DisableColliders();
+                }
                 ent.transformTarget.position = Vector3.Lerp(dataA.LeftGrabPosition, dataB.LeftGrabPosition, t);
                 ent.transformTarget.rotation = Quaternion.Lerp(dataA.LeftGrabRotation, dataB.LeftGrabRotation, t);
             }
@@ -300,6 +310,11 @@ public class GameManagerServer : MonoBehaviour
                 Entity ent = entities.Find(x => x.id == dataA.RightGrabId);
                 p.rightGrabbed = null;
                 ent.grabbed = false;
+                DisableCollisionsOnGrab comp = ent.GetComponent<DisableCollisionsOnGrab>();
+                if (comp)
+                {
+                    comp.EnableColliders();
+                }
                 if (ent.body)
                 {
                     ent.body.isKinematic = false;
@@ -323,6 +338,11 @@ public class GameManagerServer : MonoBehaviour
                 p.rightGrabbed = ent;
                 ent.grabbed = true;
                 ent.ownerId = p.id;
+                DisableCollisionsOnGrab comp = ent.GetComponent<DisableCollisionsOnGrab>();
+                if (comp && !comp.collidesOnGrab)
+                {
+                    comp.DisableColliders();
+                }
                 ent.transformTarget.position = Vector3.Lerp(dataA.RightGrabPosition, dataB.RightGrabPosition, t);
                 ent.transformTarget.rotation = Quaternion.Lerp(dataA.RightGrabRotation, dataB.RightGrabRotation, t);
             }

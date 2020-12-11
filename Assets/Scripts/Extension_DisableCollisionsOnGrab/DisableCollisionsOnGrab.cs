@@ -25,14 +25,22 @@ public class DisableCollisionsOnGrab : MonoBehaviour
     {
         if (!collidesOnGrab)
         {
-            foreach (Collider col in colliders)
-            {
-                col.enabled = false;
-            }
+            DisableColliders();
         }
     }
 
     private void OnUngrab(InteractorFacade interactor)
+    {
+        EnableColliders();
+    }
+    public void DisableColliders()
+    {
+        foreach (Collider col in colliders)
+        {
+            col.enabled = false;
+        }
+    }
+    public void EnableColliders()
     {
         foreach (Collider col in colliders)
         {
