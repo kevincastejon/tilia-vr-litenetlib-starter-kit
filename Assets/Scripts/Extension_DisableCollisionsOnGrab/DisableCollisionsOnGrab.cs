@@ -37,14 +37,14 @@ public class DisableCollisionsOnGrab : MonoBehaviour
     {
         foreach (Collider col in colliders)
         {
-            col.enabled = false;
+            col.isTrigger = true;
         }
     }
     public void EnableColliders()
     {
         foreach (Collider col in colliders)
         {
-            col.enabled = true;
+            col.isTrigger = false;
         }
     }
 }
