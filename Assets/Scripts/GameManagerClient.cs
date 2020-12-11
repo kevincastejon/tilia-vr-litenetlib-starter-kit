@@ -271,7 +271,7 @@ public class GameManagerClient : MonoBehaviour
             RightGrabId = rightId,
             RightGrabPosition = rightId == 0 ? Vector3.zero : rightEnt.transformTarget.position,
             RightGrabRotation = rightId == 0 ? Quaternion.identity : rightEnt.transformTarget.rotation,
-            RightGrabVelocity = leftId == 0 ? Vector3.zero : localAvatar.rightGrabVelocity,
+            RightGrabVelocity = rightId == 0 ? Vector3.zero : localAvatar.rightGrabVelocity,
             RightGrabAngularVelocity = rightId == 0 ? Vector3.zero : localAvatar.rightGrabAngularVelocity,
             LeftPointer = localAvatar.leftPointer,
             RightPointer = localAvatar.rightPointer,
