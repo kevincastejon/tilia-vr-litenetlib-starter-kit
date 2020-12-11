@@ -146,13 +146,17 @@ public class GameManagerClient : MonoBehaviour
                 ent.transformTarget.position = Vector3.Lerp(entitiesStateA.Position, entityStateB.Position, t);
                 ent.transformTarget.rotation = Quaternion.Lerp(entitiesStateA.Rotation, entityStateB.Rotation, t);
                 ent.ownerId = entitiesStateA.Owner;
-                if (ent.ownerId != -1 && ent.ownerId != localAvatar.id && ent.interactable)
+                if (ent.interactable)
                 {
-                    ent.interactable.DisablePrimaryGrabAction();
-                }
-                else if(ent.interactable)
-                {
-                    ent.interactable.EnablePrimaryGrabAction();
+                    if (ent.ownerId != -1 && ent.ownerId != localAvatar.id)
+                    {
+                        Debug.Log("DISABLING GRAB ACTION");
+                        ent.interactable.DisablePrimaryGrabAction();
+                    }
+                    else
+                    {
+                        ent.interactable.EnablePrimaryGrabAction();
+                    }
                 }
             }
         }
