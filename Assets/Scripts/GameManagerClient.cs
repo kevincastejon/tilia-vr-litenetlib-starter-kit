@@ -202,6 +202,7 @@ public class GameManagerClient : MonoBehaviour
 
     private void DestroyOldPlayers(PlayerState[] playerStates)
     {
+        List<int> oldKeys = new List<int>();
         foreach (KeyValuePair<int, Player> entry in players)
         {
             int key = entry.Key;
@@ -217,9 +218,15 @@ public class GameManagerClient : MonoBehaviour
             }
             if (!presence)
             {
-                players.Remove(key);
-                Destroy(player.gameObject);
+                oldKeys.Add(key);
             }
+        }
+        for (int i = 0; i < oldKeys.Count; i++)
+        {
+            int key = oldKeys[i];
+            Player p = players[key];
+            players.Remove(key);
+            Destroy(p.gameObject);
         }
     }
     private void DestroyOldEntities(EntityState[] entityStates)
