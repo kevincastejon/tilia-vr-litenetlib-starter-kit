@@ -150,7 +150,7 @@ public class GameManagerClient : MonoBehaviour
                 {
                     ent.interactable.DisablePrimaryGrabAction();
                 }
-                else
+                else if(ent.interactable)
                 {
                     ent.interactable.EnablePrimaryGrabAction();
                 }
