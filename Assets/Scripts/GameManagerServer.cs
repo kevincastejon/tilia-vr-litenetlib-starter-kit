@@ -240,9 +240,9 @@ public class GameManagerServer : MonoBehaviour
 
     private void LerpPlayers(float t, bool isLastFrame)
     {
-        for (int i = 0; i < players.Count; i++)
+        foreach (KeyValuePair<int, Player> entry in players)
         {
-            Player p = players[i];
+            Player p = entry.Value;
             if (p.nameOrientationTarget)
             {
                 p.playerName.transform.rotation = Quaternion.LookRotation(p.playerName.transform.position - p.nameOrientationTarget.transform.position);
