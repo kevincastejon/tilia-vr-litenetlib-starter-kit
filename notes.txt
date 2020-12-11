@@ -17,4 +17,3 @@ entitystate : 25 bytes
 	-ownerId[1] (sbyte[1])
 TODO:
 add bool grabbableFromHand to Entity
-preserve initial IsKinematic on 

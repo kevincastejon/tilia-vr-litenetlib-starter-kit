@@ -273,6 +273,7 @@ public class GameManagerServer : MonoBehaviour
                 {
                     comp.EnableColliders();
                 }
+                ent.interactable.EnablePrimaryGrabAction();
                 if (ent.body)
                 {
                     ent.body.isKinematic = ent.initialIsKinematic;
@@ -289,6 +290,7 @@ public class GameManagerServer : MonoBehaviour
                 {
                     ent.snapZone.Unsnap();
                 }
+                ent.interactable.DisablePrimaryGrabAction();
                 if (ent.body)
                 {
                     ent.body.isKinematic = true;
@@ -315,6 +317,7 @@ public class GameManagerServer : MonoBehaviour
                 {
                     comp.EnableColliders();
                 }
+                ent.interactable.EnablePrimaryGrabAction();
                 if (ent.body)
                 {
                     ent.body.isKinematic = ent.initialIsKinematic;
@@ -331,6 +334,7 @@ public class GameManagerServer : MonoBehaviour
                 {
                     ent.snapZone.Unsnap();
                 }
+                ent.interactable.DisablePrimaryGrabAction();
                 if (ent.body)
                 {
                     ent.body.isKinematic = true;

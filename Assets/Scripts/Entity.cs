@@ -23,6 +23,8 @@ public class Entity : MonoBehaviour
     public SnapZoneFacade snapZone;
     [Header("Entity type")]
     public EntityType type;
+    //[Header("Grabbable from your hand by remote player")]         //Hard to implement... Let's forbid it for now
+    //public bool isGrabbableFromHand;
     [Header("Reference settings (transformTarget is MANDATORY)")]
     public Transform transformTarget;
     public InteractableFacade interactable;
