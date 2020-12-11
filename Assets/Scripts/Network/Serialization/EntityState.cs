@@ -14,7 +14,7 @@ public class EntityState : INetSerializable
         writer.Put(Type);
         Vector3Utils.Serialize(writer, Position);
         QuatUtils.Serialize(writer, Rotation);
-        writer.Put((sbyte)Id);
+        writer.Put((sbyte)Owner);
     }
 
     public void Deserialize(NetDataReader reader)

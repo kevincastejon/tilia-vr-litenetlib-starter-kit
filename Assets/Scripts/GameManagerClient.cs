@@ -322,10 +322,5 @@ public class GameManagerClient : MonoBehaviour
         }
         stateBuffer.Add(sm.Clone());
         stateBufferLength = stateBuffer.Count;
-        Debug.Log("RECEIVING STATE");
-        for (int i = 0; i < sm.Entities.Length; i++)
-        {
-            Debug.Log("-"+ (EntityType)(sm.Entities[i].Type)+" "+ sm.Entities[i].Owner);
-        }
     }
 }
