@@ -5,6 +5,7 @@ public class StateMessage
     public int Sequence { get; set; }
     public PlayerState[] Players { get; set; }
     public EntityState[] Entities { get; set; }
+    public byte ColoredCube { get; set; }
 
     public StateMessage Clone()
     {
@@ -23,6 +24,7 @@ public class StateMessage
             Sequence = Sequence,
             Players = plrs,
             Entities = ent,
+            ColoredCube = ColoredCube
         };
     }
 }

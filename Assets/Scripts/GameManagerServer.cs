@@ -19,6 +19,7 @@ public class GameManagerServer : MonoBehaviour
     [Header("Reference Settings")]
     public LocalAvatar localAvatar;
     public GameServer server;
+    public ColoredCube coloredCube;
     public List<InstanceCountLimit> entityTypeInstanceLimits = new List<InstanceCountLimit>();
     [Header("Monitoring")]
     [ReadOnly]
@@ -252,7 +253,8 @@ public class GameManagerServer : MonoBehaviour
                 {
                     Sequence = Sequence,
                     Entities = entityStates,
-                    Players = playerStates
+                    Players = playerStates,
+                    ColoredCube = coloredCube.currentColor,
                 },
                 entry.Value.id
             );

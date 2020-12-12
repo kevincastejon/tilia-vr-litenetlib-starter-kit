@@ -684,6 +684,7 @@ MonoBehaviour:
     type: 3}
   localAvatar: {fileID: 2110964069}
   server: {fileID: 121076093}
+  coloredCube: {fileID: 346633232}
   entityTypeInstanceLimits:
   - max: 3
     destroyFirst: 1
@@ -1461,6 +1462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f62cba7e5cf4ae44b9480c1295154eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentColor: 0
 --- !u!65 &346633233
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6992,6 +6994,7 @@ MonoBehaviour:
   - {fileID: 0}
   localAvatar: {fileID: 2110964069}
   client: {fileID: 1928920087}
+  coloredCube: {fileID: 346633232}
   stateBufferLength: 0
 --- !u!114 &1960257411 stripped
 MonoBehaviour:

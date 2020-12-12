@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ColoredCube : MonoBehaviour
 {
+    [ReadOnly]
+    public byte currentColor;
     private MeshRenderer meshRenderer;
     private Color[] colors = new Color[] { Color.white, Color.black, Color.green, Color.yellow, Color.blue, Color.red };
     private void Start()
@@ -13,6 +15,13 @@ public class ColoredCube : MonoBehaviour
 
     public void SetRandomColor()
     {
-        meshRenderer.material.color = colors[Random.Range(0, colors.Length)];
+        currentColor = (byte)Random.Range(0, colors.Length);
+        meshRenderer.material.color = colors[currentColor];
+    }
+
+    public void SetColor(byte index)
+    {
+        currentColor = index;
+        meshRenderer.material.color = colors[index];
     }
 }

@@ -12,6 +12,7 @@ public class GameManagerClient : MonoBehaviour
     [Header("Reference Settings")]
     public LocalAvatar localAvatar;
     public GameClient client;
+    public ColoredCube coloredCube;
     [Header("Monitoring")]
     private Dictionary<int, Player> players = new Dictionary<int, Player>();
     private List<Entity> entities = new List<Entity>();
@@ -95,6 +96,7 @@ public class GameManagerClient : MonoBehaviour
 
         LerpPlayers(stateA.Players, stateB.Players, t);
         LerpEntities(stateA.Entities, stateB.Entities, t);
+        coloredCube.SetColor(stateA.ColoredCube);
 
         if (isLastFrame)
         {
