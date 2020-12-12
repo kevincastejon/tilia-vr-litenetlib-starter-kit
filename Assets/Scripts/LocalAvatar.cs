@@ -140,6 +140,10 @@ public class LocalAvatar : MonoBehaviour
             {
                 ent.body.isKinematic = true;
             }
+            else if(DEVNetworkSwitcher.isServer && ent.body)
+            {
+                ent.body.isKinematic = ent.initialIsKinematic;
+            }
             ent.ownerId = -1;
         }
     }
@@ -154,6 +158,10 @@ public class LocalAvatar : MonoBehaviour
             {
                 ent.body.isKinematic = true;
                 Debug.Log("SET ISKINEMATIC BACK TO TRUE");
+            }
+            else if (DEVNetworkSwitcher.isServer && ent.body)
+            {
+                ent.body.isKinematic = ent.initialIsKinematic;
             }
             //Debug.Log("UNGRABBED " + ent.id);
             ent.ownerId = -1;

@@ -22,9 +22,9 @@ public class Player : MonoBehaviour
     [ReadOnly]
     public bool rightShooting;
     [ReadOnly]
-    private bool leftPointer;
+    public bool leftPointer;
     [ReadOnly]
-    private bool rightPointer;
+    public bool rightPointer;
     [Header("!Server-Side Only!")]
     [ReadOnly]
     public Entity leftGrabbed;

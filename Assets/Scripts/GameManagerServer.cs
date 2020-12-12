@@ -265,6 +265,8 @@ public class GameManagerServer : MonoBehaviour
             p.leftHandAlias.transform.rotation = Quaternion.Lerp(dataA.LeftHandRotation, dataB.LeftHandRotation, t);
             p.rightHandAlias.transform.position = Vector3.Lerp(dataA.RightHandPosition, dataB.RightHandPosition, t);
             p.rightHandAlias.transform.rotation = Quaternion.Lerp(dataA.RightHandRotation, dataB.RightHandRotation, t);
+            p.LeftPointer = dataA.LeftPointer;
+            p.RightPointer = dataA.RightPointer;
             if (dataA.LeftGrabId != dataB.LeftGrabId && dataA.LeftGrabId != 0)
             {
                 //Ungrab left
@@ -305,7 +307,7 @@ public class GameManagerServer : MonoBehaviour
                 Entity ent = entities.Find(x => x.id == dataA.RightGrabId);
                 p.rightGrabbed = null;
                 ent.ownerId = -1;
-                Debug.Log("Enable Grab Action");
+                //Debug.Log("Enable Grab Action");
                 ent.interactable.EnableGrab();
                 if (ent.body)
                 {
@@ -324,7 +326,7 @@ public class GameManagerServer : MonoBehaviour
                 {
                     ent.snapZone.Unsnap();
                 }
-                Debug.Log("Disable Grab Action");
+                //Debug.Log("Disable Grab Action");
                 ent.interactable.DisableGrab();
                 if (ent.body)
                 {
