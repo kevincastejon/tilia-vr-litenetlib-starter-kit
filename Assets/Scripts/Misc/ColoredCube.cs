@@ -11,6 +11,7 @@ public class ColoredCube : MonoBehaviour
     private void Start()
     {
         meshRenderer = GetComponent<MeshRenderer>();
+        SetRandomColor();
     }
 
     public void SetRandomColor()
