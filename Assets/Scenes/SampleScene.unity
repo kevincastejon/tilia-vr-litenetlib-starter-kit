@@ -721,21 +721,6 @@ MonoBehaviour:
   interactable: {fileID: 148629921}
   body: {fileID: 148629920}
   initialIsKinematic: 0
---- !u!114 &148629918
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 148629916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dad45d1b37f9ce0438919d60f9bd456e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colliders:
-  - {fileID: 1737012310}
-  collidesOnGrab: 1
 --- !u!54 &148629920 stripped
 Rigidbody:
   m_CorrespondingSourceObject: {fileID: 8862883227734677280, guid: 1bb7642ebf8d0a34aa23fc586ea87e6a,
@@ -2356,22 +2341,6 @@ Rigidbody:
     type: 3}
   m_PrefabInstance: {fileID: 401014464}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &446864218
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 446864211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dad45d1b37f9ce0438919d60f9bd456e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colliders:
-  - {fileID: 951090263}
-  - {fileID: 1970978564}
-  collidesOnGrab: 0
 --- !u!1 &451122358 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1458957959020712, guid: 114b3c3ce4645364a97c8f0803bed65b,
@@ -5750,9 +5719,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc59cd886320cee4e8f23cbbe4ab56ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isServer: 0
+  _isServer: 1
   server: {fileID: 121076092}
   client: {fileID: 1928920086}
+  _showLagLogs: 0
 --- !u!4 &1511931687
 Transform:
   m_ObjectHideFlags: 0

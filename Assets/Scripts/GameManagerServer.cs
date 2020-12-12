@@ -271,12 +271,7 @@ public class GameManagerServer : MonoBehaviour
                 Entity ent = entities.Find(x => x.id == dataA.LeftGrabId);
                 p.leftGrabbed = null;
                 ent.ownerId = -1;
-                DisableCollisionsOnGrab comp = ent.GetComponent<DisableCollisionsOnGrab>();
-                if (comp)
-                {
-                    comp.EnableColliders();
-                }
-                ent.interactable.EnablePrimaryGrabAction();
+                ent.interactable.EnableGrab();
                 if (ent.body)
                 {
                     ent.body.isKinematic = ent.initialIsKinematic;
@@ -293,18 +288,13 @@ public class GameManagerServer : MonoBehaviour
                 {
                     ent.snapZone.Unsnap();
                 }
-                ent.interactable.DisablePrimaryGrabAction();
+                ent.interactable.DisableGrab();
                 if (ent.body)
                 {
                     ent.body.isKinematic = true;
                 }
                 p.leftGrabbed = ent;
                 ent.ownerId = p.id;
-                DisableCollisionsOnGrab comp = ent.GetComponent<DisableCollisionsOnGrab>();
-                if (comp && !comp.collidesOnGrab)
-                {
-                    comp.DisableColliders();
-                }
                 ent.transformTarget.position = Vector3.Lerp(dataA.LeftGrabPosition, dataB.LeftGrabPosition, t);
                 ent.transformTarget.rotation = Quaternion.Lerp(dataA.LeftGrabRotation, dataB.LeftGrabRotation, t);
             }
@@ -315,11 +305,6 @@ public class GameManagerServer : MonoBehaviour
                 Entity ent = entities.Find(x => x.id == dataA.RightGrabId);
                 p.rightGrabbed = null;
                 ent.ownerId = -1;
-                DisableCollisionsOnGrab comp = ent.GetComponent<DisableCollisionsOnGrab>();
-                if (comp)
-                {
-                    comp.EnableColliders();
-                }
                 Debug.Log("Enable Grab Action");
                 ent.interactable.EnableGrab();
                 if (ent.body)
@@ -346,11 +331,6 @@ public class GameManagerServer : MonoBehaviour
                 }
                 p.rightGrabbed = ent;
                 ent.ownerId = p.id;
-                DisableCollisionsOnGrab comp = ent.GetComponent<DisableCollisionsOnGrab>();
-                if (comp && !comp.collidesOnGrab)
-                {
-                    comp.DisableColliders();
-                }
                 ent.transformTarget.position = Vector3.Lerp(dataA.RightGrabPosition, dataB.RightGrabPosition, t);
                 ent.transformTarget.rotation = Quaternion.Lerp(dataA.RightGrabRotation, dataB.RightGrabRotation, t);
             }
