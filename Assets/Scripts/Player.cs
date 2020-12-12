@@ -52,14 +52,17 @@ public class Player : MonoBehaviour
 
     public void AddStateToBuffer(PlayerInput pi)
     {
-        if (pi.Sequence<=lastSequence)
+        if (pi.Sequence <= lastSequence)
         {
             return;
         }
         lastSequence = pi.Sequence;
         if (inputBuffer.IsFull)
         {
-            Debug.Log("TOO MUCH STATE RECEIVED");
+            if (DEVNetworkSwitcher.showLagLogs)
+            {
+                Debug.Log("TOO MUCH STATE RECEIVED");
+            }
             //Lag?
             inputBuffer.FastClear();
         }

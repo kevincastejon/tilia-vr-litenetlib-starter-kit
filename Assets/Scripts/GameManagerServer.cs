@@ -46,11 +46,11 @@ public class GameManagerServer : MonoBehaviour
         {
             ent.id = ent.GetInstanceID();
             entities.Add(ent);
-            if (ent.interactable != null)
-            {
-                ent.interactable.Grabbed.AddListener((InteractorFacade ifc) => OnLocalGrab(ent));
-                ent.interactable.Ungrabbed.AddListener((InteractorFacade ifc) => OnLocalUngrab(ent));
-            }
+            //if (ent.interactable != null)
+            //{
+            //    ent.interactable.Grabbed.AddListener((InteractorFacade ifc) => OnLocalGrab(ent));
+            //    ent.interactable.Ungrabbed.AddListener((InteractorFacade ifc) => OnLocalUngrab(ent));
+            //}
         }
         else
         {
@@ -66,11 +66,11 @@ public class GameManagerServer : MonoBehaviour
                 }
                 ent.id = ent.GetInstanceID();
                 entities.Add(ent);
-                if (ent.interactable != null)
-                {
-                    ent.interactable.Grabbed.AddListener((InteractorFacade ifc) => OnLocalGrab(ent));
-                    ent.interactable.Ungrabbed.AddListener((InteractorFacade ifc) => OnLocalUngrab(ent));
-                }
+                //if (ent.interactable != null)
+                //{
+                //    ent.interactable.Grabbed.AddListener((InteractorFacade ifc) => OnLocalGrab(ent));
+                //    ent.interactable.Ungrabbed.AddListener((InteractorFacade ifc) => OnLocalUngrab(ent));
+                //}
             }
             else
             {
@@ -92,15 +92,15 @@ public class GameManagerServer : MonoBehaviour
         }
     }
 
-    private void OnLocalGrab(Entity ent)
-    {
+    //private void OnLocalGrab(Entity ent)
+    //{
 
-    }
+    //}
 
-    private void OnLocalUngrab(Entity ent)
-    {
+    //private void OnLocalUngrab(Entity ent)
+    //{
 
-    }
+    //}
 
     private int GetEntityTypeCount(EntityType type)
     {
@@ -250,7 +250,10 @@ public class GameManagerServer : MonoBehaviour
 
             if (p.inputBuffer.Count < 2)
             {
-                Debug.Log("NOT ENOUGTH DATA RECEIVED FROM PLAYER " + p.id);
+                if (DEVNetworkSwitcher.showLagLogs)
+                {
+                    Debug.Log("NOT ENOUGTH DATA RECEIVED FROM PLAYER " + p.id);
+                }
                 return;
             }
             var dataA = p.inputBuffer[0];
@@ -317,6 +320,7 @@ public class GameManagerServer : MonoBehaviour
                 {
                     comp.EnableColliders();
                 }
+                Debug.Log("Enable Grab Action");
                 ent.interactable.EnablePrimaryGrabAction();
                 if (ent.body)
                 {
@@ -334,6 +338,7 @@ public class GameManagerServer : MonoBehaviour
                 {
                     ent.snapZone.Unsnap();
                 }
+                Debug.Log("Disable Grab Action");
                 ent.interactable.DisablePrimaryGrabAction();
                 if (ent.body)
                 {

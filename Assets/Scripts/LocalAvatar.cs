@@ -126,6 +126,7 @@ public class LocalAvatar : MonoBehaviour
         Entity ent = interactable.GetComponent<Entity>();
         if (ent)
         {
+            //Debug.Log("GRABBED "+ ent.id);
             ent.ownerId = id;
         }
     }
@@ -153,6 +154,7 @@ public class LocalAvatar : MonoBehaviour
             {
                 ent.body.isKinematic = true;
             }
+            //Debug.Log("UNGRABBED " + ent.id);
             ent.ownerId = -1;
         }
     }

@@ -6,9 +6,11 @@ public class DEVNetworkSwitcher : MonoBehaviour
 {
     
     static public bool isServer;
+    static public bool showLagLogs;
     public bool _isServer;
     public GameObject server;
     public GameObject client;
+    public bool _showLagLogs;
     private void Awake()
     {
         if (_isServer)
@@ -22,6 +24,10 @@ public class DEVNetworkSwitcher : MonoBehaviour
             isServer = false;
             Destroy(server);
             client.SetActive(true);
+        }
+        if (_showLagLogs)
+        {
+            showLagLogs = _showLagLogs;
         }
     }
 }

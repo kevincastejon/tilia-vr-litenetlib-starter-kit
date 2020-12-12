@@ -84,7 +84,10 @@ public class GameManagerClient : MonoBehaviour
     {
         if (stateBuffer.Count < 2)
         {
-            Debug.Log("NOT ENOUGTH DATA RECEIVED");
+            if (DEVNetworkSwitcher.showLagLogs)
+            {
+                Debug.Log("NOT ENOUGTH DATA RECEIVED");
+            }
             return;
         }
         StateMessage stateA = stateBuffer[0];
@@ -127,11 +130,14 @@ public class GameManagerClient : MonoBehaviour
                 ent.transformTarget.position = entityStateB.Position;
                 ent.transformTarget.rotation = entityStateB.Rotation;
             }
-            Entity leftGrabbedEnt = localAvatar.GetLeftGrabbedEntity();
-            Entity rightGrabbedEnt = localAvatar.GetRightGrabbedEntity();
-            if (leftGrabbedEnt && leftGrabbedEnt.id == ent.id || rightGrabbedEnt && rightGrabbedEnt.id == ent.id)
+            else
             {
-                continue;
+                Entity leftGrabbedEnt = localAvatar.GetLeftGrabbedEntity();
+                Entity rightGrabbedEnt = localAvatar.GetRightGrabbedEntity();
+                if (leftGrabbedEnt && leftGrabbedEnt.id == ent.id || rightGrabbedEnt && rightGrabbedEnt.id == ent.id)
+                {
+                    continue;
+                }
             }
             EntityState entityStateA = null;
             for (int j = 0; j < entitiesA.Length; j++)
@@ -316,7 +322,10 @@ public class GameManagerClient : MonoBehaviour
         lastSequence = sm.Sequence;
         if (stateBuffer.IsFull)
         {
-            Debug.Log("TOO MUCH STATE RECEIVED");
+            if (DEVNetworkSwitcher.showLagLogs)
+            {
+                Debug.Log("TOO MUCH STATE RECEIVED");
+            }
             //Lag?
             stateBuffer.FastClear();
         }
