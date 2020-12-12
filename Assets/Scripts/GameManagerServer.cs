@@ -134,6 +134,7 @@ public class GameManagerServer : MonoBehaviour
         newPlayer.nameOrientationTarget = localAvatar.headAlias;
         newPlayer.id = peerID;
         players[peerID] = newPlayer;
+        newPlayer.OnShoot.AddListener(ShootBullet);
         InitMessage im = new InitMessage()
         {
             OwnId = peerID
@@ -342,7 +343,6 @@ public class GameManagerServer : MonoBehaviour
                     ent.body.velocity = dataA.RightGrabVelocity;
                     ent.body.angularVelocity = dataA.RightGrabAngularVelocity;
                 }
-
             }
             else if (dataA.RightGrabId != 0)
             {

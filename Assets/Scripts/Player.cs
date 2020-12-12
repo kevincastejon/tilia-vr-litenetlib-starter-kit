@@ -36,6 +36,8 @@ public class Player : MonoBehaviour
     public LiteRingBuffer<PlayerInput> inputBuffer = new LiteRingBuffer<PlayerInput>(5);
     [HideInInspector]
     public GameObject nameOrientationTarget;
+    [HideInInspector]
+    public ShootEvent OnShoot = new ShootEvent();
     private int lastSequence = -1;
 
     public bool LeftPointer
@@ -53,7 +55,15 @@ public class Player : MonoBehaviour
     public bool LeftTrigger
     {
         get { return leftTrigger; }
-        set { leftTrigger = value; }
+        set {
+            if (!leftTrigger && value)
+            {
+                if (leftGrabbed.type == EntityType.Gun)
+                {
+                    OnShoot.Invoke(leftGrabbed.GetComponent<Gun>());
+                }
+            }
+            leftTrigger = value; }
     }
 
     public bool RightTrigger
@@ -63,6 +73,10 @@ public class Player : MonoBehaviour
         {
             if (!rightTrigger && value)
             {
+                if (rightGrabbed.type == EntityType.Gun)
+                {
+                    OnShoot.Invoke(rightGrabbed.GetComponent<Gun>());
+                }
                 rightPointerFacade.Select();
             }
             rightTrigger = value;  }
