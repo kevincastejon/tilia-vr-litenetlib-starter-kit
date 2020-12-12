@@ -153,6 +153,7 @@ public class LocalAvatar : MonoBehaviour
             if (!DEVNetworkSwitcher.isServer && ent.body)
             {
                 ent.body.isKinematic = true;
+                Debug.Log("SET ISKINEMATIC BACK TO TRUE");
             }
             //Debug.Log("UNGRABBED " + ent.id);
             ent.ownerId = -1;

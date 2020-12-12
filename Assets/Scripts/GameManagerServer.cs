@@ -310,6 +310,7 @@ public class GameManagerServer : MonoBehaviour
                 if (ent.body)
                 {
                     ent.body.isKinematic = ent.initialIsKinematic;
+                    Debug.Log("SET ISKINEMATIC BACK TO INITIAL VALUE : " + ent.initialIsKinematic);
                     ent.body.velocity = dataA.RightGrabVelocity;
                     ent.body.angularVelocity = dataA.RightGrabAngularVelocity;
                 }
