@@ -146,11 +146,33 @@ public class GameManagerServer : MonoBehaviour
         players.Remove(peerID);
         if (disconnectedPlayer.leftGrabbed)
         {
-
+            Entity ent = disconnectedPlayer.leftGrabbed;
+            ent.ownerId = -1;
+            ent.interactable.EnableGrab();
+            if (ent.body)
+            {
+                ent.body.isKinematic = ent.initialIsKinematic;
+                if (disconnectedPlayer.inputBufferLength > 1)
+                {
+                    ent.body.velocity = disconnectedPlayer.inputBuffer[0].LeftGrabVelocity;
+                    ent.body.angularVelocity = disconnectedPlayer.inputBuffer[0].LeftGrabAngularVelocity;
+                }
+            }
         }
         if (disconnectedPlayer.rightGrabbed)
         {
-
+            Entity ent = disconnectedPlayer.rightGrabbed;
+            ent.ownerId = -1;
+            ent.interactable.EnableGrab();
+            if (ent.body)
+            {
+                ent.body.isKinematic = ent.initialIsKinematic;
+                if (disconnectedPlayer.inputBufferLength > 1)
+                {
+                    ent.body.velocity = disconnectedPlayer.inputBuffer[0].LeftGrabVelocity;
+                    ent.body.angularVelocity = disconnectedPlayer.inputBuffer[0].LeftGrabAngularVelocity;
+                }
+            }
         }
         Destroy(disconnectedPlayer.gameObject);
     }
