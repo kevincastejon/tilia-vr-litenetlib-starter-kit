@@ -12,7 +12,7 @@ public class PlayerState : INetSerializable
     public Quaternion RightHandRotation { get; set; }
     public bool LeftPointer { get; set; }
     public bool RightPointer { get; set; }
-
+    
     public void Serialize(NetDataWriter writer)
     {
         writer.Put((sbyte)Id);

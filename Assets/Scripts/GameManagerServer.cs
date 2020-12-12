@@ -267,6 +267,8 @@ public class GameManagerServer : MonoBehaviour
             p.rightHandAlias.transform.rotation = Quaternion.Lerp(dataA.RightHandRotation, dataB.RightHandRotation, t);
             p.LeftPointer = dataA.LeftPointer;
             p.RightPointer = dataA.RightPointer;
+            p.LeftTrigger = dataA.LeftTrigger;
+            p.RightTrigger = dataA.RightTrigger;
             if (dataA.LeftGrabId != dataB.LeftGrabId && dataA.LeftGrabId != 0)
             {
                 //Ungrab left

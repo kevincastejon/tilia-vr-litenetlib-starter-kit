@@ -305,6 +305,8 @@ public class GameManagerClient : MonoBehaviour
             RightGrabAngularVelocity = rightId == 0 ? Vector3.zero : localAvatar.rightGrabAngularVelocity,
             LeftPointer = localAvatar.leftPointer,
             RightPointer = localAvatar.rightPointer,
+            LeftTrigger = localAvatar.leftTrigger,
+            RightTrigger = localAvatar.rightTrigger,
         });
         sequence++;
     }

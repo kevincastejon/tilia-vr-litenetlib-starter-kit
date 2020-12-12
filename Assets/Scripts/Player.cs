@@ -18,9 +18,9 @@ public class Player : MonoBehaviour
     [ReadOnly]
     public int id;
     [ReadOnly]
-    public bool leftShooting;
+    public bool leftTrigger;
     [ReadOnly]
-    public bool rightShooting;
+    public bool rightTrigger;
     [ReadOnly]
     public bool leftPointer;
     [ReadOnly]
@@ -48,6 +48,24 @@ public class Player : MonoBehaviour
     {
         get { return rightPointer; }
         set { rightPointer = value; if (value) { rightPointerFacade.Activate(); } else { rightPointerFacade.Deactivate(); } }
+    }
+
+    public bool LeftTrigger
+    {
+        get { return leftTrigger; }
+        set { leftTrigger = value; }
+    }
+
+    public bool RightTrigger
+    {
+        get { return rightTrigger; }
+        set
+        {
+            if (!rightTrigger && value)
+            {
+                rightPointerFacade.Select();
+            }
+            rightTrigger = value;  }
     }
 
     public void AddStateToBuffer(PlayerInput pi)
