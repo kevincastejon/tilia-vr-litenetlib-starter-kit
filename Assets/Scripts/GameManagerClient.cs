@@ -158,11 +158,11 @@ public class GameManagerClient : MonoBehaviour
                     {
                         //Debug.Log("owner id : "+ent.ownerId+" - local id : "+localAvatar.id);
                         //Debug.Log("DISABLING GRAB ACTION");
-                        ent.interactable.DisablePrimaryGrabAction();
+                        ent.interactable.DisableGrab();
                     }
                     else
                     {
-                        ent.interactable.EnablePrimaryGrabAction();
+                        ent.interactable.EnableGrab();
                     }
                 }
             }

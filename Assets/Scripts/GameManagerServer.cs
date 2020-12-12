@@ -321,7 +321,7 @@ public class GameManagerServer : MonoBehaviour
                     comp.EnableColliders();
                 }
                 Debug.Log("Enable Grab Action");
-                ent.interactable.EnablePrimaryGrabAction();
+                ent.interactable.EnableGrab();
                 if (ent.body)
                 {
                     ent.body.isKinematic = ent.initialIsKinematic;
@@ -339,7 +339,7 @@ public class GameManagerServer : MonoBehaviour
                     ent.snapZone.Unsnap();
                 }
                 Debug.Log("Disable Grab Action");
-                ent.interactable.DisablePrimaryGrabAction();
+                ent.interactable.DisableGrab();
                 if (ent.body)
                 {
                     ent.body.isKinematic = true;
