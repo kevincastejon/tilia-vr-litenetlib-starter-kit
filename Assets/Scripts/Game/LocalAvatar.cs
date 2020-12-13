@@ -24,6 +24,8 @@ public class LocalAvatar : MonoBehaviour
     public OVRInputButtonAction rightTriggerAction;
     public OVRInputTouchAction leftPointerAction;
     public OVRInputTouchAction rightPointerAction;
+    public GameObject pseudoBody;
+    public GameObject playArea;
     [Header("Monitoring")]
     [ReadOnly]
     public int id;
@@ -75,6 +77,13 @@ public class LocalAvatar : MonoBehaviour
             rightGrabVelocity = rightInteractor.VelocityTracker.GetVelocity();
             rightGrabAngularVelocity = rightInteractor.VelocityTracker.GetAngularVelocity();
         }
+    }
+
+    public void TransportTo(Vector3 pos)
+    {
+        pseudoBody.SetActive(false);
+        playArea.transform.Translate(pos);
+        pseudoBody.SetActive(true);
     }
 
     public Entity GetLeftGrabbedEntity()

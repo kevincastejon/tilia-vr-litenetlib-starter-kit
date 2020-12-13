@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using Tilia.Interactions.Interactables.Interactors;
 using UnityEngine;
 
@@ -31,6 +32,11 @@ public class GameManagerClient : MonoBehaviour
     private void Awake()
     {
         instance = this;
+    }
+
+    public void OnLANDiscovery(string name, IPEndPoint ip)
+    {
+        Debug.Log(name + " " + ip);
     }
 
     public void AddEntity(Entity ent)

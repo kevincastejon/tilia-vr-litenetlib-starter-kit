@@ -33,9 +33,11 @@ public class GameManagerServer : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("AWAKED");
         instance = this;
         localAvatar.id = -128;
         localAvatar.OnShoot.AddListener(ShootBullet);
+        localAvatar.TransportTo(new Vector3(0f, 10f, -12.5f));
     }
 
     public void AddEntity(Entity ent)
