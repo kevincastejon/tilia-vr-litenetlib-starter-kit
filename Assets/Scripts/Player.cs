@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
         set {
             if (!leftTrigger && value)
             {
-                if (leftGrabbed.type == EntityType.Gun)
+                if (leftGrabbed && leftGrabbed.type == EntityType.Gun)
                 {
                     OnShoot.Invoke(leftGrabbed.GetComponent<Gun>());
                 }
@@ -73,7 +73,7 @@ public class Player : MonoBehaviour
         {
             if (!rightTrigger && value)
             {
-                if (rightGrabbed.type == EntityType.Gun)
+                if (rightGrabbed && rightGrabbed.type == EntityType.Gun)
                 {
                     OnShoot.Invoke(rightGrabbed.GetComponent<Gun>());
                 }
