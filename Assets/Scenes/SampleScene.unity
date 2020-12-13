@@ -722,6 +722,21 @@ MonoBehaviour:
   interactable: {fileID: 148629921}
   body: {fileID: 148629920}
   initialIsKinematic: 0
+--- !u!114 &148629918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148629916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10954326cf659a84cb170ff0eb38971f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliders:
+  - {fileID: 1737012310}
+  collidesOnGrab: 0
 --- !u!54 &148629920 stripped
 Rigidbody:
   m_CorrespondingSourceObject: {fileID: 8862883227734677280, guid: 1bb7642ebf8d0a34aa23fc586ea87e6a,
@@ -5538,7 +5553,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc59cd886320cee4e8f23cbbe4ab56ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isServer: 0
+  _isServer: 1
   server: {fileID: 121076092}
   client: {fileID: 1928920086}
   _showLagLogs: 0
