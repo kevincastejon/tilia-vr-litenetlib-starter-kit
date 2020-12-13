@@ -14,18 +14,18 @@ public class DEVNetworkSwitcher : MonoBehaviour
     public bool _showLagLogs;
     private void Awake()
     {
-        if (_isServer)
-        {
-            isServer = true;
-            Destroy(client);
-            server.SetActive(true);
-        }
-        else
-        {
-            isServer = false;
-            Destroy(server);
-            client.SetActive(true);
-        }
+        //if (_isServer)
+        //{
+        //    isServer = true;
+        //    Destroy(client);
+        //    server.SetActive(true);
+        //}
+        //else
+        //{
+        //    isServer = false;
+        //    Destroy(server);
+        //    client.SetActive(true);
+        //}
         if (_showLagLogs)
         {
             showLagLogs = _showLagLogs;
