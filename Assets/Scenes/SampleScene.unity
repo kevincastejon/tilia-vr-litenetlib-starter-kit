@@ -861,7 +861,7 @@ MonoBehaviour:
   server: {fileID: 121076093}
   coloredCube: {fileID: 346633232}
   entityTypeInstanceLimits:
-  - max: 9
+  - max: 12
     destroyFirst: 1
   - max: -1
     destroyFirst: 0

@@ -22,8 +22,7 @@ ball + guns + coloredCube = 76B
 4 players = 192B
 
 Static total = 268B
-Left size = [244B] (for 512B max)
-Possible entities spawn = 9 (floor(244/25))
+Left size = [308B] (for 576B max)
+Possible entities spawn = 12 (floor(308/25))
 
 TODO:
-add bool grabbableFromHand to Entity
