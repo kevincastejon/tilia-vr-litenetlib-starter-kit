@@ -151,6 +151,11 @@ public class GameManagerServer : MonoBehaviour
             Entity ent = disconnectedPlayer.leftGrabbed;
             ent.ownerId = -1;
             ent.interactable.EnableGrab();
+            DisableCollisionsOnGrab dcog = ent.GetComponent<DisableCollisionsOnGrab>();
+            if (dcog)
+            {
+                dcog.EnableColliders();
+            }
             if (ent.body)
             {
                 ent.body.isKinematic = ent.initialIsKinematic;
@@ -166,6 +171,11 @@ public class GameManagerServer : MonoBehaviour
             Entity ent = disconnectedPlayer.rightGrabbed;
             ent.ownerId = -1;
             ent.interactable.EnableGrab();
+            DisableCollisionsOnGrab dcog = ent.GetComponent<DisableCollisionsOnGrab>();
+            if (dcog)
+            {
+                dcog.EnableColliders();
+            }
             if (ent.body)
             {
                 ent.body.isKinematic = ent.initialIsKinematic;
