@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Tilia.Indicators.ObjectPointers;
 using Tilia.Interactions.Interactables.Interactables;
 using Tilia.Interactions.Interactables.Interactors;
 using Tilia.SDK.OculusIntegration.Input;
@@ -17,6 +18,8 @@ public class LocalAvatar : MonoBehaviour
     public GameObject rightHandAlias;
     public InteractorFacade leftInteractor;
     public InteractorFacade rightInteractor;
+    public PointerFacade leftPointerFacade;
+    public PointerFacade rightPointerFacade;
     public OVRInputButtonAction leftTriggerAction;
     public OVRInputButtonAction rightTriggerAction;
     public OVRInputTouchAction leftPointerAction;
@@ -38,14 +41,13 @@ public class LocalAvatar : MonoBehaviour
     public bool rightTrigger;
     [HideInInspector]
     public ShootEvent OnShoot = new ShootEvent();
-    [Header("TEMP DEV")]
-    [ReadOnly]
+    [HideInInspector]
     public Vector3 leftGrabVelocity;
-    [ReadOnly]
+    [HideInInspector]
     public Vector3 leftGrabAngularVelocity;
-    [ReadOnly]
+    [HideInInspector]
     public Vector3 rightGrabVelocity;
-    [ReadOnly]
+    [HideInInspector]
     public Vector3 rightGrabAngularVelocity;
 
     // Start is called before the first frame update
@@ -112,6 +114,7 @@ public class LocalAvatar : MonoBehaviour
 
     private void OnLeftGrab(InteractableFacade interactable)
     {
+        leftPointerFacade.gameObject.SetActive(false);
         leftGrabbed = interactable;
         Entity ent = interactable.GetComponent<Entity>();
         if (ent)
@@ -122,6 +125,7 @@ public class LocalAvatar : MonoBehaviour
 
     private void OnRightGrab(InteractableFacade interactable)
     {
+        rightPointerFacade.gameObject.SetActive(false);
         rightGrabbed = interactable;
         Entity ent = interactable.GetComponent<Entity>();
         if (ent)
@@ -132,6 +136,7 @@ public class LocalAvatar : MonoBehaviour
     }
     private void OnLeftUngrab(InteractableFacade interactable)
     {
+        leftPointerFacade.gameObject.SetActive(true);
         leftGrabbed = null;
         Entity ent = interactable.GetComponent<Entity>();
         if (ent)
@@ -150,6 +155,7 @@ public class LocalAvatar : MonoBehaviour
 
     private void OnRightUngrab(InteractableFacade interactable)
     {
+        rightPointerFacade.gameObject.SetActive(true);
         rightGrabbed = null;
         Entity ent = interactable.GetComponent<Entity>();
         if (ent)

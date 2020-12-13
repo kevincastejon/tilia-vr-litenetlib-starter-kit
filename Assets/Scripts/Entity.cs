@@ -10,7 +10,6 @@ public enum EntityType
     Ball = 1,
     Pin = 2,
     Gun = 3,
-    Racket = 4,
 }
 
 public class Entity : MonoBehaviour
