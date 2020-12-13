@@ -19,12 +19,13 @@ public class GameClient : MonoBehaviour
     public ClientEvent onDisconnected = new ClientEvent();
     public ClientInitEvent onInit = new ClientInitEvent();
     public ClientStateEvent onState = new ClientStateEvent();
+    public bool awaked = false;
     private Client client;
 
     public bool Connected => (client.Connected);
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         client = GetComponentInChildren<Client>();
         client.onLANDiscovered.AddListener((string name, IPEndPoint ip) => OnLANDiscovered(name, ip));
@@ -32,6 +33,7 @@ public class GameClient : MonoBehaviour
         client.onDisconnected.AddListener(() => OnDisconnected());
         client.onInit.AddListener((InitMessage im) => OnInit(im));
         client.onState.AddListener((StateMessage sm) => OnState(sm));
+        awaked = true;
     }
     /// <summary>
     /// Start sending regular discovery broadcast message

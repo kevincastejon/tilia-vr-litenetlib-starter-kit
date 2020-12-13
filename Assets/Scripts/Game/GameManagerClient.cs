@@ -32,11 +32,13 @@ public class GameManagerClient : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        Debug.Log(client.awaked);
+        client.StartLANDiscovery();
     }
 
     public void OnLANDiscovery(string name, IPEndPoint ip)
     {
-        Debug.Log(name + " " + ip);
+        Debug.Log("DISCOVERED LAN");
     }
 
     public void AddEntity(Entity ent)

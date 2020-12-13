@@ -67,6 +67,7 @@ public class Client : MonoBehaviour, INetEventListener
             _discoveringTimer += Time.deltaTime;
             if (_discoveringTimer >= _discoveringInterval)
             {
+                //Debug.Log("SENDING DISCOVERY PACKET");
                 _netClient.SendBroadcast(new byte[] { 1 }, 5000);
                 _discoveringTimer = 0;
             }
