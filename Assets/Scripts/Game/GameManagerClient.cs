@@ -38,7 +38,7 @@ public class GameManagerClient : MonoBehaviour
 
     public void OnLANDiscovery(string name, IPEndPoint ip)
     {
-        Debug.Log("DISCOVERED LAN");
+        client.Connect(ip);
     }
 
     public void AddEntity(Entity ent)
@@ -323,6 +323,7 @@ public class GameManagerClient : MonoBehaviour
     public void OnServerInit(InitMessage im)
     {
         localAvatar.id = im.OwnId;
+        localAvatar.TransportTo(new Vector3(0f, 10f, -12.5f));
         ready = true;
     }
     public void OnServerState(StateMessage sm)
