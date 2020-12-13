@@ -300,6 +300,8 @@ public class GameManagerServer : MonoBehaviour
             p.leftHandAlias.transform.rotation = Quaternion.Lerp(dataA.LeftHandRotation, dataB.LeftHandRotation, t);
             p.rightHandAlias.transform.position = Vector3.Lerp(dataA.RightHandPosition, dataB.RightHandPosition, t);
             p.rightHandAlias.transform.rotation = Quaternion.Lerp(dataA.RightHandRotation, dataB.RightHandRotation, t);
+            p.LeftPointer = dataA.LeftPointer;
+            p.RightPointer = dataA.RightPointer;
             p.LeftTrigger = dataA.LeftTrigger;
             p.RightTrigger = dataA.RightTrigger;
             if (dataA.LeftGrabId != dataB.LeftGrabId && dataA.LeftGrabId != 0)
@@ -391,9 +393,6 @@ public class GameManagerServer : MonoBehaviour
                 ent.transformTarget.position = Vector3.Lerp(dataA.RightGrabPosition, dataB.RightGrabPosition, t);
                 ent.transformTarget.rotation = Quaternion.Lerp(dataA.RightGrabRotation, dataB.RightGrabRotation, t);
             }
-            p.LeftPointer = p.leftGrabbed != null ? false : dataA.LeftPointer;
-            p.RightPointer = p.rightGrabbed != null ? false : dataA.RightPointer;
-
             if (isLastFrame)
             {
                 p.inputBuffer.RemoveFromStart(1);
