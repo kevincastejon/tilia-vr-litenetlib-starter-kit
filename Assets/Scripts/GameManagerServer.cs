@@ -301,6 +301,11 @@ public class GameManagerServer : MonoBehaviour
                 p.leftGrabbed = null;
                 ent.ownerId = -1;
                 ent.interactable.EnableGrab();
+                DisableCollisionsOnGrab dcog = ent.GetComponent<DisableCollisionsOnGrab>();
+                if (dcog)
+                {
+                    dcog.EnableColliders();
+                }
                 if (ent.body)
                 {
                     ent.body.isKinematic = ent.initialIsKinematic;
@@ -318,6 +323,11 @@ public class GameManagerServer : MonoBehaviour
                     ent.snapZone.Unsnap();
                 }
                 ent.interactable.DisableGrab();
+                DisableCollisionsOnGrab dcog = ent.GetComponent<DisableCollisionsOnGrab>();
+                if (dcog && !dcog.collidesOnGrab)
+                {
+                    dcog.DisableColliders();
+                }
                 if (ent.body)
                 {
                     ent.body.isKinematic = true;
@@ -336,6 +346,11 @@ public class GameManagerServer : MonoBehaviour
                 ent.ownerId = -1;
                 //Debug.Log("Enable Grab Action");
                 ent.interactable.EnableGrab();
+                DisableCollisionsOnGrab dcog = ent.GetComponent<DisableCollisionsOnGrab>();
+                if (dcog)
+                {
+                    dcog.EnableColliders();
+                }
                 if (ent.body)
                 {
                     ent.body.isKinematic = ent.initialIsKinematic;
@@ -354,6 +369,11 @@ public class GameManagerServer : MonoBehaviour
                 }
                 //Debug.Log("Disable Grab Action");
                 ent.interactable.DisableGrab();
+                DisableCollisionsOnGrab dcog = ent.GetComponent<DisableCollisionsOnGrab>();
+                if (dcog && !dcog.collidesOnGrab)
+                {
+                    dcog.DisableColliders();
+                }
                 if (ent.body)
                 {
                     ent.body.isKinematic = true;
