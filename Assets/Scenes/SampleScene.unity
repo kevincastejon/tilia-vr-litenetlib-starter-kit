@@ -2202,7 +2202,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 906c6376972e44f469330df394172abd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &446864215
+--- !u!54 &446864216 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 8862883227734677280, guid: 1bb7642ebf8d0a34aa23fc586ea87e6a,
+    type: 3}
+  m_PrefabInstance: {fileID: 401014464}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &446864218
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2218,12 +2224,6 @@ MonoBehaviour:
   - {fileID: 951090263}
   - {fileID: 1970978564}
   collidesOnGrab: 0
---- !u!54 &446864216 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 8862883227734677280, guid: 1bb7642ebf8d0a34aa23fc586ea87e6a,
-    type: 3}
-  m_PrefabInstance: {fileID: 401014464}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &451122358 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1458957959020712, guid: 114b3c3ce4645364a97c8f0803bed65b,
@@ -5569,7 +5569,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc59cd886320cee4e8f23cbbe4ab56ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isServer: 0
+  _isServer: 1
   server: {fileID: 121076092}
   client: {fileID: 1928920086}
   _showLagLogs: 0
