@@ -24,6 +24,7 @@ public class GameManagerClient : MonoBehaviour
     private int lastSequence;
     private int sequence;
     private bool ready;
+    private bool connecting;
     private float timerMax = 2 / 60f;
     private float timer = 0f;
     [HideInInspector]
@@ -32,12 +33,16 @@ public class GameManagerClient : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        Debug.Log(client.awaked);
         client.StartLANDiscovery();
     }
 
     public void OnLANDiscovery(string name, IPEndPoint ip)
     {
+        if (connecting)
+        {
+            return;
+        }
+        connecting = true;
         client.Connect(ip);
     }
 
