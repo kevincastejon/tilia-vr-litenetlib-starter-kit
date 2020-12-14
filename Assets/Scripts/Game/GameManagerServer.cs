@@ -5,22 +5,14 @@ using Tilia.Interactions.Interactables.Interactables;
 using Tilia.Interactions.Interactables.Interactors;
 using UnityEngine;
 
-[Serializable]
-public class InstanceCountLimit
-{
-    public int max = -1;
-    public bool destroyFirst = false;
-}
 public class GameManagerServer : MonoBehaviour
 {
     [Header("Prefab Settings")]
     public GameObject playerPrefab;
-    public GameObject bulletPrefab;
     [Header("Reference Settings")]
     public LocalAvatar localAvatar;
     public GameServer server;
     public ColoredCube coloredCube;
-    public List<InstanceCountLimit> entityTypeInstanceLimits = new List<InstanceCountLimit>();
     [Header("Monitoring")]
     [ReadOnly]
     public int Sequence;
@@ -30,9 +22,11 @@ public class GameManagerServer : MonoBehaviour
     private float timer = 0f;
     [HideInInspector]
     public static GameManagerServer instance;
+    private EntitiesSettings entitiesSettings;
 
     private void Awake()
     {
+        entitiesSettings = EntitiesSettings.instance;
         instance = this;
         localAvatar.id = -128;
         localAvatar.OnShoot.AddListener(ShootBullet);
@@ -41,9 +35,9 @@ public class GameManagerServer : MonoBehaviour
 
     public void AddEntity(Entity ent)
     {
-        int max = entityTypeInstanceLimits[(int)ent.type].max;
+        int max = entitiesSettings.settings[(int)ent.type].maxInstance;
         int currentCount = GetEntityTypeCount(ent.type);
-        bool destroyFirst = entityTypeInstanceLimits[(int)ent.type].destroyFirst;
+        bool destroyFirst = entitiesSettings.settings[(int)ent.type].destroyFirst;
         if (max == -1 || currentCount < max)
         {
             ent.id = ent.GetInstanceID();
@@ -405,7 +399,7 @@ public class GameManagerServer : MonoBehaviour
 
     public void ShootBullet(Gun gun)
     {
-        GameObject bullet = Instantiate(bulletPrefab, gun.spawnPoint.position, gun.spawnPoint.rotation);
+        GameObject bullet = Instantiate(entitiesSettings.settings[(int)EntityType.Bullet].prefab, gun.spawnPoint.position, gun.spawnPoint.rotation);
         bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * 5, ForceMode.Impulse);
     }
 }

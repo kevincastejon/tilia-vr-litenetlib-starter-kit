@@ -9,7 +9,6 @@ public class GameManagerClient : MonoBehaviour
 {
     [Header("Prefab Settings")]
     public GameObject playerPrefab;
-    public List<GameObject> entityPrefabs = new List<GameObject>();
     [Header("Reference Settings")]
     public LocalAvatar localAvatar;
     public GameClient client;
@@ -29,9 +28,11 @@ public class GameManagerClient : MonoBehaviour
     private float timer = 0f;
     [HideInInspector]
     public static GameManagerClient instance;
+    private EntitiesSettings entitiesSettings;
 
     private void Awake()
     {
+        entitiesSettings = EntitiesSettings.instance;
         instance = this;
         client.StartLANDiscovery();
     }
@@ -138,7 +139,7 @@ public class GameManagerClient : MonoBehaviour
                 }
                 else
                 {
-                    ent = Instantiate(entityPrefabs[entityStateB.Type]).GetComponent<Entity>();
+                    ent = Instantiate(entitiesSettings.settings[entityStateB.Type].prefab).GetComponent<Entity>();
                     entities.Add(ent);
                 }
                 ent.id = entityStateB.Id;

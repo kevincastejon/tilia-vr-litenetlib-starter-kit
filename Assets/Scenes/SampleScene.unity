@@ -855,20 +855,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 5143088545895085449, guid: 882ad77aea76e9f4480b8ede08df835c,
     type: 3}
-  bulletPrefab: {fileID: 2024301931097442895, guid: 2910db0b28aba7b408e99e773670a592,
-    type: 3}
   localAvatar: {fileID: 2110964069}
   server: {fileID: 121076093}
   coloredCube: {fileID: 346633232}
-  entityTypeInstanceLimits:
-  - max: 12
-    destroyFirst: 1
-  - max: -1
-    destroyFirst: 0
-  - max: -1
-    destroyFirst: 0
-  - max: -1
-    destroyFirst: 0
   Sequence: 0
   entities: []
 --- !u!1 &140554483
@@ -2774,6 +2763,63 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 319c9c4cb939912429c7786a67e40f0d, type: 3}
+--- !u!1 &484640394
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 484640396}
+  - component: {fileID: 484640395}
+  m_Layer: 0
+  m_Name: EntitiesSettings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &484640395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484640394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d498d5288fc528e4f8033a1ef7e5d4b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings:
+  - maxInstance: 12
+    destroyFirst: 1
+    prefab: {fileID: 2024301931097442895, guid: 2910db0b28aba7b408e99e773670a592,
+      type: 3}
+  - maxInstance: -1
+    destroyFirst: 0
+    prefab: {fileID: 0}
+  - maxInstance: -1
+    destroyFirst: 0
+    prefab: {fileID: 0}
+  - maxInstance: -1
+    destroyFirst: 0
+    prefab: {fileID: 0}
+--- !u!4 &484640396
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484640394}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.021532, y: -6.044212, z: 13.296443}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &505322508 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7479104189870987516, guid: eeee0625b80a71f42b3d538d5038b1ea,
@@ -8686,11 +8732,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 5143088545895085449, guid: 882ad77aea76e9f4480b8ede08df835c,
     type: 3}
-  entityPrefabs:
-  - {fileID: 2024301931097442895, guid: 2910db0b28aba7b408e99e773670a592, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   localAvatar: {fileID: 2110964069}
   client: {fileID: 1928920087}
   coloredCube: {fileID: 346633232}
