@@ -82,7 +82,7 @@ public class LocalAvatar : MonoBehaviour
     public void TransportTo(Vector3 pos)
     {
         pseudoBody.SetActive(false);
-        playArea.transform.Translate(pos);
+        playArea.transform.position = pos;
         pseudoBody.SetActive(true);
     }
 
