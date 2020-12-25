@@ -208,8 +208,8 @@ public class GameManagerServer : MonoBehaviour
                     LeftHandRotation = p.leftHandAlias.transform.rotation,
                     RightHandPosition = p.rightHandAlias.transform.position,
                     RightHandRotation = p.rightHandAlias.transform.rotation,
-                    LeftPointer = p.LeftPointer,
-                    RightPointer = p.RightPointer,
+                    LeftPointer = p.leftGrabbed ? false : p.LeftPointer,
+                    RightPointer = p.rightGrabbed ? false : p.RightPointer,
                 };
                 playerStateCount++;
             }
@@ -223,8 +223,8 @@ public class GameManagerServer : MonoBehaviour
             LeftHandRotation = localAvatar.leftHandAlias.transform.rotation,
             RightHandPosition = localAvatar.rightHandAlias.transform.position,
             RightHandRotation = localAvatar.rightHandAlias.transform.rotation,
-            LeftPointer = localAvatar.leftPointer,
-            RightPointer = localAvatar.rightPointer,
+            LeftPointer = localAvatar.leftGrabbed ? false : localAvatar.leftPointer,
+            RightPointer = localAvatar.rightGrabbed ? false : localAvatar.rightPointer,
         };
         return playerStates;
     }

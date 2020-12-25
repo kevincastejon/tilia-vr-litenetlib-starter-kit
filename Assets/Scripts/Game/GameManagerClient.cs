@@ -201,8 +201,8 @@ public class GameManagerClient : MonoBehaviour
                 p.leftHandAlias.transform.rotation = Quaternion.Lerp(playersStateA.LeftHandRotation, playersStateB.LeftHandRotation, t);
                 p.rightHandAlias.transform.position = Vector3.Lerp(playersStateA.RightHandPosition, playersStateB.RightHandPosition, t);
                 p.rightHandAlias.transform.rotation = Quaternion.Lerp(playersStateA.RightHandRotation, playersStateB.RightHandRotation, t);
-                p.LeftPointer = playersStateA.LeftPointer;
-                p.RightPointer = playersStateA.RightPointer;
+                p.LeftPointer =  != null ? false : playersStateA.LeftPointer;
+                p.RightPointer = p.rightGrabbed != null ? false : playersStateA.RightPointer;
             }
         }
     }
