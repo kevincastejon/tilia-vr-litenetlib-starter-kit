@@ -14,12 +14,13 @@ public class GameManagerClient : MonoBehaviour
     public GameClient client;
     public ColoredCube coloredCube;
     [Header("Monitoring")]
-    private Dictionary<int, Player> players = new Dictionary<int, Player>();
-    private List<Entity> entities = new List<Entity>();
-    [HideInInspector]
-    public LiteRingBuffer<StateMessage> stateBuffer = new LiteRingBuffer<StateMessage>(5);
     [ReadOnly]
     public int stateBufferLength;
+    [ReadOnly]
+    public List<Entity> entities = new List<Entity>();
+    [HideInInspector]
+    public LiteRingBuffer<StateMessage> stateBuffer = new LiteRingBuffer<StateMessage>(5);
+    private Dictionary<int, Player> players = new Dictionary<int, Player>();
     private int lastSequence;
     private int sequence;
     private bool ready;
