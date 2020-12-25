@@ -120,7 +120,6 @@ public class GameManagerClient : MonoBehaviour
                 else
                 {
                     ent = Instantiate(entitiesSettings.settings[entityStateB.Type].prefab).GetComponent<Entity>();
-                    //entities.Add(ent);
                 }
                 ent.id = entityStateB.Id;
                 ent.transformTarget.position = entityStateB.Position;
@@ -175,6 +174,7 @@ public class GameManagerClient : MonoBehaviour
             {
                 p = Instantiate(playerPrefab).GetComponent<Player>();
                 p.id = playersStateB.Id;
+                p.nameOrientationTarget = localAvatar.headAlias;
                 p.headAlias.transform.position = playersStateB.HeadPosition;
                 p.headAlias.transform.rotation = playersStateB.HeadRotation;
                 p.leftHandAlias.transform.position = playersStateB.LeftHandPosition;
