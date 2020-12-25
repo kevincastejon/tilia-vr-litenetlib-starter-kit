@@ -8736,6 +8736,7 @@ MonoBehaviour:
   client: {fileID: 1928920087}
   coloredCube: {fileID: 346633232}
   stateBufferLength: 0
+  entities: []
 --- !u!114 &1960257411 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6820168409908592392, guid: 5381c6b0ade0a784ebf6f5f903c11182,

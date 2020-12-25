@@ -51,33 +51,12 @@ public class GameManagerClient : MonoBehaviour
     public void AddEntity(Entity ent)
     {
         entities.Add(ent);
-        //if (ent.interactable != null)
-        //{
-        //    ent.interactable.Grabbed.AddListener((InteractorFacade ifc) => OnLocalGrab(ent));
-        //    ent.interactable.Ungrabbed.AddListener((InteractorFacade ifc) => OnLocalUngrab(ent));
-        //}
     }
 
     public void RemoveEntity(Entity ent)
     {
         entities.Remove(ent);
-        //if (ent.interactable != null)
-        //{
-        //    ent.interactable.Grabbed.RemoveAllListeners();
-        //    ent.interactable.Ungrabbed.RemoveAllListeners();
-        //}
     }
-
-    //private void OnLocalGrab(Entity ent)
-    //{
-    //    ent.grabbed = true;
-    //    ent.ownerId = localAvatar.id;
-    //}
-
-    //private void OnLocalUngrab(Entity ent)
-    //{
-    //    ent.grabbed = false;
-    //}
 
     private void FixedUpdate()
     {
@@ -141,7 +120,7 @@ public class GameManagerClient : MonoBehaviour
                 else
                 {
                     ent = Instantiate(entitiesSettings.settings[entityStateB.Type].prefab).GetComponent<Entity>();
-                    entities.Add(ent);
+                    //entities.Add(ent);
                 }
                 ent.id = entityStateB.Id;
                 ent.transformTarget.position = entityStateB.Position;
