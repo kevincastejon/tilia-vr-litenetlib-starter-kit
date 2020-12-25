@@ -42,11 +42,6 @@ public class GameManagerServer : MonoBehaviour
         {
             ent.id = ent.GetInstanceID();
             entities.Add(ent);
-            //if (ent.interactable != null)
-            //{
-            //    ent.interactable.Grabbed.AddListener((InteractorFacade ifc) => OnLocalGrab(ent));
-            //    ent.interactable.Ungrabbed.AddListener((InteractorFacade ifc) => OnLocalUngrab(ent));
-            //}
         }
         else
         {
@@ -62,11 +57,6 @@ public class GameManagerServer : MonoBehaviour
                 }
                 ent.id = ent.GetInstanceID();
                 entities.Add(ent);
-                //if (ent.interactable != null)
-                //{
-                //    ent.interactable.Grabbed.AddListener((InteractorFacade ifc) => OnLocalGrab(ent));
-                //    ent.interactable.Ungrabbed.AddListener((InteractorFacade ifc) => OnLocalUngrab(ent));
-                //}
             }
             else
             {
@@ -87,16 +77,6 @@ public class GameManagerServer : MonoBehaviour
             }
         }
     }
-
-    //private void OnLocalGrab(Entity ent)
-    //{
-
-    //}
-
-    //private void OnLocalUngrab(Entity ent)
-    //{
-
-    //}
 
     private int GetEntityTypeCount(EntityType type)
     {
@@ -347,7 +327,6 @@ public class GameManagerServer : MonoBehaviour
                 Entity ent = entities.Find(x => x.id == dataA.RightGrabId);
                 p.rightGrabbed = null;
                 ent.ownerId = -1;
-                //Debug.Log("Enable Grab Action");
                 ent.interactable.EnableGrab();
                 DisableCollisionsOnGrab dcog = ent.GetComponent<DisableCollisionsOnGrab>();
                 if (dcog)
@@ -357,7 +336,6 @@ public class GameManagerServer : MonoBehaviour
                 if (ent.body)
                 {
                     ent.body.isKinematic = ent.initialIsKinematic;
-                    Debug.Log("SET ISKINEMATIC BACK TO INITIAL VALUE : " + ent.initialIsKinematic);
                     ent.body.velocity = dataA.RightGrabVelocity;
                     ent.body.angularVelocity = dataA.RightGrabAngularVelocity;
                 }
@@ -370,7 +348,6 @@ public class GameManagerServer : MonoBehaviour
                 {
                     ent.snapZone.Unsnap();
                 }
-                //Debug.Log("Disable Grab Action");
                 ent.interactable.DisableGrab();
                 DisableCollisionsOnGrab dcog = ent.GetComponent<DisableCollisionsOnGrab>();
                 if (dcog && !dcog.collidesOnGrab)
