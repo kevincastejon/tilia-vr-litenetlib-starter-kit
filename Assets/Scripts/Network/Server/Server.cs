@@ -9,7 +9,10 @@ using System;
 [Serializable]
 public class ServerPlayerEvent : UnityEvent<int> { };
 [Serializable]
+public class ServerPlayerInitInfoEvent : UnityEvent<int, PlayerInitInfo> { };
+[Serializable]
 public class ServerPlayerInputEvent : UnityEvent<int, PlayerInput> { };
+
 
 public class Server : MonoBehaviour, INetEventListener, INetLogger
 {
@@ -25,6 +28,7 @@ public class Server : MonoBehaviour, INetEventListener, INetLogger
     [Header("Server Events")]
     public ServerPlayerEvent onPlayerConnected = new ServerPlayerEvent();
     public ServerPlayerEvent onPlayerDisconnected = new ServerPlayerEvent();
+    public ServerPlayerInitInfoEvent onPlayerInitInfo = new ServerPlayerInitInfoEvent();
     public ServerPlayerInputEvent onPlayerInput = new ServerPlayerInputEvent();
     private NetManager _netServer;
     private readonly NetPacketProcessor _netPacketProcessor = new NetPacketProcessor();
@@ -39,11 +43,17 @@ public class Server : MonoBehaviour, INetEventListener, INetLogger
         _netPacketProcessor.RegisterNestedType(() => new PlayerAddMessage());
         _netPacketProcessor.RegisterNestedType(() => new EntityAddMessage());
         _netPacketProcessor.SubscribeReusable<PlayerInput, NetPeer>(OnPlayerInput);
+        _netPacketProcessor.SubscribeReusable<PlayerInitInfo, NetPeer>(OnPlayerInitInfo);
         if (autoStart)
         {
             Listen(port);
         }
         Debug.Log("SERVER AWAKED");
+    }
+
+    private void OnPlayerInitInfo(PlayerInitInfo inf, NetPeer peer)
+    {
+        onPlayerInitInfo.Invoke(peer.Id, inf);
     }
 
     void Update()

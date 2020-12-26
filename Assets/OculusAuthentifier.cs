@@ -11,7 +11,8 @@ public class OculusAuthentifier : MonoBehaviour
     public GameObject LogWall;
     [Header("Monitoring")]
     [ReadOnly]
-    public string OculusId;
+    public string _OculusId;
+    public static string OculusId;
     private void Awake()
     {
         Core.AsyncInitialize().OnComplete(OnCoreInit);
@@ -36,6 +37,7 @@ public class OculusAuthentifier : MonoBehaviour
     }
     private void OnUserInfo(Message<User> msg)
     {
+        _OculusId = msg.Data.OculusID;
         OculusId = msg.Data.OculusID;
         Debug.Log("LOGGED IN AS "+msg.Data.OculusID);
         LogWall.SetActive(false);

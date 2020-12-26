@@ -17,6 +17,7 @@ public class GameManagerServer : MonoBehaviour
     public int Sequence;
     public List<Entity> entities = new List<Entity>();
     private Dictionary<int, Player> players = new Dictionary<int, Player>();
+    private int numConnectedPlayers;
     private float timerMax = 2 / 60f;
     private float timer = 0f;
     [HideInInspector]
@@ -131,7 +132,20 @@ public class GameManagerServer : MonoBehaviour
         newPlayer.nameOrientationTarget = localAvatar.headAlias;
         newPlayer.id = peerID;
         players[peerID] = newPlayer;
-        newPlayer.OnShoot.AddListener(ShootBullet);
+    }
+    public void OnPlayerInitInfo(int peerID, PlayerInitInfo inf)
+    {
+        Player p = players[peerID];
+        p.connected = true;
+        p.OnShoot.AddListener(ShootBullet);
+        p.headAlias.transform.position = inf.HeadPosition;
+        p.headAlias.transform.rotation = inf.HeadRotation;
+        p.leftHandAlias.transform.position = inf.LeftHandPosition;
+        p.leftHandAlias.transform.rotation = inf.LeftHandRotation;
+        p.rightHandAlias.transform.position = inf.RightHandPosition;
+        p.rightHandAlias.transform.rotation = inf.RightHandRotation;
+        p.LeftPointer = inf.LeftPointer;
+        p.RightPointer = inf.RightPointer;
         InitMessage im = new InitMessage()
         {
             OwnId = peerID,
@@ -152,6 +166,7 @@ public class GameManagerServer : MonoBehaviour
             LeftPointer = false,
             RightPointer = false,
         }, peerID, true);
+        numConnectedPlayers++;
     }
 
     public void OnPlayerDisconnected(int peerID)
@@ -200,6 +215,10 @@ public class GameManagerServer : MonoBehaviour
         }
         Destroy(disconnectedPlayer.gameObject);
         server.SendImportantMessage(new PlayerRemoveMessage() { Id = peerID });
+        if (!disconnectedPlayer.connected)
+        {
+            numConnectedPlayers--;
+        }
     }
 
     public void OnPlayerInput(int playerId, PlayerInput pi)
@@ -210,11 +229,15 @@ public class GameManagerServer : MonoBehaviour
 
     public PlayerState[] GetPlayersStates(int excludedPlayerId)
     {
-        PlayerState[] playerStates = new PlayerState[players.Count];
+        PlayerState[] playerStates = new PlayerState[numConnectedPlayers];
         int playerStateCount = 0;
         foreach (KeyValuePair<int, Player> entry in players)
         {
             Player p = entry.Value;
+            if (!p.connected)
+            {
+                continue;
+            }
             if (p.id != excludedPlayerId)
             {
                 playerStates[playerStateCount] = new PlayerState()
@@ -326,6 +349,10 @@ public class GameManagerServer : MonoBehaviour
     {
         foreach (KeyValuePair<int, Player> entry in players)
         {
+            if (!entry.Value.connected)
+            {
+                continue;
+            }
             PlayerState[] playerStates = GetPlayersStates(entry.Key);
             EntityState[] entityStates = GetEntitiesStates();
             server.SendFastMessage(

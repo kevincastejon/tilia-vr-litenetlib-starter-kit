@@ -19,13 +19,15 @@ public class GameManagerClient : MonoBehaviour
     public int stateBufferLength;
     [ReadOnly]
     public List<Entity> entities = new List<Entity>();
+    [ReadOnly]
+    public bool connecting;
+    [ReadOnly]
+    public bool connected;
     [HideInInspector]
     public LiteRingBuffer<StateMessage> stateBuffer = new LiteRingBuffer<StateMessage>(5);
     private Dictionary<int, Player> players = new Dictionary<int, Player>();
     private int lastSequence;
     private int sequence;
-    private bool ready;
-    private bool connecting;
     private float timerMax = 2 / 60f;
     private float timer = 0f;
     [HideInInspector]
@@ -49,6 +51,24 @@ public class GameManagerClient : MonoBehaviour
         client.Connect(ip);
     }
 
+    public void OnConnected()
+    {
+        connecting = false;
+        client.SendImportantMessage(new PlayerInitInfo() {
+            OculusID = OculusAuthentifier.OculusId,
+            HeadPosition = localAvatar.headAlias.transform.position,
+            HeadRotation = localAvatar.headAlias.transform.rotation,
+            LeftHandPosition = localAvatar.leftHandAlias.transform.position,
+            LeftHandRotation = localAvatar.leftHandAlias.transform.rotation,
+            RightHandPosition = localAvatar.rightHandAlias.transform.position,
+            RightHandRotation = localAvatar.rightHandAlias.transform.rotation,
+            LeftPointer = localAvatar.leftPointer,
+            RightPointer = localAvatar.rightPointer,
+            LeftTrigger = localAvatar.leftTrigger,
+            RightTrigger = localAvatar.rightTrigger,
+        });
+    }
+
     public void AddEntity(Entity ent)
     {
         entities.Add(ent);
@@ -61,7 +81,7 @@ public class GameManagerClient : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!ready)
+        if (!connected)
         {
             return;
         }
@@ -286,7 +306,7 @@ public class GameManagerClient : MonoBehaviour
             OnAddEntity(eam);
         }
         coloredCube.SetColor(im.ColoredCube);
-        ready = true;
+        connected = true;
     }
     public void OnServerState(StateMessage sm)
     {

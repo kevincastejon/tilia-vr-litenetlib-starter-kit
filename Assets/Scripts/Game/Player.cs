@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
     [ReadOnly]
     public int id;
     [ReadOnly]
+    public bool connected;
+    [ReadOnly]
     public bool leftTrigger;
     [ReadOnly]
     public bool rightTrigger;
