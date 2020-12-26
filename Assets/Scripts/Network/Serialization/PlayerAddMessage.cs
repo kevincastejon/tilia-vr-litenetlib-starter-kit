@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerAddMessage : INetSerializable
 {
     public int Id { get; set; }
+    public string OculusId { get; set; }
     public Vector3 HeadPosition { get; set; }
     public Quaternion HeadRotation { get; set; }
     public Vector3 LeftHandPosition { get; set; }
@@ -15,6 +16,7 @@ public class PlayerAddMessage : INetSerializable
     public void Deserialize(NetDataReader reader)
     {
         Id = reader.GetSByte();
+        OculusId = reader.GetString();
         HeadPosition = Vector3Utils.Deserialize(reader);
         HeadRotation = QuatUtils.Deserialize(reader);
         LeftHandPosition = Vector3Utils.DeserializeHand(reader, HeadPosition);
@@ -28,6 +30,7 @@ public class PlayerAddMessage : INetSerializable
     public void Serialize(NetDataWriter writer)
     {
         writer.Put((sbyte)Id);
+        writer.Put(OculusId);
         Vector3Utils.Serialize(writer, HeadPosition);
         QuatUtils.Serialize(writer, HeadRotation);
         Vector3Utils.SerializeHand(writer, LeftHandPosition, HeadPosition);
@@ -43,6 +46,7 @@ public class PlayerAddMessage : INetSerializable
         PlayerAddMessage clone = new PlayerAddMessage()
         {
             Id = Id,
+            OculusId = OculusId,
             HeadPosition = new Vector3(HeadPosition.x, HeadPosition.y, HeadPosition.z),
             HeadRotation = new Quaternion(HeadRotation.x, HeadRotation.y, HeadRotation.z, HeadRotation.w),
             LeftHandPosition = new Vector3(LeftHandPosition.x, LeftHandPosition.y, LeftHandPosition.z),

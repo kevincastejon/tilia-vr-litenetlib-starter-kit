@@ -157,14 +157,15 @@ public class GameManagerServer : MonoBehaviour
         server.SendImportantMessage(new PlayerAddMessage()
         {
             Id = peerID,
-            HeadPosition = Vector3.zero,
-            HeadRotation = Quaternion.identity,
-            LeftHandPosition = Vector3.zero,
-            LeftHandRotation = Quaternion.identity,
-            RightHandPosition = Vector3.zero,
-            RightHandRotation = Quaternion.identity,
-            LeftPointer = false,
-            RightPointer = false,
+            OculusId = inf.OculusID,
+            HeadPosition = inf.HeadPosition,
+            HeadRotation = inf.HeadRotation,
+            LeftHandPosition = inf.LeftHandPosition,
+            LeftHandRotation = inf.LeftHandRotation,
+            RightHandPosition = inf.RightHandPosition,
+            RightHandRotation = inf.RightHandRotation,
+            LeftPointer = inf.LeftPointer,
+            RightPointer = inf.RightPointer,
         }, peerID, true);
         numConnectedPlayers++;
     }
