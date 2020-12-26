@@ -36,6 +36,8 @@ public class Server : MonoBehaviour, INetEventListener, INetLogger
         _netPacketProcessor.RegisterNestedType(QuatUtils.Serialize, QuatUtils.Deserialize);
         _netPacketProcessor.RegisterNestedType(() => new PlayerState());
         _netPacketProcessor.RegisterNestedType(() => new EntityState());
+        _netPacketProcessor.RegisterNestedType(() => new PlayerAddMessage());
+        _netPacketProcessor.RegisterNestedType(() => new EntityAddMessage());
         _netPacketProcessor.SubscribeReusable<PlayerInput, NetPeer>(OnPlayerInput);
         if (autoStart)
         {
