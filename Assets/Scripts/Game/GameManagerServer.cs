@@ -316,7 +316,7 @@ public class GameManagerServer : MonoBehaviour
 
     public EntityState[] GetEntitiesStates()
     {
-        int max = entitiesSettings.maxEntitiesStateSend > entities.Count ? entitiesSettings.maxEntitiesStateSend : entities.Count;
+        int max = entitiesSettings.maxEntitiesStateSend < entities.Count ? entitiesSettings.maxEntitiesStateSend : entities.Count;
         EntityState[] entityStates = new EntityState[max];
         int entityStateCount = 0;
         entities.Sort((Entity a, Entity b) => { return a.priorityAccumulator < b.priorityAccumulator ? -1 : 1; });
