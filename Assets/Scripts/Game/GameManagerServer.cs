@@ -84,6 +84,7 @@ public class GameManagerServer : MonoBehaviour
             Destroy(destroyingEnt.gameObject);
         }
     }
+
     public void RemoveEntity(Entity ent)
     {
         if (entities.Contains(ent))
@@ -284,6 +285,7 @@ public class GameManagerServer : MonoBehaviour
                 playerStates[playerStateCount] = new PlayerAddMessage()
                 {
                     Id = p.id,
+                    OculusId = p.oculusId,
                     HeadPosition = p.headAlias.transform.position,
                     HeadRotation = p.headAlias.transform.rotation,
                     LeftHandPosition = p.leftHandAlias.transform.position,
@@ -299,6 +301,7 @@ public class GameManagerServer : MonoBehaviour
         playerStates[playerStateCount] = new PlayerAddMessage()
         {
             Id = -128,     //Server id is always -128
+            OculusId = OculusAuthentifier.OculusId,
             HeadPosition = localAvatar.headAlias.transform.position,
             HeadRotation = localAvatar.headAlias.transform.rotation,
             LeftHandPosition = localAvatar.leftHandAlias.transform.position,

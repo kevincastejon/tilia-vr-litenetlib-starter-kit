@@ -173,6 +173,7 @@ public class GameManagerClient : MonoBehaviour
         {
             PlayerState playersStateB = playersB[i];
             Player p = players.ContainsKey(playersStateB.Id) ? players[playersStateB.Id] : null;
+            p.playerName.transform.rotation = Quaternion.LookRotation(p.playerName.transform.position - p.nameOrientationTarget.transform.position);
             if (p == null)
             {
                 continue;
