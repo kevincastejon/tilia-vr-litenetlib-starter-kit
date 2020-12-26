@@ -811,6 +811,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   token: appsecret
+  port: 5000
+  autoStart: 1
   lastSentPacketSize: 0
 --- !u!4 &121076095
 Transform:
@@ -6811,7 +6813,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc59cd886320cee4e8f23cbbe4ab56ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isServer: 0
   server: {fileID: 121076092}
   client: {fileID: 1928920086}
   TiliaObjects: {fileID: 2122384635}
@@ -8623,10 +8624,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4320cd22601fc4b4389b487ed6faecf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverIP: 192.168.0.43
+  serverIP: 192.168.0.46
   serverPort: 5000
   token: appsecret
-  autoConnect: 0
+  autoConnect: 1
   connected: 0
   lastSentPacketSize: 0
   onLANDiscovered:

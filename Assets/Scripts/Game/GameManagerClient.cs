@@ -35,6 +35,7 @@ public class GameManagerClient : MonoBehaviour
     {
         instance = this;
         client.StartLANDiscovery();
+        Debug.Log("GAMEMANAGER CLIENT AWAKED");
     }
 
     public void OnLANDiscovery(string name, IPEndPoint ip)

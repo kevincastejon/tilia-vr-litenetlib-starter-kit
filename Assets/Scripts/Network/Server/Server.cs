@@ -13,16 +13,19 @@ public class ServerPlayerInputEvent : UnityEvent<int, PlayerInput> { };
 
 public class Server : MonoBehaviour, INetEventListener, INetLogger
 {
+    [Header("Network Settings")]
+    public string token = "appsecret";
+    public int port = 5000;
+    public bool autoStart;
+    [Header("Monitoring")]
+    [ReadOnly]
+    public int lastSentPacketSize;
+    [ReadOnly]
+    public bool started;
     [Header("Server Events")]
     public ServerPlayerEvent onPlayerConnected = new ServerPlayerEvent();
     public ServerPlayerEvent onPlayerDisconnected = new ServerPlayerEvent();
     public ServerPlayerInputEvent onPlayerInput = new ServerPlayerInputEvent();
-    [Header("Network Settings")]
-    public string token = "appsecret";
-    public int port = 5000;
-    [Header("Monitoring")]
-    [ReadOnly]
-    public int lastSentPacketSize;
     private NetManager _netServer;
     private readonly NetPacketProcessor _netPacketProcessor = new NetPacketProcessor();
 
@@ -34,7 +37,10 @@ public class Server : MonoBehaviour, INetEventListener, INetLogger
         _netPacketProcessor.RegisterNestedType(() => new PlayerState());
         _netPacketProcessor.RegisterNestedType(() => new EntityState());
         _netPacketProcessor.SubscribeReusable<PlayerInput, NetPeer>(OnPlayerInput);
-        Listen(port);
+        if (autoStart)
+        {
+            Listen(port);
+        }
         Debug.Log("SERVER AWAKED");
     }
 
@@ -56,16 +62,17 @@ public class Server : MonoBehaviour, INetEventListener, INetLogger
         _netServer.Start(port);
         _netServer.BroadcastReceiveEnabled = true;
         _netServer.UpdateTime = 15;
+        started = true;
     }
 
     public NetPeer GetPeerById(int peerId)
     {
-        return(_netServer.GetPeerById(peerId));
+        return (_netServer.GetPeerById(peerId));
     }
 
     public void OnPeerConnected(NetPeer peer)
     {
-        Debug.Log("[SERVER] We have new peer " + peer.EndPoint + " with id : "+peer.Id);
+        Debug.Log("[SERVER] We have new peer " + peer.EndPoint + " with id : " + peer.Id);
         onPlayerConnected.Invoke(peer.Id);
     }
 
@@ -155,7 +162,7 @@ public class Server : MonoBehaviour, INetEventListener, INetLogger
     public void SendFastMessage<T>(T data, int peerId, bool exclusion) where T : class, new()
     {
         byte[] ba = _netPacketProcessor.Write(data);
-        lastSentPacketSize=ba.Length;
+        lastSentPacketSize = ba.Length;
         if (peerId != -1)
         {
             if (exclusion)

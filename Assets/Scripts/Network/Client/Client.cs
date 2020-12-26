@@ -53,7 +53,7 @@ public class Client : MonoBehaviour, INetEventListener
     private float _discoveringInterval = 0.5f;
     private float _discoveringTimer = 0;
 
-    void Start()
+    void Awake()
     {
         _dataWriter = new NetDataWriter();
         _netClient = new NetManager(this);
@@ -65,6 +65,8 @@ public class Client : MonoBehaviour, INetEventListener
         _netPacketProcessor.RegisterNestedType(() => new PlayerInput());
         _netPacketProcessor.RegisterNestedType(() => new PlayerState());
         _netPacketProcessor.RegisterNestedType(() => new EntityState());
+        _netPacketProcessor.RegisterNestedType(() => new PlayerAddMessage());
+        _netPacketProcessor.RegisterNestedType(() => new EntityAddMessage());
         _netPacketProcessor.SubscribeReusable((InitMessage im, NetPeer np) => onInit.Invoke(im));
         _netPacketProcessor.SubscribeReusable((PlayerAddMessage pam, NetPeer np) => onPlayerAdd.Invoke(pam));
         _netPacketProcessor.SubscribeReusable((PlayerRemoveMessage prm, NetPeer np) => onPlayerRemove.Invoke(prm));
@@ -75,6 +77,7 @@ public class Client : MonoBehaviour, INetEventListener
         {
             Connect(new IPEndPoint(IPAddress.Parse(serverIP), serverPort));
         }
+        Debug.Log("CLIENT AWAKED");
     }
 
     void Update()
