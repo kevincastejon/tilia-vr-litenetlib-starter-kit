@@ -40,6 +40,7 @@ public class GameManagerClient : MonoBehaviour
 
     public void OnLANDiscovery(string name, IPEndPoint ip)
     {
+        Debug.Log("DISCOVERED LAN GAME ON IP:"+ip);
         if (connecting)
         {
             return;
