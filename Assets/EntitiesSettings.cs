@@ -13,10 +13,5 @@ public class EntitySetting
 
 public class EntitiesSettings : MonoBehaviour
 {
-    public static EntitiesSettings instance;
     public List<EntitySetting> settings = new List<EntitySetting>();
-    private void Awake()
-    {
-        instance = this;
-    }
 }

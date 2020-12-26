@@ -11,8 +11,9 @@ public class GameManagerClient : MonoBehaviour
     public GameObject playerPrefab;
     [Header("Reference Settings")]
     public LocalAvatar localAvatar;
-    public GameClient client;
+    public Client client;
     public ColoredCube coloredCube;
+    public EntitiesSettings entitiesSettings;
     [Header("Monitoring")]
     [ReadOnly]
     public int stateBufferLength;
@@ -29,11 +30,9 @@ public class GameManagerClient : MonoBehaviour
     private float timer = 0f;
     [HideInInspector]
     public static GameManagerClient instance;
-    private EntitiesSettings entitiesSettings;
 
     private void Awake()
     {
-        entitiesSettings = EntitiesSettings.instance;
         instance = this;
         client.StartLANDiscovery();
     }
@@ -96,11 +95,6 @@ public class GameManagerClient : MonoBehaviour
         {
             stateBuffer.RemoveFromStart(1);
             stateBufferLength = stateBuffer.Count;
-            if (stateBuffer.Count > 1)
-            {
-                DestroyOldPlayers(stateBuffer[1].Players);
-                DestroyOldEntities(stateBuffer[1].Entities);
-            }
         }
     }
 
@@ -112,18 +106,7 @@ public class GameManagerClient : MonoBehaviour
             Entity ent = entities.Find(x => x.id == entityStateB.Id);
             if (ent == null)
             {
-                Entity linkableEntity = entities.Find(x => x.id == 0 && (int)x.type == entityStateB.Type);
-                if (linkableEntity != null)
-                {
-                    ent = linkableEntity;
-                }
-                else
-                {
-                    ent = Instantiate(entitiesSettings.settings[entityStateB.Type].prefab).GetComponent<Entity>();
-                }
-                ent.id = entityStateB.Id;
-                ent.transformTarget.position = entityStateB.Position;
-                ent.transformTarget.rotation = entityStateB.Rotation;
+                continue;
             }
             else
             {
@@ -151,8 +134,6 @@ public class GameManagerClient : MonoBehaviour
                 {
                     if (ent.ownerId != -1 && ent.ownerId != localAvatar.id)
                     {
-                        //Debug.Log("owner id : "+ent.ownerId+" - local id : "+localAvatar.id);
-                        //Debug.Log("DISABLING GRAB ACTION");
                         ent.interactable.DisableGrab();
                     }
                     else
@@ -172,18 +153,7 @@ public class GameManagerClient : MonoBehaviour
             Player p = players.ContainsKey(playersStateB.Id) ? players[playersStateB.Id] : null;
             if (p == null)
             {
-                p = Instantiate(playerPrefab).GetComponent<Player>();
-                p.id = playersStateB.Id;
-                p.nameOrientationTarget = localAvatar.headAlias;
-                p.headAlias.transform.position = playersStateB.HeadPosition;
-                p.headAlias.transform.rotation = playersStateB.HeadRotation;
-                p.leftHandAlias.transform.position = playersStateB.LeftHandPosition;
-                p.leftHandAlias.transform.rotation = playersStateB.LeftHandRotation;
-                p.rightHandAlias.transform.position = playersStateB.RightHandPosition;
-                p.rightHandAlias.transform.rotation = playersStateB.RightHandRotation;
-                p.LeftPointer = playersStateB.LeftPointer;
-                p.RightPointer = playersStateB.RightPointer;
-                players[p.id] = p;
+                continue;
             }
             PlayerState playersStateA = null;
             for (int j = 0; j < playersA.Length; j++)
@@ -203,57 +173,6 @@ public class GameManagerClient : MonoBehaviour
                 p.rightHandAlias.transform.rotation = Quaternion.Lerp(playersStateA.RightHandRotation, playersStateB.RightHandRotation, t);
                 p.LeftPointer = p.leftGrabbed != null ? false : playersStateA.LeftPointer;
                 p.RightPointer = p.rightGrabbed != null ? false : playersStateA.RightPointer;
-            }
-        }
-    }
-
-    private void DestroyOldPlayers(PlayerState[] playerStates)
-    {
-        List<int> oldKeys = new List<int>();
-        foreach (KeyValuePair<int, Player> entry in players)
-        {
-            int key = entry.Key;
-            Player player = entry.Value;
-            bool presence = false;
-            for (int i = 0; i < playerStates.Length; i++)
-            {
-                if (playerStates[i].Id == player.id)
-                {
-                    presence = true;
-                    break;
-                }
-            }
-            if (!presence)
-            {
-                oldKeys.Add(key);
-            }
-        }
-        for (int i = 0; i < oldKeys.Count; i++)
-        {
-            int key = oldKeys[i];
-            Player p = players[key];
-            players.Remove(key);
-            Destroy(p.gameObject);
-        }
-    }
-    private void DestroyOldEntities(EntityState[] entityStates)
-    {
-        for (int i = 0; i < entities.Count; i++)
-        {
-            Entity entity = entities[i];
-            bool presence = false;
-            for (int j = 0; j < entityStates.Length; j++)
-            {
-                if (entityStates[j].Id == entity.id)
-                {
-                    presence = true;
-                    break;
-                }
-            }
-            if (!presence)
-            {
-                entities.Remove(entity);
-                Destroy(entity.gameObject);
             }
         }
     }
@@ -280,7 +199,7 @@ public class GameManagerClient : MonoBehaviour
                 rightId = rightEnt.id;
             }
         }
-        client.SendInput(new PlayerInput()
+        client.SendFastMessage(new PlayerInput()
         {
             Sequence = sequence,
             HeadPosition = localAvatar.headAlias.transform.position,
@@ -306,10 +225,65 @@ public class GameManagerClient : MonoBehaviour
         });
         sequence++;
     }
+    public void OnAddPlayer(PlayerAddMessage pam)
+    {
+        Player p;
+        p = Instantiate(playerPrefab).GetComponent<Player>();
+        p.id = pam.Id;
+        p.nameOrientationTarget = localAvatar.headAlias;
+        p.headAlias.transform.position = pam.HeadPosition;
+        p.headAlias.transform.rotation = pam.HeadRotation;
+        p.leftHandAlias.transform.position = pam.LeftHandPosition;
+        p.leftHandAlias.transform.rotation = pam.LeftHandRotation;
+        p.rightHandAlias.transform.position = pam.RightHandPosition;
+        p.rightHandAlias.transform.rotation = pam.RightHandRotation;
+        p.LeftPointer = pam.LeftPointer;
+        p.RightPointer = pam.RightPointer;
+        players[p.id] = p;
+    }
+    public void OnRemovePlayer(PlayerRemoveMessage prm)
+    {
+        Player p = players[prm.Id];
+        players.Remove(prm.Id);
+        Destroy(p.gameObject);
+    }
+    public void OnAddEntity(EntityAddMessage eam)
+    {
+        Entity ent;
+        Entity linkableEntity = entities.Find(x => x.id == 0 && (int)x.type == eam.Type);
+        if (linkableEntity != null)
+        {
+            ent = linkableEntity;
+        }
+        else
+        {
+            ent = Instantiate(entitiesSettings.settings[eam.Type].prefab).GetComponent<Entity>();
+        }
+        ent.id = eam.Id;
+        ent.transformTarget.position = eam.Position;
+        ent.transformTarget.rotation = eam.Rotation;
+    }
+    public void OnRemoveEntity(EntityRemoveMessage erm)
+    {
+        Entity entity = entities.Find(x => x.id == erm.Id);
+        entities.Remove(entity);
+        Destroy(entity.gameObject);
+    }
     public void OnServerInit(InitMessage im)
     {
         localAvatar.id = im.OwnId;
         localAvatar.TransportTo(new Vector3(0f, 10f, -12.5f));
+        for (int i = 0; i < im.Players.Length; i++)
+        {
+            PlayerAddMessage pam = im.Players[i];
+            OnAddPlayer(pam);
+        }
+        for (int i = 0; i < im.Entities.Length; i++)
+        {
+            EntityAddMessage eam = im.Entities[i];
+            OnAddEntity(eam);
+        }
+        coloredCube.SetColor(im.ColoredCube);
         ready = true;
     }
     public void OnServerState(StateMessage sm)

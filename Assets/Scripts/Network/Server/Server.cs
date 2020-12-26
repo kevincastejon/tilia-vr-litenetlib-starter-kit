@@ -4,19 +4,24 @@ using UnityEngine;
 using LiteNetLib;
 using LiteNetLib.Utils;
 using UnityEngine.Events;
+using System;
 
-public class BaseServerPlayerEvent : UnityEvent<NetPeer> { };
-public class BaseServerPlayerInputEvent : UnityEvent<NetPeer, PlayerInput> { };
+[Serializable]
+public class ServerPlayerEvent : UnityEvent<int> { };
+[Serializable]
+public class ServerPlayerInputEvent : UnityEvent<int, PlayerInput> { };
 
 public class Server : MonoBehaviour, INetEventListener, INetLogger
 {
-    public BaseServerPlayerEvent onPlayerConnected = new BaseServerPlayerEvent();
-    public BaseServerPlayerEvent onPlayerDisconnected = new BaseServerPlayerEvent();
-    public BaseServerPlayerInputEvent onPlayerInput = new BaseServerPlayerInputEvent();
+    [Header("Server Events")]
+    public ServerPlayerEvent onPlayerConnected = new ServerPlayerEvent();
+    public ServerPlayerEvent onPlayerDisconnected = new ServerPlayerEvent();
+    public ServerPlayerInputEvent onPlayerInput = new ServerPlayerInputEvent();
+    [Header("Network Settings")]
     public string token = "appsecret";
-    [Header("State packet size (bytes)")]
+    [Header("Monitoring")]
     [ReadOnly]
-    public int packetSize;
+    public int lastSentPacketSize;
     private NetManager _netServer;
     private readonly NetPacketProcessor _netPacketProcessor = new NetPacketProcessor();
 
@@ -58,7 +63,7 @@ public class Server : MonoBehaviour, INetEventListener, INetLogger
     public void OnPeerConnected(NetPeer peer)
     {
         Debug.Log("[SERVER] We have new peer " + peer.EndPoint + " with id : "+peer.Id);
-        onPlayerConnected.Invoke(peer);
+        onPlayerConnected.Invoke(peer.Id);
     }
 
     public void OnNetworkError(IPEndPoint endPoint, SocketError socketErrorCode)
@@ -91,13 +96,13 @@ public class Server : MonoBehaviour, INetEventListener, INetLogger
     public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
     {
         Debug.Log("[SERVER] peer disconnected " + peer.EndPoint + ", info: " + disconnectInfo.Reason);
-        onPlayerDisconnected.Invoke(peer);
+        onPlayerDisconnected.Invoke(peer.Id);
     }
 
     private void OnPlayerInput(PlayerInput pi, NetPeer peer)
     {
         //Debug.Log("received player state");
-        onPlayerInput.Invoke(peer, pi);
+        onPlayerInput.Invoke(peer.Id, pi);
     }
 
     public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)
@@ -111,24 +116,24 @@ public class Server : MonoBehaviour, INetEventListener, INetLogger
     }
     public void SendImportantMessage<T>(T data) where T : class, new()
     {
-        SendImportantMessage(data, null, false);
+        SendImportantMessage(data, -1, false);
     }
-    public void SendImportantMessage<T>(T data, NetPeer peer) where T : class, new()
+    public void SendImportantMessage<T>(T data, int peerId) where T : class, new()
     {
-        SendImportantMessage(data, peer, false);
+        SendImportantMessage(data, peerId, false);
     }
-    public void SendImportantMessage<T>(T data, NetPeer peer, bool exclusion) where T : class, new()
+    public void SendImportantMessage<T>(T data, int peerId, bool exclusion) where T : class, new()
     {
         byte[] ba = _netPacketProcessor.Write(data);
-        if (peer != null)
+        if (peerId != -1)
         {
             if (exclusion)
             {
-                _netServer.SendToAll(ba, DeliveryMethod.ReliableOrdered, peer);
+                _netServer.SendToAll(ba, DeliveryMethod.ReliableOrdered, GetPeerById(peerId));
             }
             else
             {
-                _netPacketProcessor.Send(peer, data, DeliveryMethod.ReliableOrdered);
+                _netPacketProcessor.Send(GetPeerById(peerId), data, DeliveryMethod.ReliableOrdered);
             }
         }
         else
@@ -147,7 +152,7 @@ public class Server : MonoBehaviour, INetEventListener, INetLogger
     public void SendFastMessage<T>(T data, int peerId, bool exclusion) where T : class, new()
     {
         byte[] ba = _netPacketProcessor.Write(data);
-        packetSize=ba.Length;
+        lastSentPacketSize=ba.Length;
         if (peerId != -1)
         {
             if (exclusion)

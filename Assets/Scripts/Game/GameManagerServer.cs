@@ -11,22 +11,21 @@ public class GameManagerServer : MonoBehaviour
     public GameObject playerPrefab;
     [Header("Reference Settings")]
     public LocalAvatar localAvatar;
-    public GameServer server;
+    public Server server;
     public ColoredCube coloredCube;
+    public EntitiesSettings entitiesSettings;
     [Header("Monitoring")]
     [ReadOnly]
     public int Sequence;
-    private Dictionary<int, Player> players = new Dictionary<int, Player>();
     public List<Entity> entities = new List<Entity>();
+    private Dictionary<int, Player> players = new Dictionary<int, Player>();
     private float timerMax = 2 / 60f;
     private float timer = 0f;
     [HideInInspector]
     public static GameManagerServer instance;
-    private EntitiesSettings entitiesSettings;
 
     private void Awake()
     {
-        entitiesSettings = EntitiesSettings.instance;
         instance = this;
         localAvatar.id = -128;
         localAvatar.OnShoot.AddListener(ShootBullet);
@@ -42,6 +41,14 @@ public class GameManagerServer : MonoBehaviour
         {
             ent.id = ent.GetInstanceID();
             entities.Add(ent);
+            server.SendImportantMessage(new EntityAddMessage()
+            {
+                Id = ent.id,
+                Owner = ent.ownerId,
+                Position = ent.transform.position,
+                Rotation = ent.transform.rotation,
+                Type = (byte)ent.type
+            });
         }
         else
         {
@@ -50,6 +57,10 @@ public class GameManagerServer : MonoBehaviour
             {
                 destroyingEnt = entities.Find(x => x.type == ent.type);
                 entities.Remove(destroyingEnt);
+                server.SendImportantMessage(new EntityRemoveMessage()
+                {
+                    Id = destroyingEnt.id
+                });
                 if (destroyingEnt.interactable != null)
                 {
                     destroyingEnt.interactable.Grabbed.RemoveAllListeners();
@@ -57,6 +68,14 @@ public class GameManagerServer : MonoBehaviour
                 }
                 ent.id = ent.GetInstanceID();
                 entities.Add(ent);
+                server.SendImportantMessage(new EntityAddMessage()
+                {
+                    Id = ent.id,
+                    Owner = ent.ownerId,
+                    Position = ent.transform.position,
+                    Rotation = ent.transform.rotation,
+                    Type = (byte)ent.type
+                });
             }
             else
             {
@@ -75,6 +94,10 @@ public class GameManagerServer : MonoBehaviour
                 ent.interactable.Grabbed.RemoveAllListeners();
                 ent.interactable.Ungrabbed.RemoveAllListeners();
             }
+            server.SendImportantMessage(new EntityRemoveMessage()
+            {
+                Id = ent.id
+            });
         }
     }
 
@@ -112,9 +135,24 @@ public class GameManagerServer : MonoBehaviour
         newPlayer.OnShoot.AddListener(ShootBullet);
         InitMessage im = new InitMessage()
         {
-            OwnId = peerID
+            OwnId = peerID,
+            Entities = GetEntitiesAddMessage(),
+            Players = GetPlayersAddMessage(peerID),
+            ColoredCube = coloredCube.currentColor
         };
-        server.SendInitMessage(im, peerID);
+        server.SendImportantMessage(im, peerID);
+        server.SendImportantMessage(new PlayerAddMessage()
+        {
+            Id = peerID,
+            HeadPosition = Vector3.zero,
+            HeadRotation = Quaternion.identity,
+            LeftHandPosition = Vector3.zero,
+            LeftHandRotation = Quaternion.identity,
+            RightHandPosition = Vector3.zero,
+            RightHandRotation = Quaternion.identity,
+            LeftPointer = false,
+            RightPointer = false,
+        }, peerID, true);
     }
 
     public void OnPlayerDisconnected(int peerID)
@@ -162,6 +200,7 @@ public class GameManagerServer : MonoBehaviour
             }
         }
         Destroy(disconnectedPlayer.gameObject);
+        server.SendImportantMessage(new PlayerRemoveMessage() { Id = peerID });
     }
 
     public void OnPlayerInput(int playerId, PlayerInput pi)
@@ -208,6 +247,44 @@ public class GameManagerServer : MonoBehaviour
         };
         return playerStates;
     }
+    public PlayerAddMessage[] GetPlayersAddMessage(int excludedPlayerId)
+    {
+        PlayerAddMessage[] playerStates = new PlayerAddMessage[players.Count];
+        int playerStateCount = 0;
+        foreach (KeyValuePair<int, Player> entry in players)
+        {
+            Player p = entry.Value;
+            if (p.id != excludedPlayerId)
+            {
+                playerStates[playerStateCount] = new PlayerAddMessage()
+                {
+                    Id = p.id,
+                    HeadPosition = p.headAlias.transform.position,
+                    HeadRotation = p.headAlias.transform.rotation,
+                    LeftHandPosition = p.leftHandAlias.transform.position,
+                    LeftHandRotation = p.leftHandAlias.transform.rotation,
+                    RightHandPosition = p.rightHandAlias.transform.position,
+                    RightHandRotation = p.rightHandAlias.transform.rotation,
+                    LeftPointer = p.leftGrabbed ? false : p.LeftPointer,
+                    RightPointer = p.rightGrabbed ? false : p.RightPointer,
+                };
+                playerStateCount++;
+            }
+        }
+        playerStates[playerStateCount] = new PlayerAddMessage()
+        {
+            Id = -128,     //Server id is always -128
+            HeadPosition = localAvatar.headAlias.transform.position,
+            HeadRotation = localAvatar.headAlias.transform.rotation,
+            LeftHandPosition = localAvatar.leftHandAlias.transform.position,
+            LeftHandRotation = localAvatar.leftHandAlias.transform.rotation,
+            RightHandPosition = localAvatar.rightHandAlias.transform.position,
+            RightHandRotation = localAvatar.rightHandAlias.transform.rotation,
+            LeftPointer = localAvatar.leftGrabbed ? false : localAvatar.leftPointer,
+            RightPointer = localAvatar.rightGrabbed ? false : localAvatar.rightPointer,
+        };
+        return playerStates;
+    }
 
     public EntityState[] GetEntitiesStates()
     {
@@ -227,6 +304,24 @@ public class GameManagerServer : MonoBehaviour
         }
         return entityStates;
     }
+    public EntityAddMessage[] GetEntitiesAddMessage()
+    {
+        EntityAddMessage[] entityStates = new EntityAddMessage[entities.Count];
+        int entityStateCount = 0;
+        foreach (Entity ent in entities)
+        {
+            entityStates[entityStateCount] = new EntityAddMessage()
+            {
+                Id = ent.id,
+                Type = (byte)ent.type,
+                Position = ent.transform.position,
+                Rotation = ent.transform.rotation,
+                Owner = ent.ownerId,
+            };
+            entityStateCount++;
+        }
+        return entityStates;
+    }
 
     private void SendState()
     {
@@ -234,7 +329,7 @@ public class GameManagerServer : MonoBehaviour
         {
             PlayerState[] playerStates = GetPlayersStates(entry.Key);
             EntityState[] entityStates = GetEntitiesStates();
-            server.SendWorldState(
+            server.SendFastMessage(
                 new StateMessage()
                 {
                     Sequence = Sequence,

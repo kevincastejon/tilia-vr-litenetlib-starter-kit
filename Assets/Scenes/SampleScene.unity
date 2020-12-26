@@ -748,7 +748,6 @@ GameObject:
   m_Component:
   - component: {fileID: 121076095}
   - component: {fileID: 121076094}
-  - component: {fileID: 121076093}
   - component: {fileID: 121076096}
   m_Layer: 0
   m_Name: Server
@@ -757,7 +756,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &121076093
+--- !u!114 &121076094
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -766,11 +765,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 121076092}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15cf58e12cc481e4085593d3bd73084f, type: 3}
+  m_Script: {fileID: 11500000, guid: c460ea9c55ebfa343af0657943a58faf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  port: 5000
-  autoStart: 1
   onPlayerConnected:
     m_PersistentCalls:
       m_Calls:
@@ -813,20 +810,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &121076094
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 121076092}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c460ea9c55ebfa343af0657943a58faf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   token: appsecret
-  packetSize: 0
+  lastSentPacketSize: 0
 --- !u!4 &121076095
 Transform:
   m_ObjectHideFlags: 0
@@ -856,8 +841,9 @@ MonoBehaviour:
   playerPrefab: {fileID: 5143088545895085449, guid: 882ad77aea76e9f4480b8ede08df835c,
     type: 3}
   localAvatar: {fileID: 2110964069}
-  server: {fileID: 121076093}
+  server: {fileID: 121076094}
   coloredCube: {fileID: 346633232}
+  entitiesSettings: {fileID: 484640395}
   Sequence: 0
   entities: []
 --- !u!1 &140554483
@@ -8617,7 +8603,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1928920089}
   - component: {fileID: 1928920088}
-  - component: {fileID: 1928920087}
   - component: {fileID: 1928920090}
   m_Layer: 0
   m_Name: Client
@@ -8626,7 +8611,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &1928920087
+--- !u!114 &1928920088
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8635,9 +8620,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1928920086}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e0586517989f214685a543b80cd0db9, type: 3}
+  m_Script: {fileID: 11500000, guid: 4320cd22601fc4b4389b487ed6faecf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serverIP: 192.168.0.43
+  serverPort: 5000
+  token: appsecret
+  autoConnect: 0
+  connected: 0
+  lastSentPacketSize: 0
   onLANDiscovered:
     m_PersistentCalls:
       m_Calls:
@@ -8654,15 +8645,93 @@ MonoBehaviour:
         m_CallState: 2
   onConnected:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1928920086}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onDisconnected:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1928920086}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onInit:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1928920090}
         m_MethodName: OnServerInit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onPlayerAdd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1928920090}
+        m_MethodName: OnAddPlayer
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onPlayerRemove:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1928920090}
+        m_MethodName: OnRemovePlayer
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onEntityAdd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1928920090}
+        m_MethodName: OnAddEntity
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onEntityRemove:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1928920090}
+        m_MethodName: OnRemoveEntity
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8686,24 +8755,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  awaked: 0
---- !u!114 &1928920088
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1928920086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4320cd22601fc4b4389b487ed6faecf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serverIP: 192.168.0.43
-  serverPort: 5000
-  token: appsecret
-  autoConnect: 0
-  packetSize: 0
 --- !u!4 &1928920089
 Transform:
   m_ObjectHideFlags: 0
@@ -8733,8 +8784,9 @@ MonoBehaviour:
   playerPrefab: {fileID: 5143088545895085449, guid: 882ad77aea76e9f4480b8ede08df835c,
     type: 3}
   localAvatar: {fileID: 2110964069}
-  client: {fileID: 1928920087}
+  client: {fileID: 1928920088}
   coloredCube: {fileID: 346633232}
+  entitiesSettings: {fileID: 484640395}
   stateBufferLength: 0
   entities: []
 --- !u!114 &1960257411 stripped

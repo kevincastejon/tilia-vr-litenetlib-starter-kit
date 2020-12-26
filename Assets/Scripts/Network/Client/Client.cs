@@ -4,26 +4,47 @@ using UnityEngine;
 using LiteNetLib;
 using LiteNetLib.Utils;
 using UnityEngine.Events;
+using System;
 
-public class BaseClientEvent : UnityEvent { };
-public class BaseClientInitEvent : UnityEvent<InitMessage> { };
-public class BaseClientStateEvent : UnityEvent<StateMessage> { };
-public class BaseClientLANDiscoveredEvent : UnityEvent<string, IPEndPoint> { };
+[Serializable]
+public class ClientEvent : UnityEvent { };
+[Serializable]
+public class ClientInitEvent : UnityEvent<InitMessage> { };
+[Serializable]
+public class ClientPlayerAddEvent : UnityEvent<PlayerAddMessage> { };
+[Serializable]
+public class ClientPlayerRemoveEvent : UnityEvent<PlayerRemoveMessage> { };
+[Serializable]
+public class ClientEntityAddEvent : UnityEvent<EntityAddMessage> { };
+[Serializable]
+public class ClientEntityRemoveEvent : UnityEvent<EntityRemoveMessage> { };
+[Serializable]
+public class ClientStateEvent : UnityEvent<StateMessage> { };
+[Serializable]
+public class ClientLANDiscoveredEvent : UnityEvent<string, IPEndPoint> { };
 
 public class Client : MonoBehaviour, INetEventListener
 {
+    [Header("Network Settings")]
     public string serverIP="192.168.0.x";
     public int serverPort=5000;
     public string token = "appsecret";
     public bool autoConnect;
-    [Header("Input packet size (bytes)")]
+    [Header("Monitoring")]
     [ReadOnly]
-    public int packetSize;
-    public BaseClientEvent onConnected = new BaseClientEvent();
-    public BaseClientEvent onDisconnected = new BaseClientEvent();
-    public BaseClientInitEvent onInit = new BaseClientInitEvent();
-    public BaseClientStateEvent onState = new BaseClientStateEvent();
-    public BaseClientLANDiscoveredEvent onLANDiscovered = new BaseClientLANDiscoveredEvent();
+    public bool connected;
+    [ReadOnly]
+    public int lastSentPacketSize;
+    [Header("Client Events")]
+    public ClientLANDiscoveredEvent onLANDiscovered = new ClientLANDiscoveredEvent();
+    public ClientEvent onConnected = new ClientEvent();
+    public ClientEvent onDisconnected = new ClientEvent();
+    public ClientInitEvent onInit = new ClientInitEvent();
+    public ClientPlayerAddEvent onPlayerAdd = new ClientPlayerAddEvent();
+    public ClientPlayerRemoveEvent onPlayerRemove = new ClientPlayerRemoveEvent();
+    public ClientEntityAddEvent onEntityAdd = new ClientEntityAddEvent();
+    public ClientEntityRemoveEvent onEntityRemove = new ClientEntityRemoveEvent();
+    public ClientStateEvent onState = new ClientStateEvent();
     private NetManager _netClient;
     private NetPeer server;
     private NetDataWriter _dataWriter;
@@ -31,8 +52,6 @@ public class Client : MonoBehaviour, INetEventListener
     private bool _discovering = false;
     private float _discoveringInterval = 0.5f;
     private float _discoveringTimer = 0;
-
-    public bool Connected { get; private set; }
 
     void Start()
     {
@@ -46,8 +65,12 @@ public class Client : MonoBehaviour, INetEventListener
         _netPacketProcessor.RegisterNestedType(() => new PlayerInput());
         _netPacketProcessor.RegisterNestedType(() => new PlayerState());
         _netPacketProcessor.RegisterNestedType(() => new EntityState());
-        _netPacketProcessor.SubscribeReusable<InitMessage, NetPeer>(OnInitReceived);
-        _netPacketProcessor.SubscribeReusable<StateMessage, NetPeer>(OnStateReceived);
+        _netPacketProcessor.SubscribeReusable((InitMessage im, NetPeer np) => onInit.Invoke(im));
+        _netPacketProcessor.SubscribeReusable((PlayerAddMessage pam, NetPeer np) => onPlayerAdd.Invoke(pam));
+        _netPacketProcessor.SubscribeReusable((PlayerRemoveMessage prm, NetPeer np) => onPlayerRemove.Invoke(prm));
+        _netPacketProcessor.SubscribeReusable((EntityAddMessage eam, NetPeer np) => onEntityAdd.Invoke(eam));
+        _netPacketProcessor.SubscribeReusable((EntityRemoveMessage erm, NetPeer np) => onEntityRemove.Invoke(erm));
+        _netPacketProcessor.SubscribeReusable((StateMessage sm, NetPeer np) => onState.Invoke(sm));
         if (autoConnect)
         {
             Connect(new IPEndPoint(IPAddress.Parse(serverIP), serverPort));
@@ -83,8 +106,8 @@ public class Client : MonoBehaviour, INetEventListener
     public void OnPeerConnected(NetPeer peer)
     {
         Debug.Log("Connected to " + peer.EndPoint + " with id: " + peer.Id);
-        this.server = peer;
-        Connected = true;
+        server = peer;
+        connected = true;
         onConnected.Invoke();
     }
 
@@ -98,15 +121,15 @@ public class Client : MonoBehaviour, INetEventListener
         _netPacketProcessor.ReadAllPackets(reader, peer);
     }
 
-    private void OnInitReceived(InitMessage im, NetPeer peer)
-    {
-        onInit.Invoke(im);
-    }
+    //private void OnInitReceived(InitMessage im, NetPeer peer)
+    //{
+    //    onInit.Invoke(im);
+    //}
 
-    private void OnStateReceived(StateMessage sm, NetPeer peer)
-    {
-        onState.Invoke(sm);
-    }
+    //private void OnStateReceived(StateMessage sm, NetPeer peer)
+    //{
+    //    onState.Invoke(sm);
+    //}
 
     public void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader, UnconnectedMessageType messageType)
     {
@@ -134,16 +157,16 @@ public class Client : MonoBehaviour, INetEventListener
     public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
     {
         Debug.Log("[CLIENT] We disconnected because " + disconnectInfo.Reason);
-        Connected = false;
+        connected = false;
         server = null;
         onDisconnected.Invoke();
     }
 
-    public void StartDiscovery()
+    public void StartLANDiscovery()
     {
         _discovering = true;
     }
-    public void StopDiscovery()
+    public void StopLANDiscovery()
     {
         _discovering = false;
     }
@@ -154,7 +177,7 @@ public class Client : MonoBehaviour, INetEventListener
     public void SendFastMessage<T>(T data) where T : class, new()
     {
         byte[] ba = _netPacketProcessor.Write(data);
-        packetSize = ba.Length;
+        lastSentPacketSize = ba.Length;
         _netPacketProcessor.Send(_netClient, data, DeliveryMethod.Unreliable);
     }
 }
