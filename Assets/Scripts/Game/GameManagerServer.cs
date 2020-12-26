@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Tilia.Interactions.Interactables.Interactables;
-using Tilia.Interactions.Interactables.Interactors;
 using UnityEngine;
 
 public class GameManagerServer : MonoBehaviour
@@ -30,6 +28,7 @@ public class GameManagerServer : MonoBehaviour
         localAvatar.id = -128;
         localAvatar.OnShoot.AddListener(ShootBullet);
         localAvatar.TransportTo(new Vector3(0f, 10f, -12.5f));
+        Debug.Log("GAMEMANAGER SERVER AWAKED");
     }
 
     public void AddEntity(Entity ent)
@@ -355,7 +354,7 @@ public class GameManagerServer : MonoBehaviour
 
             if (p.inputBuffer.Count < 2)
             {
-                if (DEVNetworkSwitcher.showLagLogs)
+                if (NetworkManager.showLagLogs)
                 {
                     Debug.Log("NOT ENOUGTH DATA RECEIVED FROM PLAYER " + p.id);
                 }

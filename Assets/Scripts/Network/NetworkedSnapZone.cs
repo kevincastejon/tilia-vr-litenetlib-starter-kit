@@ -11,7 +11,7 @@ public class NetworkedSnapZone : MonoBehaviour
     private void Awake()
     {
         snapZone = GetComponent<SnapZoneFacade>();
-        if (!DEVNetworkSwitcher.isServer)
+        if (!NetworkManager.isServer)
         {
             Destroy(gameObject);
         }

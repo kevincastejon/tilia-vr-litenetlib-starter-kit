@@ -150,11 +150,11 @@ public class LocalAvatar : MonoBehaviour
         Entity ent = interactable.GetComponent<Entity>();
         if (ent)
         {
-            if (!DEVNetworkSwitcher.isServer && ent.body)
+            if (!NetworkManager.isServer && ent.body)
             {
                 ent.body.isKinematic = true;
             }
-            else if(DEVNetworkSwitcher.isServer && ent.body)
+            else if(NetworkManager.isServer && ent.body)
             {
                 ent.body.isKinematic = ent.initialIsKinematic;
             }
@@ -169,12 +169,12 @@ public class LocalAvatar : MonoBehaviour
         Entity ent = interactable.GetComponent<Entity>();
         if (ent)
         {
-            if (!DEVNetworkSwitcher.isServer && ent.body)
+            if (!NetworkManager.isServer && ent.body)
             {
                 ent.body.isKinematic = true;
                 Debug.Log("SET ISKINEMATIC BACK TO TRUE");
             }
-            else if (DEVNetworkSwitcher.isServer && ent.body)
+            else if (NetworkManager.isServer && ent.body)
             {
                 ent.body.isKinematic = ent.initialIsKinematic;
             }

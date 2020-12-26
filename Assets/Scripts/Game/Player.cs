@@ -91,7 +91,7 @@ public class Player : MonoBehaviour
         lastSequence = pi.Sequence;
         if (inputBuffer.IsFull)
         {
-            if (DEVNetworkSwitcher.showLagLogs)
+            if (NetworkManager.showLagLogs)
             {
                 Debug.Log("TOO MUCH STATE RECEIVED");
             }

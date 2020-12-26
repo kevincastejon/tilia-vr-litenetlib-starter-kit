@@ -33,7 +33,7 @@ public class Entity : MonoBehaviour
     public bool initialIsKinematic;
     private void Awake()
     {
-        if (DEVNetworkSwitcher.isServer)
+        if (NetworkManager.isServer)
         {
             GameManagerServer.instance.AddEntity(this);
             if (body)
@@ -52,7 +52,7 @@ public class Entity : MonoBehaviour
     }
     private void OnDestroy()
     {
-        if (DEVNetworkSwitcher.isServer)
+        if (NetworkManager.isServer)
         {
             GameManagerServer.instance.RemoveEntity(this);
         }

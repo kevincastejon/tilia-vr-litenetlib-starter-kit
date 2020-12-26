@@ -78,7 +78,7 @@ public class GameManagerClient : MonoBehaviour
     {
         if (stateBuffer.Count < 2)
         {
-            if (DEVNetworkSwitcher.showLagLogs)
+            if (NetworkManager.showLagLogs)
             {
                 Debug.Log("NOT ENOUGTH DATA RECEIVED");
             }
@@ -295,7 +295,7 @@ public class GameManagerClient : MonoBehaviour
         lastSequence = sm.Sequence;
         if (stateBuffer.IsFull)
         {
-            if (DEVNetworkSwitcher.showLagLogs)
+            if (NetworkManager.showLagLogs)
             {
                 Debug.Log("TOO MUCH STATE RECEIVED");
             }

@@ -19,13 +19,14 @@ public class Server : MonoBehaviour, INetEventListener, INetLogger
     public ServerPlayerInputEvent onPlayerInput = new ServerPlayerInputEvent();
     [Header("Network Settings")]
     public string token = "appsecret";
+    public int port = 5000;
     [Header("Monitoring")]
     [ReadOnly]
     public int lastSentPacketSize;
     private NetManager _netServer;
     private readonly NetPacketProcessor _netPacketProcessor = new NetPacketProcessor();
 
-    void Start()
+    void Awake()
     {
         NetDebug.Logger = this;
         _netPacketProcessor.RegisterNestedType(Vector3Utils.Serialize, Vector3Utils.Deserialize);
@@ -33,6 +34,8 @@ public class Server : MonoBehaviour, INetEventListener, INetLogger
         _netPacketProcessor.RegisterNestedType(() => new PlayerState());
         _netPacketProcessor.RegisterNestedType(() => new EntityState());
         _netPacketProcessor.SubscribeReusable<PlayerInput, NetPeer>(OnPlayerInput);
+        Listen(port);
+        Debug.Log("SERVER AWAKED");
     }
 
     void Update()
