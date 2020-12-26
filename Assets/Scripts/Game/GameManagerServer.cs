@@ -333,6 +333,7 @@ public class GameManagerServer : MonoBehaviour
                 Rotation = ent.transform.rotation,
                 Owner = ent.ownerId,
             };
+            ent.priorityAccumulator = 0;
             entityStateCount++;
         }
         return entityStates;
