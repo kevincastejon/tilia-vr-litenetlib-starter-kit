@@ -137,6 +137,8 @@ public class GameManagerServer : MonoBehaviour
     {
         Player p = players[peerID];
         p.connected = true;
+        p.oculusId = inf.OculusID;
+        p.playerName.text = inf.OculusID;
         p.OnShoot.AddListener(ShootBullet);
         p.headAlias.transform.position = inf.HeadPosition;
         p.headAlias.transform.rotation = inf.HeadRotation;
@@ -375,10 +377,8 @@ public class GameManagerServer : MonoBehaviour
         foreach (KeyValuePair<int, Player> entry in players)
         {
             Player p = entry.Value;
-            if (p.nameOrientationTarget)
-            {
-                p.playerName.transform.rotation = Quaternion.LookRotation(p.playerName.transform.position - p.nameOrientationTarget.transform.position);
-            }
+            p.playerName.transform.rotation = Quaternion.LookRotation(p.playerName.transform.position - p.nameOrientationTarget.transform.position);
+
 
             if (p.inputBuffer.Count < 2)
             {

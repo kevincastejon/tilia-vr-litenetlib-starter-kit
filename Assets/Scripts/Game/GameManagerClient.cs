@@ -252,6 +252,9 @@ public class GameManagerClient : MonoBehaviour
         Player p;
         p = Instantiate(playerPrefab).GetComponent<Player>();
         p.id = pam.Id;
+        p.connected = true;
+        p.oculusId = pam.OculusId;
+        p.playerName.text = pam.OculusId;
         p.nameOrientationTarget = localAvatar.headAlias;
         p.headAlias.transform.position = pam.HeadPosition;
         p.headAlias.transform.rotation = pam.HeadRotation;
