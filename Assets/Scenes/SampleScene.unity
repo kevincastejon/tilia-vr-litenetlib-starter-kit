@@ -974,14 +974,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c58e8ffff5df84c92f28224e9aa227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
-  ownerId: -1
-  snapZone: {fileID: 0}
   type: 1
+  priority: 0
+  priorityAccumulator: 0
   transformTarget: {fileID: 635204362}
   interactable: {fileID: 148629921}
   body: {fileID: 148629920}
   initialIsKinematic: 0
+  id: 0
+  ownerId: -1
+  snapZone: {fileID: 0}
 --- !u!114 &148629918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2442,14 +2444,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c58e8ffff5df84c92f28224e9aa227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
-  ownerId: -1
-  snapZone: {fileID: 0}
   type: 3
+  priority: 0
+  priorityAccumulator: 0
   transformTarget: {fileID: 111658705}
   interactable: {fileID: 446864214}
   body: {fileID: 446864216}
   initialIsKinematic: 0
+  id: 0
+  ownerId: -1
+  snapZone: {fileID: 0}
 --- !u!114 &446864214 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 785982709505707726, guid: 1bb7642ebf8d0a34aa23fc586ea87e6a,
@@ -2796,7 +2800,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings:
-  - maxInstance: 12
+  - maxInstance: -1
     destroyFirst: 1
     prefab: {fileID: 2024301931097442895, guid: 2910db0b28aba7b408e99e773670a592,
       type: 3}
@@ -2809,6 +2813,7 @@ MonoBehaviour:
   - maxInstance: -1
     destroyFirst: 0
     prefab: {fileID: 0}
+  maxEntitiesStateSend: 11
 --- !u!4 &484640396
 Transform:
   m_ObjectHideFlags: 0
@@ -8955,14 +8960,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c58e8ffff5df84c92f28224e9aa227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
-  ownerId: -1
-  snapZone: {fileID: 0}
   type: 3
+  priority: 0
+  priorityAccumulator: 0
   transformTarget: {fileID: 1863423742}
   interactable: {fileID: 1863423744}
   body: {fileID: 1863423745}
   initialIsKinematic: 0
+  id: 0
+  ownerId: -1
+  snapZone: {fileID: 0}
 --- !u!114 &1863423750
 MonoBehaviour:
   m_ObjectHideFlags: 0
