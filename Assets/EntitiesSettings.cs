@@ -14,4 +14,5 @@ public class EntitySetting
 public class EntitiesSettings : MonoBehaviour
 {
     public List<EntitySetting> settings = new List<EntitySetting>();
+    public int maxEntitiesStateSend = 12;
 }

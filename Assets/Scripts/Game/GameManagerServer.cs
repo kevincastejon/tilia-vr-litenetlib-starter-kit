@@ -316,10 +316,15 @@ public class GameManagerServer : MonoBehaviour
 
     public EntityState[] GetEntitiesStates()
     {
-        EntityState[] entityStates = new EntityState[entities.Count];
+        EntityState[] entityStates = new EntityState[entitiesSettings.maxEntitiesStateSend];
         int entityStateCount = 0;
+        entities.Sort((Entity a, Entity b) => { return a.priorityAccumulator < b.priorityAccumulator ? -1 : 1; });
         foreach (Entity ent in entities)
         {
+            if (entityStateCount >= entitiesSettings.maxEntitiesStateSend)
+            {
+                break;
+            }
             entityStates[entityStateCount] = new EntityState()
             {
                 Id = ent.id,
