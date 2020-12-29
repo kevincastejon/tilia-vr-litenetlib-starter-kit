@@ -135,7 +135,7 @@ public class GameManagerClient : MonoBehaviour
         //    }
         //    ent.Lerp(t);
         //}
-        LerpEntities(stateB.Entities, t);
+        LerpEntities(stateB.Entities, t, stateB.Sequence);
         coloredCube.SetColor(stateA.ColoredCube);
         if (newFrameTem)
         {
@@ -159,7 +159,7 @@ public class GameManagerClient : MonoBehaviour
         }
     }
 
-    private void LerpEntities(EntityState[] entitiesB, float t)
+    private void LerpEntities(EntityState[] entitiesB, float t, int sequence)
     {
         for (int i = 0; i < entitiesB.Length; i++)
         {
@@ -189,8 +189,8 @@ public class GameManagerClient : MonoBehaviour
             //}
             if (entityStateA != null)
             {
-                ent.transformTarget.position = Vector3.Lerp(entityStateA.Position, entityStateB.Position, t/(ent.sequenceB-ent.sequenceA));
-                ent.transformTarget.rotation = Quaternion.Lerp(entityStateA.Rotation, entityStateB.Rotation, t/(ent.sequenceB-ent.sequenceA));
+                ent.transformTarget.position = Vector3.Lerp(entityStateA.Position, entityStateB.Position, t/(sequence - ent.sequenceA));
+                ent.transformTarget.rotation = Quaternion.Lerp(entityStateA.Rotation, entityStateB.Rotation, t/(sequence - ent.sequenceA));
                 ent.ownerId = entityStateA.Owner;
                 if (ent.interactable)
                 {
