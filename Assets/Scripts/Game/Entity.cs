@@ -20,9 +20,9 @@ public class Entity : MonoBehaviour
     public EntityType type;
     //[Header("Grabbable from your hand by remote player")]         //Hard to implement... Let's forbid it for now
     //public bool isGrabbableFromHand;
-    [Header("Network Settings")]
-    public float priority = 0f;
-    public float priorityAccumulator = 0f;
+    //[Header("Network Settings")]
+    //public float priority = 0f;
+    //public float priorityAccumulator = 0f;
     [Header("Reference Settings (transformTarget is MANDATORY)")]
     public Transform transformTarget;
     public InteractableFacade interactable;
@@ -36,6 +36,7 @@ public class Entity : MonoBehaviour
     public int ownerId=-1;
     [ReadOnly]
     public SnapZoneFacade snapZone;
+    [ReadOnly]
     public float lastSerialization;
     private void Awake()
     {
@@ -64,43 +65,43 @@ public class Entity : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (body)
-        {
-            if (body.velocity.Equals(Vector3.zero) && body.angularVelocity.Equals(Vector3.zero))
-            {
-                priority = 0f;
-            }
-            else
-            {
-                priority = 100f;
-            }
-        }
-        priorityAccumulator += priority;
+        //if (body)
+        //{
+        //    if (body.velocity.Equals(Vector3.zero) && body.angularVelocity.Equals(Vector3.zero))
+        //    {
+        //        priority = 0f;
+        //    }
+        //    else
+        //    {
+        //        priority = 100f;
+        //    }
+        //}
+        //priorityAccumulator += priority;
         lastSerialization += 1f;
     }
 
     private void OnGrab(InteractorFacade interactorFacade)
     {
-        priority = 1000000f;
+        //priority = 1000000f;
     }
 
     private void OnUngrab(InteractorFacade arg0)
     {
-        if (body)
-        {
-            if (body.velocity.Equals(Vector3.zero) && body.angularVelocity.Equals(Vector3.zero))
-            {
-                priority = 0f;
-            }
-            else
-            {
-                priority = 100f;
-            }
-        }
-        else
-        {
-            priority = 0f;
-        }
+        //if (body)
+        //{
+        //    if (body.velocity.Equals(Vector3.zero) && body.angularVelocity.Equals(Vector3.zero))
+        //    {
+        //        priority = 0f;
+        //    }
+        //    else
+        //    {
+        //        priority = 100f;
+        //    }
+        //}
+        //else
+        //{
+        //    priority = 0f;
+        //}
     }
 
     private void OnDestroy()
