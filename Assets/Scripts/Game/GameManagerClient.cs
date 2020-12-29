@@ -32,6 +32,7 @@ public class GameManagerClient : MonoBehaviour
     private float timer = 0f;
     [HideInInspector]
     public static GameManagerClient instance;
+    private bool newFrameTem;
 
     private void Awake()
     {
@@ -108,40 +109,57 @@ public class GameManagerClient : MonoBehaviour
         }
         StateMessage stateA = stateBuffer[0];
         StateMessage stateB = stateBuffer[1];
-
-        LerpPlayers(stateA.Players, stateB.Players, t);
-        Entity leftGrabbedEnt = localAvatar.GetLeftGrabbedEntity();
-        Entity rightGrabbedEnt = localAvatar.GetRightGrabbedEntity();
-        for (int i = 0; i < entities.Count; i++)
-        {
-            Entity ent = entities[i];
-            if (leftGrabbedEnt && leftGrabbedEnt.id == ent.id || rightGrabbedEnt && rightGrabbedEnt.id == ent.id)
-            {
-                continue;
-            }
-            ent.Lerp(t);
-        }
-        //LerpEntities(stateA.Entities, stateB.Entities, t);
-        coloredCube.SetColor(stateA.ColoredCube);
-
-        if (isLastFrame)
+        if (newFrameTem)
         {
             for (int i = 0; i < stateA.Entities.Length; i++)
             {
-                EntityState es = stateA.Entities[i];
-                Entity ent = entities.Find(x => x.id == es.Id);
+                Entity ent = entities.Find(x => x.id == stateA.Entities[i].Id);
                 if (ent == null)
                 {
                     continue;
                 }
-                ent.PushState(es, stateA.Sequence);
+                ent.stateA = stateA.Entities[i];
+                ent.sequenceA = stateA.Sequence;
             }
+        }
+        LerpPlayers(stateA.Players, stateB.Players, t);
+        //LerpPlayers(stateA.Players, stateB.Players, t);
+        //Entity leftGrabbedEnt = localAvatar.GetLeftGrabbedEntity();
+        //Entity rightGrabbedEnt = localAvatar.GetRightGrabbedEntity();
+        //for (int i = 0; i < entities.Count; i++)
+        //{
+        //    Entity ent = entities[i];
+        //    if (leftGrabbedEnt && leftGrabbedEnt.id == ent.id || rightGrabbedEnt && rightGrabbedEnt.id == ent.id)
+        //    {
+        //        continue;
+        //    }
+        //    ent.Lerp(t);
+        //}
+        LerpEntities(stateB.Entities, t);
+        coloredCube.SetColor(stateA.ColoredCube);
+        if (newFrameTem)
+        {
+            newFrameTem = false;
+        }
+        if (isLastFrame)
+        {
+            //for (int i = 0; i < stateA.Entities.Length; i++)
+            //{
+            //    EntityState es = stateA.Entities[i];
+            //    Entity ent = entities.Find(x => x.id == es.Id);
+            //    if (ent == null)
+            //    {
+            //        continue;
+            //    }
+            //    ent.PushState(es, stateA.Sequence);
+            //}
             stateBuffer.RemoveFromStart(1);
             stateBufferLength = stateBuffer.Count;
+            newFrameTem = true;
         }
     }
 
-    private void LerpEntities(EntityState[] entitiesA, EntityState[] entitiesB, float t)
+    private void LerpEntities(EntityState[] entitiesB, float t)
     {
         for (int i = 0; i < entitiesB.Length; i++)
         {
@@ -160,14 +178,15 @@ public class GameManagerClient : MonoBehaviour
                     continue;
                 }
             }
-            EntityState entityStateA = null;
-            for (int j = 0; j < entitiesA.Length; j++)
-            {
-                if (entitiesA[j].Id == entityStateB.Id)
-                {
-                    entityStateA = entitiesA[j];
-                }
-            }
+            EntityState entityStateA = ent.stateA;
+            //EntityState entityStateA = null;
+            //for (int j = 0; j < entitiesA.Length; j++)
+            //{
+            //    if (entitiesA[j].Id == entityStateB.Id)
+            //    {
+            //        entityStateA = entitiesA[j];
+            //    }
+            //}
             if (entityStateA != null)
             {
                 ent.transformTarget.position = Vector3.Lerp(entityStateA.Position, entityStateB.Position, t);

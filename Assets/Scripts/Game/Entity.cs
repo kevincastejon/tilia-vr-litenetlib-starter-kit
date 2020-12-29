@@ -46,6 +46,8 @@ public class Entity : MonoBehaviour
     public EntityState stateB;
     [ReadOnly]
     public int sequenceB;
+    [ReadOnly]
+    public LiteRingBuffer<EntityState> stateBuffer;
 
     public void PushState(EntityState es, int sequence)
     {
