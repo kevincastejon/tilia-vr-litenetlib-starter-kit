@@ -36,6 +36,7 @@ public class Entity : MonoBehaviour
     public int ownerId=-1;
     [ReadOnly]
     public SnapZoneFacade snapZone;
+    public float lastSerialization;
     private void Awake()
     {
         if (NetworkManager.isServer)
@@ -75,6 +76,7 @@ public class Entity : MonoBehaviour
             }
         }
         priorityAccumulator += priority;
+        lastSerialization += 1f;
     }
 
     private void OnGrab(InteractorFacade interactorFacade)
