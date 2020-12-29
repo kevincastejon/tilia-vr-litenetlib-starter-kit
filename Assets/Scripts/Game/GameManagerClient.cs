@@ -189,8 +189,8 @@ public class GameManagerClient : MonoBehaviour
             //}
             if (entityStateA != null)
             {
-                ent.transformTarget.position = Vector3.Lerp(entityStateA.Position, entityStateB.Position, t);
-                ent.transformTarget.rotation = Quaternion.Lerp(entityStateA.Rotation, entityStateB.Rotation, t);
+                ent.transformTarget.position = Vector3.Lerp(entityStateA.Position, entityStateB.Position, t/(ent.sequenceB-ent.sequenceA));
+                ent.transformTarget.rotation = Quaternion.Lerp(entityStateA.Rotation, entityStateB.Rotation, t/(ent.sequenceB-ent.sequenceA));
                 ent.ownerId = entityStateA.Owner;
                 if (ent.interactable)
                 {
