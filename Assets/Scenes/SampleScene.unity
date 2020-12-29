@@ -2847,7 +2847,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings:
   - maxInstance: -1
-    destroyFirst: 1
+    destroyFirst: 0
     prefab: {fileID: 2024301931097442895, guid: 2910db0b28aba7b408e99e773670a592,
       type: 3}
   - maxInstance: -1

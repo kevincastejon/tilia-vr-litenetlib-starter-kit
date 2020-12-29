@@ -28,7 +28,7 @@ public class GameManagerClient : MonoBehaviour
     private Dictionary<int, Player> players = new Dictionary<int, Player>();
     private int lastSequence;
     private int sequence;
-    private float timerMax = 2 / 60f;
+    private float timerMax = 4 / 60f;
     private float timer = 0f;
     [HideInInspector]
     public static GameManagerClient instance;

@@ -22,7 +22,7 @@ ball + guns + coloredCube = 76B
 4 players = 192B
 
 Static total = 268B
-Left size = [308B] (for 576B max)
-Possible entities spawn = 12 (floor(308/25))
+Left size = [1008B] (for 1200B max)
+Possible entities spawn = 40 (floor(1008/25))
 
 TODO:
