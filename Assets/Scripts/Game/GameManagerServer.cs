@@ -319,7 +319,7 @@ public class GameManagerServer : MonoBehaviour
         int max = entitiesSettings.maxEntitiesStateSend < entities.Count ? entitiesSettings.maxEntitiesStateSend : entities.Count;
         EntityState[] entityStates = new EntityState[max];
         int entityStateCount = 0;
-        entities.Sort((Entity a, Entity b) => { return a.lastSerialization < b.lastSerialization ? -1 : 1; });
+        entities.Sort((Entity a, Entity b) => { return a.lastSerialization > b.lastSerialization ? -1 : 1; });
         foreach (Entity ent in entities)
         {
             if (entityStateCount >= max)
