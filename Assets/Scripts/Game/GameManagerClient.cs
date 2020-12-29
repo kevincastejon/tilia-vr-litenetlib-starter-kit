@@ -119,7 +119,7 @@ public class GameManagerClient : MonoBehaviour
             {
                 continue;
             }
-            ent.Lerp(Time.fixedDeltaTime);
+            ent.Lerp(t);
         }
         //LerpEntities(stateA.Entities, stateB.Entities, t);
         coloredCube.SetColor(stateA.ColoredCube);

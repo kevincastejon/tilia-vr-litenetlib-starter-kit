@@ -46,8 +46,6 @@ public class Entity : MonoBehaviour
     public EntityState stateB;
     [ReadOnly]
     public int sequenceB;
-    private float timer = 0f;
-    private float timerMaxBase = 4/60f;
 
     public void PushState(EntityState es, int sequence)
     {
@@ -70,15 +68,15 @@ public class Entity : MonoBehaviour
         }
     }
 
-    public void Lerp(float delta)
+    public void Lerp(float _t)
     {
         if (stateB == null)
         {
             return;
         }
-        float timerMax = timerMaxBase * (sequenceB - sequenceA);
-        transformTarget.position = Vector3.Lerp(stateA.Position, stateB.Position, timer/timerMax);
-        transformTarget.rotation = Quaternion.Lerp(stateA.Rotation, stateB.Rotation, timer / timerMax);
+        float t = _t / (sequenceB - sequenceA);
+        transformTarget.position = Vector3.Lerp(stateA.Position, stateB.Position, t);
+        transformTarget.rotation = Quaternion.Lerp(stateA.Rotation, stateB.Rotation, t);
         ownerId = stateA.Owner;
         if (interactable)
         {
@@ -90,13 +88,6 @@ public class Entity : MonoBehaviour
             {
                 interactable.EnableGrab();
             }
-        }
-        float newTimer = timer + delta;
-        bool isLastFrame = newTimer > timerMax;
-        timer = newTimer;
-        if (isLastFrame)
-        {
-            timer -= timerMax;
         }
     }
 
