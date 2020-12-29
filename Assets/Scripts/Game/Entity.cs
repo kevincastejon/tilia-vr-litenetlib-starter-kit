@@ -33,11 +33,73 @@ public class Entity : MonoBehaviour
     [ReadOnly]
     public int id;
     [ReadOnly]
-    public int ownerId=-1;
+    public int ownerId = -1;
     [ReadOnly]
     public SnapZoneFacade snapZone;
     [ReadOnly]
     public float lastSerialization;
+    [ReadOnly]
+    public EntityState stateA;
+    [ReadOnly]
+    public int sequenceA;
+    [ReadOnly]
+    public EntityState stateB;
+    [ReadOnly]
+    public int sequenceB;
+    private float timer = 0f;
+    private float timerMaxBase = 4/60f;
+
+    public void PushState(EntityState es, int sequence)
+    {
+        if (stateA == null && stateB == null)
+        {
+            stateA = es;
+            sequenceA = sequence;
+        }
+        else if (stateB == null)
+        {
+            stateB = es;
+            sequenceB = sequence;
+        }
+        else
+        {
+            stateA = stateB;
+            sequenceA = sequenceB;
+            stateB = es;
+            sequenceB = sequence;
+        }
+    }
+
+    public void Lerp(float delta)
+    {
+        if (stateB == null)
+        {
+            return;
+        }
+        float timerMax = timerMaxBase * (sequenceB - sequenceA);
+        transformTarget.position = Vector3.Lerp(stateA.Position, stateB.Position, timer/timerMax);
+        transformTarget.rotation = Quaternion.Lerp(stateA.Rotation, stateB.Rotation, timer / timerMax);
+        ownerId = stateA.Owner;
+        if (interactable)
+        {
+            if (ownerId != -1)
+            {
+                interactable.DisableGrab();
+            }
+            else
+            {
+                interactable.EnableGrab();
+            }
+        }
+        float newTimer = timer + delta;
+        bool isLastFrame = newTimer > timerMax;
+        timer = newTimer;
+        if (isLastFrame)
+        {
+            timer -= timerMax;
+        }
+    }
+
     private void Awake()
     {
         if (NetworkManager.isServer)
