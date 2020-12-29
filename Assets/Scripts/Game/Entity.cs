@@ -21,7 +21,7 @@ public class Entity : MonoBehaviour
     //[Header("Grabbable from your hand by remote player")]         //Hard to implement... Let's forbid it for now
     //public bool isGrabbableFromHand;
     [Header("Network Settings")]
-    public int priority = 0;
+    public int priority = 1;
     public int priorityAccumulator = 0;
     [Header("Reference Settings (transformTarget is MANDATORY)")]
     public Transform transformTarget;
@@ -67,7 +67,7 @@ public class Entity : MonoBehaviour
         {
             if (body.velocity.Equals(Vector3.zero) && body.angularVelocity.Equals(Vector3.zero))
             {
-                priority = 0;
+                priority = 1;
             }
             else
             {
@@ -88,7 +88,7 @@ public class Entity : MonoBehaviour
         {
             if (body.velocity.Equals(Vector3.zero) && body.angularVelocity.Equals(Vector3.zero))
             {
-                priority = 0;
+                priority = 1;
             }
             else
             {
@@ -97,7 +97,7 @@ public class Entity : MonoBehaviour
         }
         else
         {
-            priority = 0;
+            priority = 1;
         }
     }
 
