@@ -175,7 +175,6 @@ public class GameManagerServer : MonoBehaviour
 
     public void OnPlayerDisconnected(int peerID)
     {
-        Debug.Log("DISCONNECTED");
         Player disconnectedPlayer = players[peerID];
         players.Remove(peerID);
         if (disconnectedPlayer.leftGrabbed)
@@ -218,12 +217,12 @@ public class GameManagerServer : MonoBehaviour
                 }
             }
         }
-        if (!disconnectedPlayer.connected)
+        Destroy(disconnectedPlayer.gameObject);
+        server.SendImportantMessage(new PlayerRemoveMessage() { Id = peerID });
+        if (disconnectedPlayer.connected)
         {
             numConnectedPlayers--;
         }
-        Destroy(disconnectedPlayer.gameObject);
-        server.SendImportantMessage(new PlayerRemoveMessage() { Id = peerID });
     }
 
     public void OnPlayerInput(int playerId, PlayerInput pi)
@@ -234,7 +233,6 @@ public class GameManagerServer : MonoBehaviour
 
     public PlayerState[] GetPlayersStates(int excludedPlayerId)
     {
-        Debug.Log("CONNECTED PLAYERS:"+numConnectedPlayers);
         PlayerState[] playerStates = new PlayerState[numConnectedPlayers];
         int playerStateCount = 0;
         foreach (KeyValuePair<int, Player> entry in players)
@@ -370,7 +368,6 @@ public class GameManagerServer : MonoBehaviour
                 continue;
             }
             PlayerState[] playerStates = GetPlayersStates(entry.Key);
-            Debug.Log(playerStates);
             EntityState[] entityStates = GetEntitiesStates();
             server.SendFastMessage(
                 new StateMessage()
