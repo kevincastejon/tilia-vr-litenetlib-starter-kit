@@ -370,6 +370,7 @@ public class GameManagerServer : MonoBehaviour
             }
             PlayerState[] playerStates = GetPlayersStates(entry.Key);
             EntityState[] entityStates = GetEntitiesStates();
+            Debug.Log("ENTITY STATES LENGTH : "+ entityStates.Length);
             server.SendFastMessage(
                 new StateMessage()
                 {
