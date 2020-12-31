@@ -218,12 +218,12 @@ public class GameManagerServer : MonoBehaviour
                 }
             }
         }
-        Destroy(disconnectedPlayer.gameObject);
-        server.SendImportantMessage(new PlayerRemoveMessage() { Id = peerID });
         if (!disconnectedPlayer.connected)
         {
             numConnectedPlayers--;
         }
+        Destroy(disconnectedPlayer.gameObject);
+        server.SendImportantMessage(new PlayerRemoveMessage() { Id = peerID });
     }
 
     public void OnPlayerInput(int playerId, PlayerInput pi)
@@ -369,8 +369,8 @@ public class GameManagerServer : MonoBehaviour
                 continue;
             }
             PlayerState[] playerStates = GetPlayersStates(entry.Key);
+            Debug.Log(playerStates);
             EntityState[] entityStates = GetEntitiesStates();
-            Debug.Log("ENTITY STATES LENGTH : "+ entityStates.Length);
             server.SendFastMessage(
                 new StateMessage()
                 {
