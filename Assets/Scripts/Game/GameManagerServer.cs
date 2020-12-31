@@ -234,6 +234,7 @@ public class GameManagerServer : MonoBehaviour
 
     public PlayerState[] GetPlayersStates(int excludedPlayerId)
     {
+        Debug.Log("CONNECTED PLAYERS:"+numConnectedPlayers);
         PlayerState[] playerStates = new PlayerState[numConnectedPlayers];
         int playerStateCount = 0;
         foreach (KeyValuePair<int, Player> entry in players)
