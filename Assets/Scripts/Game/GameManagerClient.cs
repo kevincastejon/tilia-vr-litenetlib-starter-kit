@@ -32,7 +32,7 @@ public class GameManagerClient : MonoBehaviour
     private float timer = 0f;
     [HideInInspector]
     public static GameManagerClient instance;
-    private bool newFrameTem;
+    private bool newFrameTem=true;
 
     private void Awake()
     {
@@ -122,6 +122,16 @@ public class GameManagerClient : MonoBehaviour
                 ent.stateA = stateA.Entities[i];
                 ent.sequenceA = stateA.Sequence;
             }
+            for (int i = 0; i < stateB.Entities.Length; i++)
+            {
+                Entity ent = entities.Find(x => x.id == stateB.Entities[i].Id);
+                if (ent == null)
+                {
+                    continue;
+                }
+                ent.stateB = stateB.Entities[i];
+                ent.sequenceB = stateB.Sequence;
+            }
         }
         LerpPlayers(stateA.Players, stateB.Players, t);
         //LerpPlayers(stateA.Players, stateB.Players, t);
@@ -136,7 +146,7 @@ public class GameManagerClient : MonoBehaviour
         //    }
         //    ent.Lerp(t);
         //}
-        LerpEntities(stateB.Entities, t, stateB.Sequence);
+        LerpEntities(t);
         coloredCube.SetColor(stateA.ColoredCube);
         if (newFrameTem)
         {
@@ -160,26 +170,17 @@ public class GameManagerClient : MonoBehaviour
         }
     }
 
-    private void LerpEntities(EntityState[] entitiesB, float t, int sequence)
+    private void LerpEntities(float t)
     {
-        for (int i = 0; i < entitiesB.Length; i++)
+        for (int i = 0; i < entities.Count; i++)
         {
-            EntityState entityStateB = entitiesB[i];
-            Entity ent = entities.Find(x => x.id == entityStateB.Id);
-            if (ent == null)
+            Entity ent = entities[i];
+            Entity leftGrabbedEnt = localAvatar.GetLeftGrabbedEntity();
+            Entity rightGrabbedEnt = localAvatar.GetRightGrabbedEntity();
+            if (leftGrabbedEnt && leftGrabbedEnt.id == ent.id || rightGrabbedEnt && rightGrabbedEnt.id == ent.id || ent.stateA == null || ent.stateB == null)
             {
                 continue;
             }
-            else
-            {
-                Entity leftGrabbedEnt = localAvatar.GetLeftGrabbedEntity();
-                Entity rightGrabbedEnt = localAvatar.GetRightGrabbedEntity();
-                if (leftGrabbedEnt && leftGrabbedEnt.id == ent.id || rightGrabbedEnt && rightGrabbedEnt.id == ent.id)
-                {
-                    continue;
-                }
-            }
-            EntityState entityStateA = ent.stateA;
             //EntityState entityStateA = null;
             //for (int j = 0; j < entitiesA.Length; j++)
             //{
@@ -188,15 +189,15 @@ public class GameManagerClient : MonoBehaviour
             //        entityStateA = entitiesA[j];
             //    }
             //}
-            if (entityStateA != null)
+            if (ent.stateA != null)
             {
                 if (i == 0)
                 {
-                    Debug.Log(sequence + " - " + ent.sequenceA + " = " + (sequence - ent.sequenceA) + "  =>  t:" + t + " -> " + t / (sequence - ent.sequenceA));
+                    Debug.Log(ent.sequenceB + " - " + ent.sequenceA + " = " + (ent.sequenceB - ent.sequenceA) + "  =>  t:" + t + " -> " + t / (ent.sequenceB - ent.sequenceA));
                 }
-                ent.transformTarget.position = Vector3.Lerp(entityStateA.Position, entityStateB.Position, t / (sequence - ent.sequenceA));
-                ent.transformTarget.rotation = Quaternion.Lerp(entityStateA.Rotation, entityStateB.Rotation, t / (sequence - ent.sequenceA));
-                ent.ownerId = entityStateA.Owner;
+                ent.transformTarget.position = Vector3.Lerp(ent.stateA.Position, ent.stateB.Position, t / (ent.sequenceB - ent.sequenceA));
+                ent.transformTarget.rotation = Quaternion.Lerp(ent.stateA.Rotation, ent.stateB.Rotation, t / (ent.sequenceB - ent.sequenceA));
+                ent.ownerId = ent.stateA.Owner;
                 if (ent.interactable)
                 {
                     if (ent.ownerId != -1 && ent.ownerId != localAvatar.id)
