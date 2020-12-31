@@ -175,6 +175,7 @@ public class GameManagerServer : MonoBehaviour
 
     public void OnPlayerDisconnected(int peerID)
     {
+        Debug.Log("DISCONNECTED");
         Player disconnectedPlayer = players[peerID];
         players.Remove(peerID);
         if (disconnectedPlayer.leftGrabbed)

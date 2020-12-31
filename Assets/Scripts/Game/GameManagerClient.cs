@@ -43,7 +43,7 @@ public class GameManagerClient : MonoBehaviour
 
     public void OnLANDiscovery(string name, IPEndPoint ip)
     {
-        Debug.Log("DISCOVERED LAN GAME ON IP:"+ip);
+        Debug.Log("DISCOVERED LAN GAME ON IP:" + ip);
         if (connecting)
         {
             return;
@@ -55,7 +55,8 @@ public class GameManagerClient : MonoBehaviour
     public void OnConnected()
     {
         connecting = false;
-        client.SendImportantMessage(new PlayerInitInfo() {
+        client.SendImportantMessage(new PlayerInitInfo()
+        {
             OculusID = OculusAuthentifier.OculusId,
             HeadPosition = localAvatar.headAlias.transform.position,
             HeadRotation = localAvatar.headAlias.transform.rotation,
@@ -189,8 +190,12 @@ public class GameManagerClient : MonoBehaviour
             //}
             if (entityStateA != null)
             {
-                ent.transformTarget.position = Vector3.Lerp(entityStateA.Position, entityStateB.Position, t/(sequence - ent.sequenceA));
-                ent.transformTarget.rotation = Quaternion.Lerp(entityStateA.Rotation, entityStateB.Rotation, t/(sequence - ent.sequenceA));
+                if (i == 0)
+                {
+                    Debug.Log(sequence + " - " + ent.sequenceA + " = " + (sequence - ent.sequenceA) + "  =>  t:" + t + " -> " + t / (sequence - ent.sequenceA));
+                }
+                ent.transformTarget.position = Vector3.Lerp(entityStateA.Position, entityStateB.Position, t / (sequence - ent.sequenceA));
+                ent.transformTarget.rotation = Quaternion.Lerp(entityStateA.Rotation, entityStateB.Rotation, t / (sequence - ent.sequenceA));
                 ent.ownerId = entityStateA.Owner;
                 if (ent.interactable)
                 {
