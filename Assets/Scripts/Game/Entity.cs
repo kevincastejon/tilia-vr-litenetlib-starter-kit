@@ -120,6 +120,10 @@ public class Entity : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (ownerId != -1)
+        {
+            return;
+        }
         if (body)
         {
             if (body.velocity.Equals(Vector3.zero) && body.angularVelocity.Equals(Vector3.zero))
