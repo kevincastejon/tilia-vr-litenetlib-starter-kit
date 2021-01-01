@@ -23,6 +23,8 @@ public class GameManagerClient : MonoBehaviour
     public bool connecting;
     [ReadOnly]
     public bool connected;
+    [ReadOnly]
+    public int lagPikes;
     [HideInInspector]
     public LiteRingBuffer<StateMessage> stateBuffer = new LiteRingBuffer<StateMessage>(5);
     private Dictionary<int, Player> players = new Dictionary<int, Player>();
@@ -388,6 +390,7 @@ public class GameManagerClient : MonoBehaviour
         lastSequence = sm.Sequence;
         if (stateBuffer.IsFull)
         {
+            lagPikes++;
             if (NetworkManager.showLagLogs)
             {
                 Debug.Log("TOO MUCH STATE RECEIVED");

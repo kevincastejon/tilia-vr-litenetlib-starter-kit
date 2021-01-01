@@ -36,6 +36,8 @@ public class Player : MonoBehaviour
     public Entity rightGrabbed;
     [ReadOnly]
     public int inputBufferLength;
+    [ReadOnly]
+    public int lagPikes;
     [HideInInspector]
     public LiteRingBuffer<PlayerInput> inputBuffer = new LiteRingBuffer<PlayerInput>(5);
     [HideInInspector]
@@ -95,6 +97,7 @@ public class Player : MonoBehaviour
         lastSequence = pi.Sequence;
         if (inputBuffer.IsFull)
         {
+            lagPikes++;
             if (NetworkManager.showLagLogs)
             {
                 Debug.Log("TOO MUCH STATE RECEIVED");
