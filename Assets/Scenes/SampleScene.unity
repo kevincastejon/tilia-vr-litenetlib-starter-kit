@@ -975,6 +975,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
+  priority: 0
+  priorityAccumulator: 0
   transformTarget: {fileID: 635204362}
   interactable: {fileID: 148629921}
   body: {fileID: 148629920}
@@ -2492,6 +2494,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
+  priority: 0
+  priorityAccumulator: 0
   transformTarget: {fileID: 111658705}
   interactable: {fileID: 446864214}
   body: {fileID: 446864216}
@@ -2861,7 +2865,7 @@ MonoBehaviour:
   - maxInstance: -1
     destroyFirst: 0
     prefab: {fileID: 0}
-  maxEntitiesStateSend: 11
+  maxEntitiesStateSend: 42
 --- !u!4 &484640396
 Transform:
   m_ObjectHideFlags: 0
@@ -9010,6 +9014,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
+  priority: 0
+  priorityAccumulator: 0
   transformTarget: {fileID: 1863423742}
   interactable: {fileID: 1863423744}
   body: {fileID: 1863423745}
@@ -9454,6 +9460,7 @@ MonoBehaviour:
   entities: []
   connecting: 0
   connected: 0
+  lagPikes: 0
 --- !u!114 &1960257411 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6820168409908592392, guid: 5381c6b0ade0a784ebf6f5f903c11182,
