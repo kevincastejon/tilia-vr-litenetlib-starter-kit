@@ -36,8 +36,8 @@ public class Entity : MonoBehaviour
     public int ownerId = -1;
     [ReadOnly]
     public SnapZoneFacade snapZone;
-    [ReadOnly]
-    public float lastSerialization;
+    //[ReadOnly]
+    //public float lastSerialization;
     [ReadOnly]
     public EntityState stateA;
     [ReadOnly]
@@ -132,7 +132,7 @@ public class Entity : MonoBehaviour
             }
         }
         priorityAccumulator += priority;
-        lastSerialization += 1f;
+        //lastSerialization += 1f;
     }
 
     private void OnGrab(InteractorFacade interactorFacade)
