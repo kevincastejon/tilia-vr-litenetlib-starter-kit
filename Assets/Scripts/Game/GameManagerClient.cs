@@ -29,7 +29,7 @@ public class GameManagerClient : MonoBehaviour
     private int lastSequence;
     private int sequence;
     private int lerpingSequence;
-    private float timerMax = 2 / 60f;
+    private float timerMax = 1 / 60f;
     private float timer = 0f;
     [HideInInspector]
     public static GameManagerClient instance;
