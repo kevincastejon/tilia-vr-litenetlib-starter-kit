@@ -7313,7 +7313,7 @@ MonoBehaviour:
   server: {fileID: 121076092}
   client: {fileID: 1928920086}
   TiliaObjects: {fileID: 2122384635}
-  _showLagLogs: 1
+  _showLagLogs: 0
 --- !u!4 &1511931687
 Transform:
   m_ObjectHideFlags: 0

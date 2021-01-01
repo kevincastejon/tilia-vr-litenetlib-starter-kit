@@ -18,7 +18,7 @@ public class GameManagerServer : MonoBehaviour
     public List<Entity> entities = new List<Entity>();
     private Dictionary<int, Player> players = new Dictionary<int, Player>();
     private int numConnectedPlayers;
-    private float timerMax = 1 / 60f;
+    private float timerMax = 2 / 60f;
     private float timer = 0f;
     [HideInInspector]
     public static GameManagerServer instance;
@@ -391,7 +391,7 @@ public class GameManagerServer : MonoBehaviour
             p.playerName.transform.rotation = Quaternion.LookRotation(p.playerName.transform.position - p.nameOrientationTarget.transform.position);
 
 
-            if (p.inputBuffer.Count < 6)
+            if (p.inputBuffer.Count < 4)
             {
                 if (NetworkManager.showLagLogs)
                 {
