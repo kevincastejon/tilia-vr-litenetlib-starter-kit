@@ -120,7 +120,7 @@ public class Entity : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (ownerId == -1)
+        if (ownerId == -1 && !snapZone)
         {
             if (body)
             {
