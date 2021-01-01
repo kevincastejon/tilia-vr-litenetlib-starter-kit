@@ -9,6 +9,7 @@ public class OculusAuthentifier : MonoBehaviour
 {
     [Header("Reference Settings")]
     public GameObject LogWall;
+    public GameObject networkAutoSelector;
     [Header("Monitoring")]
     [ReadOnly]
     public string _OculusId;
@@ -41,5 +42,6 @@ public class OculusAuthentifier : MonoBehaviour
         OculusId = msg.Data.OculusID;
         Debug.Log("LOGGED IN AS "+msg.Data.OculusID);
         LogWall.SetActive(false);
+        networkAutoSelector.SetActive(true);
     }
 }

@@ -28,11 +28,11 @@ public class GameManagerClient : MonoBehaviour
     private Dictionary<int, Player> players = new Dictionary<int, Player>();
     private int lastSequence;
     private int sequence;
-    private float timerMax = 4 / 60f;
+    private float timerMax = 1 / 60f;
     private float timer = 0f;
     [HideInInspector]
     public static GameManagerClient instance;
-    private bool newFrameTem=true;
+    private bool newFrameTem = true;
 
     private void Awake()
     {
@@ -100,6 +100,7 @@ public class GameManagerClient : MonoBehaviour
 
     private void LerpStates(float t, bool isLastFrame)
     {
+        //Debug.Log("LERPING -> ISLASTFRAME : "+isLastFrame);
         if (stateBuffer.Count < 2)
         {
             if (NetworkManager.showLagLogs)
@@ -115,7 +116,7 @@ public class GameManagerClient : MonoBehaviour
             for (int i = 0; i < stateA.Entities.Length; i++)
             {
                 Entity ent = entities.Find(x => x.id == stateA.Entities[i].Id);
-                if (ent == null)
+                if (ent == null || ent.stateA != null)
                 {
                     continue;
                 }
@@ -128,6 +129,11 @@ public class GameManagerClient : MonoBehaviour
                 if (ent == null)
                 {
                     continue;
+                }
+                if (ent.stateB != null)
+                {
+                    ent.stateA = ent.stateB;
+                    ent.sequenceA = ent.sequenceB;
                 }
                 ent.stateB = stateB.Entities[i];
                 ent.sequenceB = stateB.Sequence;
@@ -146,7 +152,7 @@ public class GameManagerClient : MonoBehaviour
         //    }
         //    ent.Lerp(t);
         //}
-        LerpEntities(t);
+        LerpEntities(t, stateB.Sequence);
         coloredCube.SetColor(stateA.ColoredCube);
         if (newFrameTem)
         {
@@ -170,14 +176,14 @@ public class GameManagerClient : MonoBehaviour
         }
     }
 
-    private void LerpEntities(float t)
+    private void LerpEntities(float t, int currentSequence)
     {
         for (int i = 0; i < entities.Count; i++)
         {
             Entity ent = entities[i];
             Entity leftGrabbedEnt = localAvatar.GetLeftGrabbedEntity();
             Entity rightGrabbedEnt = localAvatar.GetRightGrabbedEntity();
-            if (leftGrabbedEnt && leftGrabbedEnt.id == ent.id || rightGrabbedEnt && rightGrabbedEnt.id == ent.id || ent.stateA == null || ent.stateB == null)
+            if ((leftGrabbedEnt && leftGrabbedEnt.id == ent.id) || (rightGrabbedEnt && rightGrabbedEnt.id == ent.id) || ent.stateA == null || ent.stateB == null)
             {
                 continue;
             }
@@ -189,25 +195,30 @@ public class GameManagerClient : MonoBehaviour
             //        entityStateA = entitiesA[j];
             //    }
             //}
-            if (ent.stateA != null)
+            int len = ent.sequenceB - ent.sequenceA;
+            int realCurrentSeq = currentSequence - ent.sequenceB;
+            float realT = (((realCurrentSeq / t) + 1) * t) / len;
+            //if (i == 0)
+            //{
+            //    Debug.Log("LERPING T:" + t + " currentSequence:" + currentSequence);
+            //    Debug.Log("STATEA SEQ:" + ent.sequenceA);
+            //    Debug.Log("STATEB SEQ:" + ent.sequenceB);
+            //    Debug.Log("LEN:" + len);
+            //    Debug.Log("REAL SEQ:" + realCurrentSeq);
+            //    Debug.Log("REAL T:" + realT);
+            //}
+            ent.transformTarget.position = Vector3.Lerp(ent.stateA.Position, ent.stateB.Position, realT);
+            ent.transformTarget.rotation = Quaternion.Lerp(ent.stateA.Rotation, ent.stateB.Rotation, realT);
+            ent.ownerId = ent.stateA.Owner;
+            if (ent.interactable)
             {
-                if (i == 0)
+                if (ent.ownerId != -1 && ent.ownerId != localAvatar.id)
                 {
-                    Debug.Log(ent.sequenceB + " - " + ent.sequenceA + " = " + (ent.sequenceB - ent.sequenceA) + "  =>  t:" + t + " -> " + t / (ent.sequenceB - ent.sequenceA));
+                    ent.interactable.DisableGrab();
                 }
-                ent.transformTarget.position = Vector3.Lerp(ent.stateA.Position, ent.stateB.Position, t / (ent.sequenceB - ent.sequenceA));
-                ent.transformTarget.rotation = Quaternion.Lerp(ent.stateA.Rotation, ent.stateB.Rotation, t / (ent.sequenceB - ent.sequenceA));
-                ent.ownerId = ent.stateA.Owner;
-                if (ent.interactable)
+                else
                 {
-                    if (ent.ownerId != -1 && ent.ownerId != localAvatar.id)
-                    {
-                        ent.interactable.DisableGrab();
-                    }
-                    else
-                    {
-                        ent.interactable.EnableGrab();
-                    }
+                    ent.interactable.EnableGrab();
                 }
             }
         }

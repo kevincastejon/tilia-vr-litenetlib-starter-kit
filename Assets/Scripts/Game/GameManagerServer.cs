@@ -18,7 +18,7 @@ public class GameManagerServer : MonoBehaviour
     public List<Entity> entities = new List<Entity>();
     private Dictionary<int, Player> players = new Dictionary<int, Player>();
     private int numConnectedPlayers;
-    private float timerMax = 4 / 60f;
+    private float timerMax = 1 / 60f;
     private float timer = 0f;
     [HideInInspector]
     public static GameManagerServer instance;
