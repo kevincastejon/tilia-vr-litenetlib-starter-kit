@@ -120,19 +120,18 @@ public class Entity : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (ownerId != -1)
+        if (ownerId == -1)
         {
-            return;
-        }
-        if (body)
-        {
-            if (body.velocity.Equals(Vector3.zero) && body.angularVelocity.Equals(Vector3.zero))
+            if (body)
             {
-                priority = 0f;
-            }
-            else
-            {
-                priority = 100f;
+                if (body.velocity.Equals(Vector3.zero) && body.angularVelocity.Equals(Vector3.zero))
+                {
+                    priority = 0f;
+                }
+                else
+                {
+                    priority = 100f;
+                }
             }
         }
         priorityAccumulator += priority;
