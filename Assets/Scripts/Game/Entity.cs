@@ -41,7 +41,7 @@ public class Entity : MonoBehaviour
     [ReadOnly]
     public EntityState stateA;
     [ReadOnly]
-    public int sequenceA;
+    public int sequenceA = -1;
     [ReadOnly]
     public EntityState stateB;
     [ReadOnly]

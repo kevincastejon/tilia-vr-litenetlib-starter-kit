@@ -28,7 +28,8 @@ public class GameManagerClient : MonoBehaviour
     private Dictionary<int, Player> players = new Dictionary<int, Player>();
     private int lastSequence;
     private int sequence;
-    private float timerMax = 4 / 60f;
+    private int lerpingSequence;
+    private float timerMax = 1 / 60f;
     private float timer = 0f;
     [HideInInspector]
     public static GameManagerClient instance;
@@ -101,7 +102,7 @@ public class GameManagerClient : MonoBehaviour
     private void LerpStates(float t, bool isLastFrame)
     {
         //Debug.Log("LERPING -> ISLASTFRAME : "+isLastFrame);
-        if (stateBuffer.Count < 4)
+        if (stateBuffer.Count < 6)
         {
             if (NetworkManager.showLagLogs)
             {
@@ -111,6 +112,7 @@ public class GameManagerClient : MonoBehaviour
         }
         StateMessage stateA = stateBuffer[0];
         StateMessage stateB = stateBuffer[1];
+        lerpingSequence = stateA.Sequence;
         if (newFrameTem)
         {
             for (int i = 0; i < stateA.Entities.Length; i++)
@@ -343,6 +345,14 @@ public class GameManagerClient : MonoBehaviour
             ent = Instantiate(entitiesSettings.settings[eam.Type].prefab).GetComponent<Entity>();
         }
         ent.id = eam.Id;
+        ent.stateA = new EntityState() {
+            Id = eam.Id,
+            Owner = eam.Owner,
+            Position= eam.Position,
+            Rotation = eam.Rotation,
+            Type = eam.Type,
+        };
+        ent.sequenceA = lerpingSequence;
         ent.transformTarget.position = eam.Position;
         ent.transformTarget.rotation = eam.Rotation;
     }
