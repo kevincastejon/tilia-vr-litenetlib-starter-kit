@@ -18,7 +18,7 @@ public class GameManagerServer : MonoBehaviour
     public List<Entity> entities = new List<Entity>();
     private Dictionary<int, Player> players = new Dictionary<int, Player>();
     private int numConnectedPlayers;
-    private float timerMax = 2 / 60f;
+    private float timerMax = 3 / 60f;
     private float timer = 0f;
     [HideInInspector]
     public static GameManagerServer instance;
@@ -334,7 +334,10 @@ public class GameManagerServer : MonoBehaviour
                 Rotation = ent.transform.rotation,
                 Owner = ent.ownerId,
             };
-            ent.priorityAccumulator = 0f;
+            if (ent.ownerId == -1)
+            {
+                ent.priorityAccumulator = 0f;
+            }
             entityStateCount++;
         }
         return entityStates;
@@ -390,7 +393,7 @@ public class GameManagerServer : MonoBehaviour
             p.playerName.transform.rotation = Quaternion.LookRotation(p.playerName.transform.position - p.nameOrientationTarget.transform.position);
 
 
-            if (p.inputBuffer.Count < 4)
+            if (p.inputBuffer.Count < 2)
             {
                 if (NetworkManager.showLagLogs)
                 {

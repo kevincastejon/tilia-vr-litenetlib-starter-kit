@@ -31,7 +31,7 @@ public class GameManagerClient : MonoBehaviour
     private int lastSequence;
     private int sequence;
     private int lerpingSequence;
-    private float timerMax = 2 / 60f;
+    private float timerMax = 3 / 60f;
     private float timer = 0f;
     [HideInInspector]
     public static GameManagerClient instance;
@@ -41,6 +41,7 @@ public class GameManagerClient : MonoBehaviour
     {
         instance = this;
         client.StartLANDiscovery();
+        //client.Connect(new IPEndPoint(IPAddress.Parse("192.168.0.32"), 5000));
         Debug.Log("GAMEMANAGER CLIENT AWAKED");
     }
 
@@ -104,7 +105,7 @@ public class GameManagerClient : MonoBehaviour
     private void LerpStates(float t, bool isLastFrame)
     {
         //Debug.Log("LERPING -> ISLASTFRAME : "+isLastFrame);
-        if (stateBuffer.Count < 4)
+        if (stateBuffer.Count < 2)
         {
             if (NetworkManager.showLagLogs)
             {
