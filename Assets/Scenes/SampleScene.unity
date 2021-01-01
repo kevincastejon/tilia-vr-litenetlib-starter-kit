@@ -975,8 +975,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
-  priority: 0
-  priorityAccumulator: 0
   transformTarget: {fileID: 635204362}
   interactable: {fileID: 148629921}
   body: {fileID: 148629920}
@@ -984,6 +982,9 @@ MonoBehaviour:
   id: 0
   ownerId: -1
   snapZone: {fileID: 0}
+  lastSerialization: 0
+  sequenceA: 0
+  sequenceB: 0
 --- !u!114 &148629918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1621,7 +1622,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &315067594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2491,8 +2492,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
-  priority: 0
-  priorityAccumulator: 0
   transformTarget: {fileID: 111658705}
   interactable: {fileID: 446864214}
   body: {fileID: 446864216}
@@ -2500,6 +2499,9 @@ MonoBehaviour:
   id: 0
   ownerId: -1
   snapZone: {fileID: 0}
+  lastSerialization: 0
+  sequenceA: 0
+  sequenceB: 0
 --- !u!114 &446864214 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 785982709505707726, guid: 1bb7642ebf8d0a34aa23fc586ea87e6a,
@@ -6602,6 +6604,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LogWall: {fileID: 1802052882}
+  networkAutoSelector: {fileID: 315067593}
   _OculusId: 
 --- !u!1 &1406038917
 GameObject:
@@ -7310,7 +7313,7 @@ MonoBehaviour:
   server: {fileID: 121076092}
   client: {fileID: 1928920086}
   TiliaObjects: {fileID: 2122384635}
-  _showLagLogs: 0
+  _showLagLogs: 1
 --- !u!4 &1511931687
 Transform:
   m_ObjectHideFlags: 0
@@ -9007,8 +9010,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
-  priority: 0
-  priorityAccumulator: 0
   transformTarget: {fileID: 1863423742}
   interactable: {fileID: 1863423744}
   body: {fileID: 1863423745}
@@ -9016,6 +9017,9 @@ MonoBehaviour:
   id: 0
   ownerId: -1
   snapZone: {fileID: 0}
+  lastSerialization: 0
+  sequenceA: 0
+  sequenceB: 0
 --- !u!114 &1863423750
 MonoBehaviour:
   m_ObjectHideFlags: 0
