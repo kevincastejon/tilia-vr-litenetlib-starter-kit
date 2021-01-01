@@ -101,7 +101,7 @@ public class GameManagerClient : MonoBehaviour
     private void LerpStates(float t, bool isLastFrame)
     {
         //Debug.Log("LERPING -> ISLASTFRAME : "+isLastFrame);
-        if (stateBuffer.Count < 2)
+        if (stateBuffer.Count < 4)
         {
             if (NetworkManager.showLagLogs)
             {

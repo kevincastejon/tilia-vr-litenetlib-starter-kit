@@ -391,7 +391,7 @@ public class GameManagerServer : MonoBehaviour
             p.playerName.transform.rotation = Quaternion.LookRotation(p.playerName.transform.position - p.nameOrientationTarget.transform.position);
 
 
-            if (p.inputBuffer.Count < 2)
+            if (p.inputBuffer.Count < 4)
             {
                 if (NetworkManager.showLagLogs)
                 {
