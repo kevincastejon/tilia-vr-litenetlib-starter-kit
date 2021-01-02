@@ -230,6 +230,7 @@ public class GameManagerServer : MonoBehaviour
     public void OnPlayerInput(int playerId, PlayerInput pi)
     {
         Player p = players[playerId];
+        p.lastSequence = pi.LastReceivedSequence;
         p.AddStateToBuffer(pi.Clone());
     }
 
