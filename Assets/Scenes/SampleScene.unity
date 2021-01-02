@@ -984,7 +984,6 @@ MonoBehaviour:
   id: 0
   ownerId: -1
   snapZone: {fileID: 0}
-  lastSerialization: 0
   sequenceA: 0
   sequenceB: 0
 --- !u!114 &148629918
@@ -1639,7 +1638,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CreateButton: {fileID: 2039984557}
   JoinButton: {fileID: 686636429}
-  isServer: 0
+  isServer: 1
 --- !u!4 &315067595
 Transform:
   m_ObjectHideFlags: 0
@@ -2503,7 +2502,6 @@ MonoBehaviour:
   id: 0
   ownerId: -1
   snapZone: {fileID: 0}
-  lastSerialization: 0
   sequenceA: 0
   sequenceB: 0
 --- !u!114 &446864214 stripped
@@ -9023,7 +9021,6 @@ MonoBehaviour:
   id: 0
   ownerId: -1
   snapZone: {fileID: 0}
-  lastSerialization: 0
   sequenceA: 0
   sequenceB: 0
 --- !u!114 &1863423750

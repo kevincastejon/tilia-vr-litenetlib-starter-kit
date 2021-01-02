@@ -33,6 +33,7 @@ public class GameManagerClient : MonoBehaviour
     private int lerpingSequence;
     private float timerMax = 3 / 60f;
     private float timer = 0f;
+    private readonly List<StateMessage> receivedStates = new List<StateMessage>();
     [HideInInspector]
     public static GameManagerClient instance;
     private bool newFrameTem = true;
@@ -181,6 +182,19 @@ public class GameManagerClient : MonoBehaviour
         }
     }
 
+    private EntityState FindEntityState(int id, EntityState[] entityStates)
+    {
+        for (int i = 0; i < entityStates.Length; i++)
+        {
+            EntityState es = entityStates[i];
+            if (es.Id == id)
+            {
+                return es;
+            }
+        }
+        return null;
+    }
+
     private void LerpEntities(float t, int currentSequence)
     {
         for (int i = 0; i < entities.Count; i++)
@@ -212,7 +226,11 @@ public class GameManagerClient : MonoBehaviour
             //    Debug.Log("REAL SEQ:" + realCurrentSeq);
             //    Debug.Log("REAL T:" + realT);
             //}
-            ent.transformTarget.position = Vector3.Lerp(ent.stateA.Position, ent.stateB.Position, realT);
+            StateMessage baseStateA = receivedStates.Find(x=>x.Sequence == ent.baseSequenceA);
+            EntityState baseEntityStateA = FindEntityState(ent.id, baseStateA.Entities);
+            StateMessage baseStateB = receivedStates.Find(x=>x.Sequence == ent.baseSequenceB);
+            EntityState baseEntityStateB = FindEntityState(ent.id, baseStateB.Entities);
+            ent.transformTarget.position = Vector3.Lerp(baseEntityStateA.Position+ent.stateA.Position, baseEntityStateB.Position + ent.stateB.Position, realT);
             ent.transformTarget.rotation = Quaternion.Lerp(ent.stateA.Rotation, ent.stateB.Rotation, realT);
             ent.ownerId = ent.stateA.Owner;
             if (ent.interactable)
@@ -307,6 +325,7 @@ public class GameManagerClient : MonoBehaviour
             RightPointer = localAvatar.rightPointer,
             LeftTrigger = localAvatar.leftTrigger,
             RightTrigger = localAvatar.rightTrigger,
+            LastReceivedSequence = lastSequence,
         });
         sequence++;
     }
@@ -398,6 +417,11 @@ public class GameManagerClient : MonoBehaviour
             }
             //Lag?
             stateBuffer.FastClear();
+        }
+        receivedStates.Add(sm.Clone());
+        if (receivedStates.Count>100)
+        {
+            receivedStates.RemoveAt(0);
         }
         stateBuffer.Add(sm.Clone());
         stateBufferLength = stateBuffer.Count;

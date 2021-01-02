@@ -43,9 +43,13 @@ public class Entity : MonoBehaviour
     [ReadOnly]
     public int sequenceA = -1;
     [ReadOnly]
+    public int baseSequenceA = -1;
+    [ReadOnly]
     public EntityState stateB;
     [ReadOnly]
     public int sequenceB;
+    [ReadOnly]
+    public int baseSequenceB;
     [ReadOnly]
     public LiteRingBuffer<EntityState> stateBuffer;
 

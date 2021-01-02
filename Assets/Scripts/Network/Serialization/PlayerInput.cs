@@ -10,7 +10,6 @@ public class PlayerInput : INetSerializable
     public Quaternion LeftHandRotation { get; set; }
     public Vector3 RightHandPosition { get; set; }
     public Quaternion RightHandRotation { get; set; }
-    public int LeftGrabId { get; set; }
     public Vector3 LeftGrabPosition { get; set; }
     public Vector3 LeftGrabVelocity { get; set; }
     public Quaternion LeftGrabRotation { get; set; }
@@ -19,11 +18,13 @@ public class PlayerInput : INetSerializable
     public Vector3 RightGrabVelocity { get; set; }
     public Quaternion RightGrabRotation { get; set; }
     public Vector3 RightGrabAngularVelocity { get; set; }
+    public int LeftGrabId { get; set; }
     public int RightGrabId { get; set; }
     public bool LeftTrigger { get; set; }
     public bool RightTrigger { get; set; }
     public bool LeftPointer { get; set; }
     public bool RightPointer { get; set; }
+    public int LastReceivedSequence { get; set; }
 
     public void Serialize(NetDataWriter writer)
     {
@@ -34,7 +35,6 @@ public class PlayerInput : INetSerializable
         QuatUtils.Serialize(writer, LeftHandRotation);
         Vector3Utils.SerializeHand(writer, RightHandPosition, HeadPosition);
         QuatUtils.Serialize(writer, RightHandRotation);
-        writer.Put(LeftGrabId);
         Vector3Utils.SerializeHand(writer, LeftGrabPosition, HeadPosition);
         Vector3Utils.Serialize(writer, LeftGrabVelocity);
         QuatUtils.Serialize(writer, LeftGrabRotation);
@@ -43,11 +43,13 @@ public class PlayerInput : INetSerializable
         Vector3Utils.Serialize(writer, RightGrabVelocity);
         QuatUtils.Serialize(writer, RightGrabRotation);
         Vector3Utils.Serialize(writer, RightGrabAngularVelocity);
+        writer.Put(LeftGrabId);
         writer.Put(RightGrabId);
         writer.Put(LeftTrigger);
         writer.Put(RightTrigger);
         writer.Put(LeftPointer);
         writer.Put(RightPointer);
+        writer.Put(LastReceivedSequence);
     }
 
     public void Deserialize(NetDataReader reader)
@@ -59,7 +61,6 @@ public class PlayerInput : INetSerializable
         LeftHandRotation = QuatUtils.Deserialize(reader);
         RightHandPosition = Vector3Utils.DeserializeHand(reader, HeadPosition);
         RightHandRotation = QuatUtils.Deserialize(reader);
-        LeftGrabId = reader.GetInt();
         LeftGrabPosition = Vector3Utils.DeserializeHand(reader, HeadPosition);
         LeftGrabVelocity = Vector3Utils.Deserialize(reader);
         LeftGrabRotation = QuatUtils.Deserialize(reader);
@@ -68,11 +69,13 @@ public class PlayerInput : INetSerializable
         RightGrabVelocity = Vector3Utils.Deserialize(reader);
         RightGrabRotation = QuatUtils.Deserialize(reader);
         RightGrabAngularVelocity = Vector3Utils.Deserialize(reader);
+        LeftGrabId = reader.GetInt();
         RightGrabId = reader.GetInt();
         LeftTrigger = reader.GetBool();
         RightTrigger = reader.GetBool();
         LeftPointer = reader.GetBool();
         RightPointer = reader.GetBool();
+        LastReceivedSequence = reader.GetInt();
     }
 
     public PlayerInput Clone()
@@ -86,20 +89,21 @@ public class PlayerInput : INetSerializable
             LeftHandRotation = new Quaternion(LeftHandRotation.x, LeftHandRotation.y, LeftHandRotation.z, LeftHandRotation.w),
             RightHandPosition = new Vector3(RightHandPosition.x, RightHandPosition.y, RightHandPosition.z),
             RightHandRotation = new Quaternion(RightHandRotation.x, RightHandRotation.y, RightHandRotation.z, RightHandRotation.w),
-            LeftGrabId = LeftGrabId,
             LeftGrabPosition = LeftGrabPosition,
             LeftGrabRotation = LeftGrabRotation,
             LeftGrabVelocity = LeftGrabVelocity,
             LeftGrabAngularVelocity = LeftGrabAngularVelocity,
-            RightGrabId = RightGrabId,
             RightGrabPosition = RightGrabPosition,
             RightGrabRotation = RightGrabRotation,
             RightGrabVelocity = RightGrabVelocity,
             RightGrabAngularVelocity = RightGrabAngularVelocity,
+            LeftGrabId = LeftGrabId,
+            RightGrabId = RightGrabId,
             LeftPointer = LeftPointer,
             RightPointer = RightPointer,
             LeftTrigger = LeftTrigger,
             RightTrigger = RightTrigger,
+            LastReceivedSequence = LastReceivedSequence,
         };
     }
 }

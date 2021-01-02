@@ -38,13 +38,14 @@ public class Player : MonoBehaviour
     public int inputBufferLength;
     [ReadOnly]
     public int lagPikes;
+    [ReadOnly]
+    public int lastSequence = -1;
     [HideInInspector]
     public LiteRingBuffer<PlayerInput> inputBuffer = new LiteRingBuffer<PlayerInput>(5);
     [HideInInspector]
     public GameObject nameOrientationTarget;
     [HideInInspector]
     public ShootEvent OnShoot = new ShootEvent();
-    private int lastSequence = -1;
 
     public bool LeftPointer
     {
