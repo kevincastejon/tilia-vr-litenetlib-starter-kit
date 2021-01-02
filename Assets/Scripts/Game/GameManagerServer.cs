@@ -341,7 +341,7 @@ public class GameManagerServer : MonoBehaviour
             {
                 break;
             }
-            StateMessage baseState = sentStates[player.lastSequence];
+            StateMessage baseState = sentStates.Find(x=>x.Sequence == player.lastSequence);
             EntityState es = FindEntityState(ent.id, baseState.Entities);
             entityStates[entityStateCount] = new EntityState()
             {
