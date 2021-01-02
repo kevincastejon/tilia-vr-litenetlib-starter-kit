@@ -345,6 +345,7 @@ public class GameManagerServer : MonoBehaviour
             }
             StateMessage baseState = sentStates.Find(x=>x.Sequence == player.lastSequence);
             EntityState es = FindEntityState(ent.id, baseState.Entities);
+            Debug.Log("TRYING TO FIND ENTITY "+ ent.id+ "... FOUND :"+es);
             entityStates[entityStateCount] = new EntityState()
             {
                 Id = ent.id,
