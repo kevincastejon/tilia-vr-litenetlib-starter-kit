@@ -1,5 +1,6 @@
 ﻿public class InitMessage
 {
+    public int Sequence { get; set; }
     public int OwnId { get; set; }
     public PlayerAddMessage[] Players { get; set; }
     public EntityAddMessage[] Entities { get; set; }

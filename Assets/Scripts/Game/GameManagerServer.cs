@@ -153,10 +153,11 @@ public class GameManagerServer : MonoBehaviour
         p.lastSequence = Sequence;
         InitMessage im = new InitMessage()
         {
+            Sequence = Sequence,
             OwnId = peerID,
             Entities = GetEntitiesAddMessage(),
             Players = GetPlayersAddMessage(peerID),
-            ColoredCube = coloredCube.currentColor
+            ColoredCube = coloredCube.currentColor,
         };
         server.SendImportantMessage(im, peerID);
         server.SendImportantMessage(new PlayerAddMessage()

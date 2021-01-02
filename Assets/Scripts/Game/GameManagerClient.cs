@@ -386,6 +386,7 @@ public class GameManagerClient : MonoBehaviour
     }
     public void OnServerInit(InitMessage im)
     {
+        lastSequence = im.Sequence;
         localAvatar.id = im.OwnId;
         localAvatar.TransportTo(new Vector3(0f, 10f, -12.5f));
         for (int i = 0; i < im.Players.Length; i++)
