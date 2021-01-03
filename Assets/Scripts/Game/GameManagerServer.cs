@@ -237,7 +237,7 @@ public class GameManagerServer : MonoBehaviour
 
     public PlayerState[] GetPlayersStates(int excludedPlayerId = -1)
     {
-        PlayerState[] playerStates = new PlayerState[numConnectedPlayers];
+        PlayerState[] playerStates = new PlayerState[excludedPlayerId == -1 ? numConnectedPlayers + 1 : numConnectedPlayers];
         int playerStateCount = 0;
         foreach (KeyValuePair<int, Player> entry in players)
         {
