@@ -235,7 +235,7 @@ public class GameManagerServer : MonoBehaviour
         p.AddStateToBuffer(pi.Clone());
     }
 
-    public PlayerState[] GetPlayersStates(int excludedPlayerId)
+    public PlayerState[] GetPlayersStates(int excludedPlayerId = -1)
     {
         PlayerState[] playerStates = new PlayerState[numConnectedPlayers];
         int playerStateCount = 0;
@@ -246,7 +246,7 @@ public class GameManagerServer : MonoBehaviour
             {
                 continue;
             }
-            if (p.id != excludedPlayerId)
+            if (excludedPlayerId == -1 || p.id != excludedPlayerId)
             {
                 playerStates[playerStateCount] = new PlayerState()
                 {
@@ -331,7 +331,7 @@ public class GameManagerServer : MonoBehaviour
         return null;
     }
 
-    public EntityState[] GetEntitiesStates(Player player)
+    public EntityState[] GetEntitiesStates(Player player = null)
     {
         int max = entitiesSettings.maxEntitiesStateSend < entities.Count ? entitiesSettings.maxEntitiesStateSend : entities.Count;
         EntityState[] entityStates = new EntityState[max];
@@ -343,14 +343,19 @@ public class GameManagerServer : MonoBehaviour
             {
                 break;
             }
-            StateMessage baseState = sentStates.Find(x=>x.Sequence == player.lastSequence);
-            EntityState es = FindEntityState(ent.id, baseState.Entities);
-            Debug.Log("TRYING TO FIND ENTITY "+ ent.id+ "... FOUND :"+es);
+            StateMessage baseState = null;
+            EntityState es = null;
+            if (player)
+            {
+                baseState = sentStates.Find(x => x.Sequence == player.lastSequence);
+                es = FindEntityState(ent.id, baseState.Entities);
+                Debug.Log("TRYING TO FIND ENTITY " + ent.id + "... FOUND :" + es);
+            }
             entityStates[entityStateCount] = new EntityState()
             {
                 Id = ent.id,
                 Type = (byte)ent.type,
-                Position = ent.transform.position-es.Position,
+                Position = es == null ? ent.transform.position : ent.transform.position - es.Position,
                 Rotation = ent.transform.rotation,
                 Owner = ent.ownerId,
             };
@@ -380,6 +385,19 @@ public class GameManagerServer : MonoBehaviour
 
     private void SendState()
     {
+        StateMessage backupState = new StateMessage()
+        {
+            Sequence = Sequence,
+            Players = GetPlayersStates(),
+            Entities = GetEntitiesStates(),
+            ColoredCube = coloredCube.currentColor,
+        };
+        sentStates.Add(backupState); // N'A AUCUN SENS !!!
+        if (sentStates.Count > 100)
+        {
+            sentStates.RemoveAt(0);
+        }
+
         foreach (KeyValuePair<int, Player> entry in players)
         {
             if (!entry.Value.connected)
@@ -396,11 +414,6 @@ public class GameManagerServer : MonoBehaviour
                 Players = playerStates,
                 ColoredCube = coloredCube.currentColor,
             };
-            sentStates.Add(states.Clone());
-            if (sentStates.Count>100)
-            {
-                sentStates.RemoveAt(0);
-            }
             server.SendFastMessage(
                 states,
                 entry.Value.id
